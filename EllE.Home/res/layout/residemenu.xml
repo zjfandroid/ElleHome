@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"
+        android:src="@color/transparent" />
+    
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/residemenu_bk" />
+
+    <ImageView
+        android:id="@+id/iv_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/shadow"
+        android:scaleType="fitXY" />
+            
+    <LinearLayout
+        android:id="@+id/linear_left"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical" >
+       
+		<elle.home.uipart.KickView
+		    android:id="@+id/sv_left_menu"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginTop="220dp"
+		    android:scrollbars="none" >
+
+		    <LinearLayout
+		        android:id="@+id/layout_left_menu"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+
+		        android:orientation="vertical" >
+		        
+
+		    </LinearLayout>
+		    
+		</elle.home.uipart.KickView>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/funlayout"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp" >
+
+        <LinearLayout
+            android:id="@+id/setting_layout"
+            android:layout_width="100dp"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/reside_setting_icon" />
+            
+            <TextView
+                android:id="@+id/reside_set"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/residemenu_manage_dev"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="normal"
+                android:typeface="serif" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/scene_layout"
+            android:layout_width="100dp"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/sceneimageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/reside_more_icon" />
+            
+            <TextView
+                android:id="@+id/reside_scene"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/residemenu_more"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="normal"
+                android:typeface="serif" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

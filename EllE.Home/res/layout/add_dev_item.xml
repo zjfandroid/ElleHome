@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:id="@+id/add_dev_item_bk"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scene_item_dev_bk" >
+
+        
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/scene_item_dev_logobk" >
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvmac"
+            android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_marginLeft="55dp"
+                android:gravity="center_vertical"
+                android:text="设备"
+                android:textColor="@color/whitesmoke"
+                android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/ibadd"
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/add_dev_add_icon"
+            android:scaleType="fitXY"
+            android:src="@color/transparent" />
+
+    </FrameLayout>
+
+</LinearLayout>

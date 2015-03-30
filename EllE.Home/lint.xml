@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="PxUsage">
+        <ignore path="res/layout/activity_dev_info.xml" />
+    </issue>
+    <issue id="RtlHardcoded" severity="ignore" />
+</lint>

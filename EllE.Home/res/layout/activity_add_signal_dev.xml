@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_dev_name_bk"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bk"
+    android:orientation="vertical" 
+    android:windowSoftInputMode="stateHidden"
+    >
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/title_bk" >
+
+            <ImageButton
+                android:id="@+id/title_btn_left"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="0dp"
+                android:background="#00000000"
+                android:scaleType="centerInside"
+                android:src="@drawable/title_back_bk" />
+
+            <TextView
+                android:id="@+id/title_bar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="添加灯泡"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+   		<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="top"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tips_bename"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:id="@+id/FrameLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom" >
+
+                <EditText
+                    android:id="@+id/addNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/transparent"
+                    android:ems="10"
+                    android:hint="@string/tips_bename"
+                    android:textColor="@color/aliceblue" >
+
+                    <requestFocus />
+                </EditText>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp" >
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left|center_vertical"
+                    android:gravity="left|center"
+                    android:text="@string/link_config_title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/whitesmoke" />
+
+                <CheckBox
+                    android:id="@+id/configWiFiCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="" />
+
+            </FrameLayout>
+            
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/link_config_ssid"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:id="@+id/FrameLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom" >
+
+                <EditText
+                    android:id="@+id/ssidEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/transparent"
+                    android:ems="10"
+                    android:hint="@string/link_config_input_ssid"
+                    android:textColor="@color/turquoise" >
+                    <requestFocus />
+                </EditText>
+
+            </FrameLayout>
+            
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/link_config_password"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:id="@+id/FrameLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom" >
+
+                <EditText
+                    android:id="@+id/passwordEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/transparent"
+                    android:ems="10"
+                    android:hint="@string/link_config_input_password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/aliceblue" >
+
+                    <requestFocus />
+                </EditText>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/add_logo_bk" >
+
+            <ImageView
+                android:id="@+id/addlogo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/info1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="全球可控"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="18sp" />
+                
+                <TextView
+                    android:id="@+id/info2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="灯随我心"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="18sp" />
+                
+                <TextView
+                    android:id="@+id/info3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="白光6500K+RGB"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="18sp" />
+                
+                <TextView
+                    android:id="@+id/info4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="AC100-240V 50/60Hz"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addSignalDevBtn"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="165dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#00000000"
+            android:text="@string/link_config_add"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+    </FrameLayout>
+
+</LinearLayout>

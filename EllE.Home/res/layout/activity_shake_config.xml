@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bk" >
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:src="@drawable/title_back_bk" />
+
+    <TextView
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/shake_config"
+        android:textColor="@color/whitesmoke"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txt_day"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/title_bar_text"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical"
+        android:paddingLeft="18dp"
+        android:text="@string/light_day"
+        android:textColor="@color/whitesmoke"
+        android:textSize="18sp" />
+
+    <elle.home.uipart.SilderButton
+        android:id="@+id/silderButtonDay"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/title_bar_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/txt_day"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical"
+        android:paddingLeft="18dp"
+        android:text="@string/light_night"
+        android:textColor="@color/whitesmoke"
+        android:textSize="18sp" />
+
+    <elle.home.uipart.SilderButton
+        android:id="@+id/silderButtonNight"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/txt_day"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp" />
+
+</RelativeLayout>

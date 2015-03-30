@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<string name="app_name">Eye4 Smart</string>
+	
+    <string name="residemenu_manage_dev">设备管理</string>
+    <string name="residemenu_about">关于</string>
+    <string name="residemenu_more">更多</string>
+    
+    <string name="residemenu_add_location">添加地点</string>
+    <string name="residemenu_add_scene">添加场景</string>
+    
+    <string name="location_home">家里</string>
+    <string name="location_apartment">公寓</string>
+    <string name="location_nursery">婴儿房</string>
+    <string name="location_garage">车库</string>
+    <string name="location_kitchen">厨房</string>
+    <string name="location_dorm">宿舍</string>
+    <string name="location_garden">花园</string>
+    <string name="location_hotel">酒店</string>
+    <string name="location_office">办公室</string>
+    
+    <string name="scene_behome">回家</string>
+    <string name="scene_dinner">聚餐</string>
+    <string name="scene_goodnight">晚安</string>
+    <string name="scene_wentout">出门</string>
+    <string name="scene_movie">电影</string>
+    <string name="scene_reading">阅读</string>
+    <string name="scene_sport">运动</string>
+    <string name="scene_meeting">会谈</string>
+    <string name="scene_working">工作</string>
+    <string name="scene_tips_del_scene_text">要删除这个场景吗?</string>
+    <string name="scene_tips_del_scene_title">询问</string>
+    <string name="scene_tips_del_scene_yes">确认</string>
+    <string name="scene_tips_del_scene_no">取消</string>
+    
+    <string name="scene_fun_light_on">打开</string>
+    <string name="scene_fun_light_off">关闭</string>
+    <string name="scene_fun_light_random">自由</string>
+    <string name="scene_fun_light_cancel">取消</string>
+    <string name="scene_fun_light_orange">橘色</string>
+    <string name="scene_fun_light_green">绿色</string>
+    <string name="scene_fun_light_blue">蓝色</string>
+    <string name="scene_fun_light_red">红色</string>
+    <string name="scene_fun_light_yellow">黄色</string>
+    <string name="scene_fun_light_cyan">青色</string>
+    <string name="scene_fun_light_indigo">靛青色</string>
+    <string name="scene_fun_light_violet">紫罗兰</string>
+    
+    <string name="scene_fun_plug_on">打开</string>
+    <string name="scene_fun_plug_off">关闭</string>
+    <string name="scene_fun_plug_cancel">取消</string>
+    
+    <string name="scene_fun_air_refrigeration16">制冷16</string>
+    <string name="scene_fun_air_refrigeration23">制冷23</string>
+	<string name="scene_fun_air_refrigeration30">制冷30</string>
+	<string name="scene_fun_air_off">关机</string>
+    <string name="scene_fun_air_heat16">加热16</string>
+    <string name="scene_fun_air_heat23">加热23</string>
+    <string name="scene_fun_air_heat30">加热30</string>
+    <string name="scene_fun_air_cancel">取消</string>
+    
+    
+    <string name="tips_bename">取个名字吧~</string>
+    <string name="tips_bename_first">取个名字先啦，然后才能添加~</string>
+    <string name="tips_add_succeed">添加成功~</string>
+    <string name="tips_benamed">这个名字用过啦~~\n取个更好的名字啦~</string>
+    <string name="tips_input_ssid">这里输入WiFi名字</string>
+    <string name="tips_input_password">这里输入WiFi密码</string>
+    <string name="tips_switch_wifi_succeed">切换wifi成功</string>
+    <string name="tips_link_config_succeed">配置设备WiFi成功，稍等片刻就可以添加了</string>
+    <string name="tips_link_config_error">配置异常，请退出软件重新来过</string>
+    <string name="tips_connected_to">连接到-></string>
+    <string name="tips_init_configing">初始化配置</string>
+    <string name="tips_connected_to_dev_configing">连接到设备，配置中</string>
+    <string name="tips_config_link_succeed">配置完成</string>
+    <string name="tips_click_back_btn">再次点击返回键退出</string>
+    
+    <string name="add_dev_title">添加设备</string>
+    <string name="add_add_string">添加</string>
+    <string name="type_light_string">球泡灯</string>
+    <string name="type_carema">摄像头</string>
+    <string name="type_plug_string">插座</string>
+    <string name="type_infra_string">遥控盒子</string>
+    <string name="type_air_string">空调遥控器</string>
+    <string name="type_tv_string">电视遥控器</string>
+    <string name="type_unknow_string">未知设备</string>
+    <string name="manage_dev_tips_del_location_text">要删除地点:</string>
+    <string name="manage_dev_tips_del_location_yes">确认</string>
+    <string name="manage_dev_tips_del_location_no">取消</string>
+    <string name="manage_dev_tips_del_dev_text">要删除设备:</string>
+    <string name="manage_dev_tips_del_dev_title">询问</string>
+    <string name="manage_dev_tips_del_dev_yes">确认</string>
+    <string name="manage_dev_tips_del_dev_no">取消</string>
+    
+    <string name="link_config_title">连接配置</string>
+    <string name="link_config_dev_name">设备名称:</string>
+    <string name="link_config_ssid">WiFi名称:</string>
+    <string name="link_config_password">WiFi密码:</string>
+    <string name="link_config_input_ssid">输入您想要登陆的WiFi名称</string>
+    <string name="link_config_input_password">输入您的WiFi密码</string>
+    <string name="link_config_add">添加</string>
+    
+    <string name="link_config_succeed">配置成功</string>
+    <string name="link_config_failed">配置失败</string>
+    
+    <string name="link_config_light_1">全球可控</string>
+	<string name="link_config_light_2">灯随我心</string>
+	<string name="link_config_light_3">白光6500K+RGB</string>
+	<string name="link_config_light_4">AC100-240V 50/60Hz</string>    
+
+	<string name="link_config_plug_1">全球可控</string>
+	<string name="link_config_plug_2">定时生活更贴心</string>
+	<string name="link_config_plug_3">最大电流:10A</string>
+	<string name="link_config_plug_4">AC100-240V 50/60Hz</string>
+	
+	<string name="link_config_infra_1">全球可控</string>
+	<string name="link_config_infra_2">万千遥控在我身</string>
+	<string name="link_config_infra_3">覆盖范围:50平米</string>
+	<string name="link_config_infra_4">电源:5V 1A</string>
+
+	<string name="link_config_air_1">全球可控</string>
+	<string name="link_config_air_2">温度随意控</string>
+	<string name="link_config_air_3">覆盖范围:50平米</string>
+	<string name="link_config_air_4">电源:5V 1A</string>
+    
+    <string name="about">关于</string>
+    <string name="more">更多</string>
+    <string name="shake_config">摇一摇设置</string>
+    <string name="shake_item">摇一摇</string>
+    <string name="update_item">检查更新</string>
+    <string name="feedback_item">一键反馈</string>
+    <string name="current_versionname">当前版本：%s</string>     
+       
+    <string name="plug_status_on">打开</string>
+    <string name="plug_status_off">关闭</string>
+    <string name="plug_switch_on">打开\n插座</string>
+    <string name="plug_switch_off">关闭\n插座</string>
+    <string name="plug_set_switch_on_time">设定插座打开时间</string>
+    <string name="plug_set_switch_off_time">设定插座关闭时间</string>
+    <string name="plug_set_time_btn_cancel">取消</string>
+    <string name="plug_set_time_btn_add">定时</string>
+    
+    <string name="infra_add_remote">添加遥控器</string>
+    <string name="infra_add_air">添加空调遥控器</string>
+    <string name="infra_add_tv">添加电视遥控器</string>
+    
+    <string name="infra_air_matching_cloud">云端匹配</string>
+    <string name="infra_air_study_succeed">学习成功</string>
+    <string name="infra_air_study_failure">学习失败</string>
+    <string name="infra_air_study_quit">学习退出</string>
+    <string name="infra_air_match_succeed">云端匹配成功</string>
+    <string name="infra_air_match_error">云端匹配异常</string>
+    
+    <string name="device_manager">设备管理</string>
+    <string name="device_info">设备信息</string>
+    <string name="title_wifi_config">Wifi配置</string>
+    <string name="device_info_place">地点:</string>
+    <string name="device_info_name">名字:</string>
+    <string name="device_info_mac">Mac:</string>
+    <string name="wifi_ssid">WiFi SSID:</string>
+    <string name="wifi_ssid_hint">请输入WiFi SSID</string>
+    <string name="wifi_password">WiFi 密码:</string>
+    <string name="wifi_password_hint">请输入WiFi密码</string>
+    <string name="device_manager_delete">删除</string>
+    <string name="new_location">添加地点</string>
+    <string name="new_scene">添加场景</string>
+    <string name="sure_to_reset">确定要复位？</string>
+    <string name="config_reset">复位</string>
+    <string name="config_link">配置</string>
+    <string name="config_wifi_ok">确定</string>
+    
+	<string name="light_shake">摇一摇</string>
+	<string name="light_free">随机变色</string>
+	<string name="light_day">白天( 7:00-19:00 )</string>
+	<string name="light_night">晚上( 19:00 - 7:00 )</string>
+    
+	<string name="alerm_motion_alarm">移动侦测报警</string>
+	<string name="alerm_gpio_alarm">IO联动报警</string>
+	
+	<string name="login_stuta_camer">相机状态</string>
+	<string name="camera_id">设备名称</string>
+	<string name="camera_user">用户名</string>
+	<string name="camera_pwd">密码</string>
+    <string name="camera_link">连接</string>
+    	<string name="input_camera_user">请输入用户名</string>
+	<string name="input_camera_id">请输入设备名称</string>
+	
+	<string name="device_not_on_line">摄像机不在线</string>
+	<string name="pppp_status_connect_timeout">连接超时</string>
+	<string name="pppp_status_initialing">已连接, 正在初始化</string>
+	<string name="pppp_status_unknown">未知状态</string>
+	<string name="pppp_status_connecting">正在连接</string>
+	<string name="pppp_status_online">在线</string>
+	<string name="pppp_status_disconnect">断线</string>
+	<string name="pppp_status_connect_failed">连接失败</string>
+	<string name="pppp_status_pwd_error">密码错误</string>
+	<string name="pppp_status_invalid_id">ID号无效</string>
+	<string name="connecting">正在连接...</string>
+	<string name="videoing">录像中...</string>
+	<string name="main_show_back">再按一次，退出程序！</string>
+	<string name="str_ok">确定</string>
+	<string name="str_cancel">取消</string>
+	<string name="exit_alert">确认退出吗 ?</string>
+	<string name="exit">退出</string>
+	<string name="p2p_view_time_out">已到观看时间</string>
+	<string name="ptz_default_vedio_params">视频参数恢复默认值</string>
+	<string name="p2p_relay_mode_time_out">转发模式观看,剩余时间:</string>
+	<string name="str_second">秒</string>
+	<string name="ptz_control">请按菜单键,进行云台控制</string>
+	<string name="exit_show">   提示：</string>
+	<string name="exit_play_show">确认退出播放?</string>
+	<string name="eixt_show_toast">本地录像中，请先停止再退出！</string>
+	
+	<string name="chose_device_to_add">请选择您需要添加的设备</string>
+	<string name="chose_wifi_to_add">请选择您需要配置的Wifi</string>
+	<string name="device_not_found">暂无此设备</string>
+	
+    <string name="dialog_default_title">Here\'s a message!</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="LOADING">Loading...</string>
+	
+</resources>

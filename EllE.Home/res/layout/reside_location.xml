@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal" 
+    android:addStatesFromChildren="true"
+	
+    >
+
+    <LinearLayout
+        android:id="@+id/reside_item_bk"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" >
+
+        <ImageView
+            android:id="@+id/resideLocatImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/resideLocatText"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="9dp"
+            android:gravity="center_vertical"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:typeface="serif" />
+
+        <ImageView
+            android:id="@+id/reside_item_next"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/reside_icon_next" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bk" >
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:src="@drawable/title_back_bk" />
+
+    <TextView
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="智能灯泡"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_btn_right"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:src="@drawable/title_right_menu" />
+
+    <LinearLayout
+        android:id="@+id/rgb_activity_bk2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_text"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <elle.home.uipart.RgbLightView
+        android:id="@+id/rgbLightView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_text"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:padding="20dp" />
+
+    <LinearLayout
+        android:id="@+id/light_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_text"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="152dp"
+            android:layout_gravity="right"
+            android:background="@drawable/title_right_menu_bk"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/sleep15min"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="睡眠:15分钟"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/title_menu_line" />
+
+            <TextView
+                android:id="@+id/sleep30min"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="睡眠:30分钟"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/title_menu_line" />
+
+            <TextView
+                android:id="@+id/sleepcancel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="取消"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/randomshow"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="@string/light_shake"
+            android:textColor="@color/whitesmoke"
+            android:textSize="18sp" />
+
+        <elle.home.uipart.SilderButton
+            android:id="@+id/silderButtonShake"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="@string/light_free"
+            android:textColor="@color/whitesmoke"
+            android:textSize="18sp" />
+
+        <elle.home.uipart.SilderButton
+            android:id="@+id/silderButton1"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sleepshow"
+        android:layout_width="90dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sleeptimeshow"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="15:00"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/mediumseagreen"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="90dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="睡眠"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</RelativeLayout>

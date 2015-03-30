@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bk"
+    android:orientation="vertical" >
+    
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/title_bk" >
+
+            <ImageButton
+                android:id="@+id/title_btn_left"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="2dp"
+                android:background="#00000000"
+                android:scaleType="centerInside"
+                android:src="@drawable/title_back_bk" />
+
+            <TextView
+                android:id="@+id/title_bar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/new_location"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" >
+            
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal" >
+
+	            <EditText
+	                android:id="@+id/addNameEdit"
+	                android:layout_width="match_parent"
+	                android:layout_height="50dp"
+	                android:layout_weight="1"
+	                android:background="@color/transparent"
+	                android:ems="10"
+	                android:hint="@string/tips_bename"
+	                android:textColor="@color/whitesmoke" >
+	
+	                <requestFocus />
+	            </EditText>
+	
+	            <ImageButton
+	                android:id="@+id/addLocationBtn"
+	                android:layout_width="120dp"
+	                android:layout_height="47dp"
+	                android:layout_weight="1"
+	                android:background="@drawable/add_signal_dev_add"
+	                android:scaleType="fitCenter"
+	                android:src="@color/transparent" />
+
+        	</LinearLayout>
+        	
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/whitesmoke"
+                android:orientation="vertical" >
+            
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+         <GridView
+             android:id="@+id/location_grid_view"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginBottom="66dp"
+             android:layout_weight="1"
+             android:cacheColorHint="@android:color/transparent"
+             android:listSelector="@drawable/scene_item_bk"
+             android:numColumns="3" >
+
+        </GridView>
+
+    </FrameLayout>    
+
+</LinearLayout>
