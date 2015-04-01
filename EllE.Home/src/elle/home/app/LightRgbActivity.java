@@ -579,7 +579,6 @@ public class LightRgbActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		rgblight.recycleBit();
 		this.userUnbindService();
 		super.onDestroy();
@@ -588,22 +587,22 @@ public class LightRgbActivity extends BaseActivity {
 	
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 		timer = new Timer();
 		TimerTask timetask = new TimerTask(){
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-
 					LightControlPacket packet = new LightControlPacket(conip,conport);
 					if(connectStatus == PublicDefine.ConnectRemote){
 						packet.setPacketRemote(true);
 					}
 					packet.lightCheck(DataExchange.longToEightByte(dev.mac),recvListener);
 					packet.setImportance(BasicPacket.ImportNormal);
-					autoBinder.addPacketToSend(packet);
+					
+					if(null != autoBinder){
+						autoBinder.addPacketToSend(packet);
+					}
 			}
 			
 		};

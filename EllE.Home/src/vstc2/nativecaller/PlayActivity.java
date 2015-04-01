@@ -1,13 +1,15 @@
 package vstc2.nativecaller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Date;
 
 import vstc2.nativecaller.BridgeService.PlayInterface;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -22,7 +24,9 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -39,8 +43,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -49,13 +51,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import elle.home.app.R;
 import elle.home.partactivity.BaseActivity;
+import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
 public class PlayActivity extends BaseActivity implements OnTouchListener,
@@ -122,7 +125,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	private ImageView vidoeView;
 	private ImageView videoViewStandard;
 	private ImageButton ptzAudio;
-	private ImageButton ptzPlayMode;
+	private ImageButton ptzTakePic;
 	private Button ptzResolutoin;
 	private Animation showAnim;
 	private boolean isTakepic = false;
@@ -216,7 +219,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 					}
 				}
 			} else {
-				showSureDialog1();
+				showSureDialog();
 			}
 
 			return true;
@@ -227,7 +230,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 				showTop();
 				showBottom();
 			} else {
-				showSureDialog1();
+				showSureDialog();
 			}
 		}
 		return super.onKeyDown(keyCode, event);
@@ -236,34 +239,38 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	/****
 	 * 退出确定dialog
 	 * */
-	public void showSureDialog1() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.app);
-		builder.setTitle(getResources().getString(R.string.exit)
-				+ getResources().getString(R.string.app_name));
-		builder.setMessage(R.string.exit_alert);
-		builder.setPositiveButton(R.string.str_ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// Process.killProcess(Process.myPid());
-						Intent intent = new Intent("finish");
-						sendBroadcast(intent);
-						PlayActivity.this.finish();
-					}
-				});
-		builder.setNegativeButton(R.string.str_cancel, null);
-		builder.show();
+	public void showSureDialog() {
+		SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+		dialog.setCancelable(true);
+		dialog.setCanceledOnTouchOutside(true);
+		
+		dialog.setTitleText(getResources().getString(R.string.exit_play_show))
+		.setCancelText(getResources().getString(R.string.manage_dev_tips_del_dev_no))
+		.setConfirmText(getResources().getString(R.string.manage_dev_tips_del_dev_yes))
+		.showCancelButton(true)
+		.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			@Override
+			public void onClick(SweetAlertDialog sDialog) {
+				sDialog.dismiss();
+			}
+		})
+		.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			@Override
+			public void onClick(SweetAlertDialog sDialog) {
+				Intent intent = new Intent("finish");
+				sendBroadcast(intent);
+				PlayActivity.this.finish();
+				sDialog.dismiss();
+			}
+		})
+		.show();
 	}
 
 	private void showTop() {
 		if (isShowtoping) {
 			isShowtoping = false;
-			topbg.setVisibility(View.GONE);
-			topbg.startAnimation(dismissTopAnim);
 		} else {
 			isShowtoping = true;
-			topbg.setVisibility(View.VISIBLE);
-			topbg.startAnimation(showTopAnim);
 		}
 	}
 
@@ -463,6 +470,8 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	public void initExitPopupWindow2() {
 		LayoutInflater li = LayoutInflater.from(this);
 		View popv = li.inflate(R.layout.popup_d, null);
+		popv.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+		
 		Button button_load = (Button) popv.findViewById(R.id.add_check_load);
 		Button button_phone = (Button) popv.findViewById(R.id.add_check_phone);
 		popupWindow_about = new PopupWindow(popv,
@@ -497,7 +506,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 					@Override
 					public void onDismiss() {
-						// TODO Auto-generated method stub
 						popupWindow_about.dismiss();
 					}
 				});
@@ -555,7 +563,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		audioPlayer = new AudioPlayer(AudioBuffer);
 		// myvideoRecorder = new CustomVideoRecord(this, strDID);
 		BridgeService.setPlayInterface(this);
-		
 
 		getCameraParams();
 		dismissTopAnim = AnimationUtils.loadAnimation(this,
@@ -638,34 +645,18 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		textosd = (TextView) findViewById(R.id.textosd);
 		textTimeoutTextView = (TextView) findViewById(R.id.textTimeout);
 		osdView = (View) findViewById(R.id.osdlayout);
-		ptzHoriMirror2 = (ImageButton) findViewById(R.id.ptz_hori_mirror);
-		ptzVertMirror2 = (ImageButton) findViewById(R.id.ptz_vert_mirror);
-		ptzHoriTour2 = (ImageButton) findViewById(R.id.ptz_hori_tour);
-		ptzVertTour2 = (ImageButton) findViewById(R.id.ptz_vert_tour);
 		ptzAudio = (ImageButton) findViewById(R.id.ptz_audio);
-		ImageButton ptzBrightness = (ImageButton) findViewById(R.id.ptz_brightness);
-		ImageButton ptzContrast = (ImageButton) findViewById(R.id.ptz_contrast);
 		ptzResolutoin = (Button) findViewById(R.id.ptz_resoluti);
-		ptzPlayMode = (ImageButton) findViewById(R.id.ptz_playmode);
+		ptzTakePic = (ImageButton) findViewById(R.id.ptz_take_pic);
 		ptzOtherSetAnimView = findViewById(R.id.ptz_othersetview_anim);
-		ImageButton ptzDefaultSet = (ImageButton) findViewById(R.id.ptz_default_set);
-		ptzHoriMirror2.setOnClickListener(this);
-		ptzVertMirror2.setOnClickListener(this);
-		ptzHoriTour2.setOnClickListener(this);
-		ptzVertTour2.setOnClickListener(this);
 		ptzAudio.setOnClickListener(this);
-		ptzBrightness.setOnClickListener(this);
-		ptzContrast.setOnClickListener(this);
 		ptzResolutoin.setOnClickListener(this);
-		ptzPlayMode.setOnClickListener(this);
-		ptzDefaultSet.setOnClickListener(this);
-		topbg = (RelativeLayout) findViewById(R.id.top_bg);
+		ptzTakePic.setOnClickListener(this);
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
 				R.drawable.top_bg);
 		drawable = new BitmapDrawable(bitmap);
 		drawable.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
 		drawable.setDither(true);
-		topbg.setBackgroundDrawable(drawable);
 		ptzOtherSetAnimView.setBackgroundDrawable(drawable);
 
 		setScreen();
@@ -860,13 +851,8 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private final int MINLEN = 80;
-	private RelativeLayout topbg;
 	private Animation showTopAnim;
 	private Animation dismissTopAnim;
-	private ImageButton ptzHoriMirror2;
-	private ImageButton ptzVertMirror2;
-	private ImageButton ptzHoriTour2;
-	private ImageButton ptzVertTour2;
 	private boolean isPTZPrompt;
 
 	@Override
@@ -920,34 +906,22 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		return false;
 	}
 
-	public void showSureDialogPlay() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.app);
-		builder.setTitle(getResources().getString(R.string.exit_show));
-		builder.setMessage(R.string.exit_play_show);
-		builder.setPositiveButton(R.string.str_ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						PlayActivity.this.finish();
-					}
-				});
-		builder.setNegativeButton(R.string.str_cancel, null);
-		builder.show();
-	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 
+		case R.id.ptz_take_pic:
+			takePicpure();
+			break;
 		case R.id.login_top_back:
 			bManualExit = true;
-			if (!bProgress) {
-				if (isTakeVideo == true) {
-					showToast(R.string.eixt_show_toast);
-				} else {
-					showSureDialogPlay();
-				}
-			}
+//			if (!bProgress) {
+//				if (isTakeVideo == true) {
+//					showToast(R.string.eixt_show_toast);
+//				} else {
+					showSureDialog();
+//				}
+//			}
 			break;
 		case R.id.imgup:
 			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_UP);
@@ -965,67 +939,67 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_RIGHT);
 			Log.d("tag", "right");
 			break;
-		case R.id.ptz_hori_mirror:
-			if (isHorizontalMirror) {
-				ptzHoriMirror2.setBackgroundColor(0x00ffffff);
-				isHorizontalMirror = false;
-				NativeCaller.PPPPCameraControl(strDID, 5,
-						ContentCommon.CMD_PTZ_ORIGINAL);
-				Log.d("tag", "水平镜像还原：" + ContentCommon.CMD_PTZ_ORIGINAL);
-			} else {
-				isHorizontalMirror = true;
-				ptzHoriMirror2.setBackgroundColor(0xff0044aa);
-				NativeCaller.PPPPCameraControl(strDID, 5,
-						ContentCommon.CMD_PTZ_HORIZONAL_MIRROR);
-				Log.d("tag", "水平镜像：" + ContentCommon.CMD_PTZ_HORIZONAL_MIRROR);
-			}
-			break;
-		case R.id.ptz_vert_mirror:
-			if (isVerticalMirror) {
-				isVerticalMirror = false;
-				ptzVertMirror2.setBackgroundColor(0x00ffffff);
-				NativeCaller.PPPPCameraControl(strDID, 5,
-						ContentCommon.CMD_PTZ_ORIGINAL);
-				Log.d("tag", "垂直镜像还原：" + ContentCommon.CMD_PTZ_ORIGINAL);
-			} else {
-				isVerticalMirror = true;
-				ptzVertMirror2.setBackgroundColor(0xff0044aa);
-				NativeCaller.PPPPCameraControl(strDID, 5,
-						ContentCommon.CMD_PTZ_VERTICAL_MIRROR);
-				Log.d("tag", "垂直镜像：" + ContentCommon.CMD_PTZ_VERTICAL_MIRROR);
-			}
-			break;
-
-		case R.id.ptz_hori_tour:
-			if (isLeftRight) {
-				ptzHoriTour2.setBackgroundColor(0x000044aa);
-				isLeftRight = false;
-				NativeCaller.PPPPPTZControl(strDID,
-						ContentCommon.CMD_PTZ_LEFT_RIGHT_STOP);
-				Log.d("tag", "水平巡视停止:" + ContentCommon.CMD_PTZ_LEFT_RIGHT_STOP);
-			} else {
-				ptzHoriTour2.setBackgroundColor(0xff0044aa);
-				isLeftRight = true;
-				NativeCaller.PPPPPTZControl(strDID,
-						ContentCommon.CMD_PTZ_LEFT_RIGHT);
-				Log.d("tag", "水平巡视开始:" + ContentCommon.CMD_PTZ_LEFT_RIGHT);
-			}
-			break;
-		case R.id.ptz_vert_tour:
-			if (isUpDown) {
-				ptzVertTour2.setBackgroundColor(0x000044aa);
-				isUpDown = false;
-				NativeCaller.PPPPPTZControl(strDID,
-						ContentCommon.CMD_PTZ_UP_DOWN_STOP);
-				Log.d("tag", "垂直巡视停止:" + ContentCommon.CMD_PTZ_UP_DOWN_STOP);
-			} else {
-				ptzVertTour2.setBackgroundColor(0xff0044aa);
-				isUpDown = true;
-				NativeCaller.PPPPPTZControl(strDID,
-						ContentCommon.CMD_PTZ_UP_DOWN);
-				Log.d("tag", "垂直巡视开始:" + ContentCommon.CMD_PTZ_UP_DOWN);
-			}
-			break;
+//		case R.id.ptz_hori_mirror:
+//			if (isHorizontalMirror) {
+//				ptzHoriMirror2.setBackgroundColor(0x00ffffff);
+//				isHorizontalMirror = false;
+//				NativeCaller.PPPPCameraControl(strDID, 5,
+//						ContentCommon.CMD_PTZ_ORIGINAL);
+//				Log.d("tag", "水平镜像还原：" + ContentCommon.CMD_PTZ_ORIGINAL);
+//			} else {
+//				isHorizontalMirror = true;
+//				ptzHoriMirror2.setBackgroundColor(0xff0044aa);
+//				NativeCaller.PPPPCameraControl(strDID, 5,
+//						ContentCommon.CMD_PTZ_HORIZONAL_MIRROR);
+//				Log.d("tag", "水平镜像：" + ContentCommon.CMD_PTZ_HORIZONAL_MIRROR);
+//			}
+//			break;
+//		case R.id.ptz_vert_mirror:
+//			if (isVerticalMirror) {
+//				isVerticalMirror = false;
+//				ptzVertMirror2.setBackgroundColor(0x00ffffff);
+//				NativeCaller.PPPPCameraControl(strDID, 5,
+//						ContentCommon.CMD_PTZ_ORIGINAL);
+//				Log.d("tag", "垂直镜像还原：" + ContentCommon.CMD_PTZ_ORIGINAL);
+//			} else {
+//				isVerticalMirror = true;
+//				ptzVertMirror2.setBackgroundColor(0xff0044aa);
+//				NativeCaller.PPPPCameraControl(strDID, 5,
+//						ContentCommon.CMD_PTZ_VERTICAL_MIRROR);
+//				Log.d("tag", "垂直镜像：" + ContentCommon.CMD_PTZ_VERTICAL_MIRROR);
+//			}
+//			break;
+//
+//		case R.id.ptz_hori_tour:
+//			if (isLeftRight) {
+//				ptzHoriTour2.setBackgroundColor(0x000044aa);
+//				isLeftRight = false;
+//				NativeCaller.PPPPPTZControl(strDID,
+//						ContentCommon.CMD_PTZ_LEFT_RIGHT_STOP);
+//				Log.d("tag", "水平巡视停止:" + ContentCommon.CMD_PTZ_LEFT_RIGHT_STOP);
+//			} else {
+//				ptzHoriTour2.setBackgroundColor(0xff0044aa);
+//				isLeftRight = true;
+//				NativeCaller.PPPPPTZControl(strDID,
+//						ContentCommon.CMD_PTZ_LEFT_RIGHT);
+//				Log.d("tag", "水平巡视开始:" + ContentCommon.CMD_PTZ_LEFT_RIGHT);
+//			}
+//			break;
+//		case R.id.ptz_vert_tour:
+//			if (isUpDown) {
+//				ptzVertTour2.setBackgroundColor(0x000044aa);
+//				isUpDown = false;
+//				NativeCaller.PPPPPTZControl(strDID,
+//						ContentCommon.CMD_PTZ_UP_DOWN_STOP);
+//				Log.d("tag", "垂直巡视停止:" + ContentCommon.CMD_PTZ_UP_DOWN_STOP);
+//			} else {
+//				ptzVertTour2.setBackgroundColor(0xff0044aa);
+//				isUpDown = true;
+//				NativeCaller.PPPPPTZControl(strDID,
+//						ContentCommon.CMD_PTZ_UP_DOWN);
+//				Log.d("tag", "垂直巡视开始:" + ContentCommon.CMD_PTZ_UP_DOWN);
+//			}
+//			break;
 		case R.id.ptz_audio:
 			dismissBrightAndContrastProgress();
 			if (!isMcriophone) {
@@ -1042,24 +1016,33 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 				}
 			}
 			break;
-		case R.id.ptz_brightness:
-			if (mPopupWindowProgress != null
-					&& mPopupWindowProgress.isShowing()) {
-				mPopupWindowProgress.dismiss();
-				mPopupWindowProgress = null;
-			}
-			setBrightOrContrast(BRIGHT);
-			break;
-		case R.id.ptz_contrast:
-			if (mPopupWindowProgress != null
-					&& mPopupWindowProgress.isShowing()) {
-				mPopupWindowProgress.dismiss();
-				mPopupWindowProgress = null;
-			}
-			setBrightOrContrast(CONTRAST);
-			break;
+//		case R.id.ptz_brightness://亮度
+//			if (mPopupWindowProgress != null
+//					&& mPopupWindowProgress.isShowing()) {
+//				mPopupWindowProgress.dismiss();
+//				mPopupWindowProgress = null;
+//			}
+//			setBrightOrContrast(BRIGHT);
+//			break;
+//		case R.id.ptz_contrast://对比度
+//			if (mPopupWindowProgress != null
+//					&& mPopupWindowProgress.isShowing()) {
+//				mPopupWindowProgress.dismiss();
+//				mPopupWindowProgress = null;
+//			}
+//			setBrightOrContrast(CONTRAST);
+//			break;
+//		case R.id.ptz_default_set://亮度对比度复位
+//			dismissBrightAndContrastProgress();
+//			defaultVideoParams();
+//			break;
 		case R.id.ptz_resoluti:
-			popupWindow_about.showAtLocation(button_back, Gravity.CENTER, 0, 0);
+			int[] location = new int[2];
+			v.getLocationOnScreen(location);
+			int popupWidth = popupWindow_about.getContentView().getMeasuredWidth();
+			int popupHeight = popupWindow_about.getContentView().getMeasuredHeight();
+			popupWindow_about.showAtLocation(v, Gravity.NO_GRAVITY, (location[0]+v.getWidth()/2)-popupWidth/2, location[1] - popupHeight);
+//			popupWindow_about.showAtLocation(ptzResolutoin, Gravity.CENTER, 0, 0);
 			break;
 		case R.id.ptz_resolution_jpeg_qvga:
 			dismissBrightAndContrastProgress();
@@ -1096,41 +1079,76 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			setResolution(nResolution);
 			Log.d("tag", "h264 resolution:" + nResolution + " 720p");
 			break;
-		case R.id.ptz_playmode:
-			dismissBrightAndContrastProgress();
-			switch (playmode) {
-			case FULLSCREEN:
-				ptzPlayMode.setImageResource(R.drawable.ptz_playmode_enlarge);
-				ptzPlayMode
-						.setBackgroundResource(R.drawable.ptz_takepic_selector);
-				Log.d("tg", "magnify 1");
-				playmode = STANDARD;
-				break;
-			case MAGNIFY:
-				Log.d("tg", "STANDARD 2");
-				playmode = FULLSCREEN;
-				ptzPlayMode.setImageResource(R.drawable.ptz_playmode_standard);
-				ptzPlayMode
-						.setBackgroundResource(R.drawable.ptz_takepic_selector);
-				break;
-			case STANDARD:
-				Log.d("tg", "FULLSCREEN 3");
-				playmode = MAGNIFY;
-				ptzPlayMode
-						.setImageResource(R.drawable.ptz_playmode_fullscreen);
-				ptzPlayMode
-						.setBackgroundResource(R.drawable.ptz_takepic_selector);
-				break;
-			default:
-				break;
-			}
-
-			break;
-		case R.id.ptz_default_set:
-			dismissBrightAndContrastProgress();
-			defaultVideoParams();
-			break;
+//		case R.id.ptz_playmode:
+//			dismissBrightAndContrastProgress();
+//			switch (playmode) {
+//			case FULLSCREEN:
+//				ptzPlayMode.setImageResource(R.drawable.ptz_playmode_enlarge);
+//				ptzPlayMode
+//						.setBackgroundResource(R.drawable.ptz_takepic_selector);
+//				Log.d("tg", "magnify 1");
+//				playmode = STANDARD;
+//				break;
+//			case MAGNIFY:
+//				Log.d("tg", "STANDARD 2");
+//				playmode = FULLSCREEN;
+//				ptzPlayMode.setImageResource(R.drawable.ptz_playmode_standard);
+//				ptzPlayMode
+//						.setBackgroundResource(R.drawable.ptz_takepic_selector);
+//				break;
+//			case STANDARD:
+//				Log.d("tg", "FULLSCREEN 3");
+//				playmode = MAGNIFY;
+//				ptzPlayMode
+//						.setImageResource(R.drawable.ptz_playmode_fullscreen);
+//				ptzPlayMode
+//						.setBackgroundResource(R.drawable.ptz_takepic_selector);
+//				break;
+//			default:
+//				break;
+//			}
+//			break;
 		}
+	}
+
+	/**
+	 * 截图
+	 */
+	private void takePicpure() {
+		videoViewStandard.setDrawingCacheEnabled(true);
+		Bitmap bitmap = videoViewStandard.getDrawingCache();
+		if(null == bitmap){
+			ShowToast.show(this, "截图失败～");
+			return;
+		}
+		
+        File file = new File( Environment.getExternalStorageDirectory()+ "/Elle.Home/" + System.currentTimeMillis() + ".png");
+        ShowInfo.printLogW(file.getParentFile() + "_________getExternalStorageDirectory________" + Environment.getExternalStorageDirectory()+ "/Elle.Home/");
+        if(!file.getParentFile().exists()){
+        		file.getParentFile().mkdirs();
+        }
+        
+        try {
+        		FileOutputStream fos = new FileOutputStream(file);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			fos.close();
+			ShowToast.show(this, "截图成功：" + file.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        if(null != bitmap && !bitmap.isRecycled()){
+        		bitmap.recycle();
+        		bitmap = null;
+        }
+        
+        videoViewStandard.setDrawingCacheEnabled(false);
+        
+        /*更新媒体库,扫描抓图文件*/
+        Uri data = Uri.parse("file://" + file.getAbsolutePath());
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
 	}
 
 	private void dismissBrightAndContrastProgress() {

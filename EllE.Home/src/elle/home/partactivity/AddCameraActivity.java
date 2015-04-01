@@ -140,7 +140,7 @@ public class AddCameraActivity extends Activity implements AddCameraInterface ,C
 			}
 			
 			if(!isExist){
-				AddDevItemView item = new AddDevItemView(mContext,PublicDefine.getLittleIconByType(PublicDefine.TypeInfraAir), camera.getStrName(),R.drawable.add_dev_add_icon);
+				AddDevItemView item = new AddDevItemView(mContext,PublicDefine.getLittleIconByType(PublicDefine.TypeInfraCamera), camera.getStrName(),R.drawable.add_dev_add_icon);
 				item.setIsWifi(false);
 				addCaremaLayout.addView(item, 0);
 				count++;

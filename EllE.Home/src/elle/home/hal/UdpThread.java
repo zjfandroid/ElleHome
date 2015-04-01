@@ -67,19 +67,25 @@ public class UdpThread {
 	
 	public void stopThread(){
 		Log.d(TAG,"udp thread stop");
-		this.sendThread.stopThis();
-		this.recvThread.stopThis();
-		dataSocket.disconnect();
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
+		if(null != sendThread){
+			this.sendThread.stopThis();
+		}
+		
+		if(null != recvThread){
+			this.recvThread.stopThis();
+		}
+		
+		if(null != dataSocket){
+			dataSocket.disconnect();
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask(){
 				
-				Log.d(TAG,"udp thread stop2");
-				dataSocket.close();
-			}}, 500);
+				@Override
+				public void run() {
+					Log.d(TAG,"udp thread stop2");
+					dataSocket.close();
+				}}, 500);
+		}
 		
 	}
 	

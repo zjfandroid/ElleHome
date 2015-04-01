@@ -3,7 +3,6 @@ package elle.home.app;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener;
+import elle.home.database.OneDev;
 import elle.home.database.OneSceneData;
 import elle.home.database.SceneData;
 import elle.home.partactivity.BaseActivity;
@@ -61,7 +61,6 @@ public class SceneActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch(msg.what){
 			case 0:
@@ -77,7 +76,6 @@ public class SceneActivity extends BaseActivity {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			// TODO Auto-generated method stub
 			autoBinder = (AutoService.AutoBinder) service;
 			initData();
 			Message msg = new Message();
@@ -87,7 +85,6 @@ public class SceneActivity extends BaseActivity {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			// TODO Auto-generated method stub
 			
 		}
 		
@@ -117,7 +114,6 @@ public class SceneActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				for(int i=0;i<sceneItemDevs.size();i++){
 					BasicPacket tmp = sceneItemDevs.get(i).runFun(autoBinder.getAllInfo());
 					if(tmp!=null){
@@ -132,7 +128,6 @@ public class SceneActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					PublicDefine.vibratorNormal(context);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -144,7 +139,6 @@ public class SceneActivity extends BaseActivity {
 		
 		sceneTitle = (TextView)this.findViewById(R.id.title_bar_text);
 		kick = (KickView)this.findViewById(R.id.scene_items_layout);
-		
 		
 		delSceneBtn = (ImageButton)this.findViewById(R.id.title_btn_right);
 		delSceneBtn.setOnTouchListener(new View.OnTouchListener() {
@@ -268,12 +262,20 @@ public class SceneActivity extends BaseActivity {
 			//地点
 			SceneItemTitle location = new SceneItemTitle(this,autoBinder.getAllInfo().allinfo.get(i));
 			this.addlayout.addView(location);
-			for(int x=0;x<autoBinder.getAllInfo().allinfo.get(i).devLocationList.size();x++){
-				//地点下的设备
-				SceneItemDev dev = new SceneItemDev(this,autoBinder.getAllInfo().allinfo.get(i).devLocationList.get(x),scenedata);
-				dev.framelayout.setOnClickListener(toglistener);
-				sceneItemDevs.add(dev);
-				this.addlayout.addView(dev);
+			
+			List<OneDev> devs = autoBinder.getAllInfo().allinfo.get(i).devLocationList;
+			int size = devs.size();
+			for(int x=0; x<size; x++){
+				OneDev oneDev = devs.get(x);
+				if(PublicDefine.TypeInfraCamera == oneDev.type){
+					continue;
+				}else{
+					//地点下的设备
+					SceneItemDev dev = new SceneItemDev(this, oneDev, scenedata);
+					dev.framelayout.setOnClickListener(toglistener);
+					sceneItemDevs.add(dev);
+					this.addlayout.addView(dev);
+				}
 			}
 		}
 	}

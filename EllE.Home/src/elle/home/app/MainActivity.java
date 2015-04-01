@@ -452,7 +452,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 .beginTransaction()
                 .replace(R.id.main_fragment, targetFragment, "fragment")
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+                .commitAllowingStateLoss();
     }
 	
 	public ResideMenu getResideMenu(){

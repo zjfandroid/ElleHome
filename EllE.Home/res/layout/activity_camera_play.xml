@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/play"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -15,7 +15,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </LinearLayout>
-
 
     <ImageView
         android:id="@+id/vedioview"
@@ -49,55 +48,58 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/connecting" />
+            android:text="@string/connecting"
+            android:textColor="@color/whitesmoke" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dip" >
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/imgup"
-            android:layout_width="45dip"
+            android:layout_width="match_parent"
             android:layout_height="45dip"
+            android:alpha="0.4"
+            android:background="@drawable/ptz_takepic_selector"
             android:src="@drawable/up"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dip"
-            android:layout_marginTop="30dip"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:alpha="0.4"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dip" >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:id="@+id/imgleft"
                 android:layout_width="45dip"
-                android:layout_height="45dip"
-                android:layout_marginRight="100dip"
+                android:layout_height="match_parent"
+                android:background="@drawable/ptz_takepic_selector"
                 android:src="@drawable/left"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/imgright"
                 android:layout_width="45dip"
-                android:layout_height="45dip"
-                android:layout_marginLeft="60dip"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ptz_takepic_selector"
                 android:src="@drawable/right"
-                android:visibility="invisible" />
-        </LinearLayout>
+                android:visibility="visible" />
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/imgdown"
-            android:layout_width="45dip"
+            android:layout_width="match_parent"
             android:layout_height="45dip"
+            android:alpha="0.4"
+            android:background="@drawable/ptz_takepic_selector"
             android:src="@drawable/down"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </LinearLayout>
 
     <RelativeLayout
@@ -171,75 +173,19 @@
             android:textStyle="bold"
             android:visibility="gone" />
 
-        <RelativeLayout
-            android:id="@+id/top_bg"
-            android:layout_width="fill_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentTop="true"
-            android:visibility="gone" >
+        <ImageButton
+            android:id="@+id/login_top_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:src="@drawable/title_back_bk" />
 
-            <ImageButton
-                android:id="@+id/login_top_back"
-                android:layout_width="65dp"
-                android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:background="@drawable/ptz_takepic_selector"
-                android:src="@drawable/exitbutton" />
-
-            <TextView
-                android:id="@+id/show_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/white"
-                android:textSize="20.0sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/ptz_hori_mirror"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="5dp"
-                    android:background="#00000000"
-                    android:src="@drawable/ptz_hori_mirror" />
-
-                <ImageButton
-                    android:id="@+id/ptz_vert_mirror"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="5dp"
-                    android:background="#00000000"
-                    android:src="@drawable/ptz_vert_mirror" />
-
-                <ImageButton
-                    android:id="@+id/ptz_hori_tour"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="5dp"
-                    android:background="#00000000"
-                    android:src="@drawable/ptz_hori_tour" />
-
-                <ImageButton
-                    android:id="@+id/ptz_vert_tour"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="5dp"
-                    android:background="#00000000"
-                    android:src="@drawable/ptz_vert_tour" />
-            </LinearLayout>
-        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/title_bk"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textTimeout"
@@ -257,71 +203,43 @@
     <LinearLayout
         android:id="@+id/ptz_othersetview_anim"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="visible"
+        android:weightSum="1.5" >
 
         <ImageButton
             android:id="@+id/ptz_audio"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:background="@drawable/ptz_takepic_selector"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ptz_audio_off" />
 
         <ImageButton
-            android:id="@+id/ptz_brightness"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
+            android:id="@+id/ptz_take_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:background="@drawable/ptz_takepic_selector"
             android:padding="5dp"
-            android:src="@drawable/ptz_brightness" />
-
-        <ImageButton
-            android:id="@+id/ptz_contrast"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/ptz_takepic_selector"
-            android:padding="5dp"
-            android:src="@drawable/ptz_contrast" />
-
-        <ImageButton
-            android:id="@+id/ptz_default_set"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/ptz_takepic_selector"
-            android:padding="5dp"
-            android:src="@drawable/ptz_default_set" />
+            android:src="@drawable/ptz_takepic"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/ptz_resoluti"
-            android:layout_width="55dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:background="@drawable/ptz_takepic_selector"
             android:src="@drawable/ptz_resolution_720p"
             android:text="VGA"
-            android:textColor="#ffffff" />
-
-        <ImageButton
-            android:id="@+id/ptz_playmode"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/ptz_takepic_selector"
-            android:padding="5dp"
-            android:src="@drawable/ptz_playmode_enlarge"
-            android:visibility="gone" />
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
     </LinearLayout>
 
 </FrameLayout>

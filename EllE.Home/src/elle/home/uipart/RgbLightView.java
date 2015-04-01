@@ -3,7 +3,6 @@ package elle.home.uipart;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import elle.home.app.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -11,14 +10,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import elle.home.app.R;
 
 /**
  * @author 律
@@ -214,7 +212,6 @@ public class RgbLightView extends View {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				runFlag =true;
 			}}, 1000,200);
 		
@@ -227,7 +224,6 @@ public class RgbLightView extends View {
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
-		// TODO Auto-generated method stub
 		super.onLayout(changed, left, top, right, bottom);
 		//得到真实的view信息,重新分配图片
 		if(this.viewWidth != (right-left)){
@@ -622,9 +618,13 @@ public class RgbLightView extends View {
 	}
 	
 	private Bitmap martixBit(Bitmap bit){
-		Bitmap tmp = Bitmap.createBitmap(bit,0,0,bit.getWidth(),bit.getHeight(),this.allMatrix,true);
-		bit.recycle();
-		return tmp;
+		try {
+			Bitmap tmp = Bitmap.createBitmap(bit,0,0,bit.getWidth(),bit.getHeight(),this.allMatrix,true);
+			bit.recycle();
+			return tmp;
+		} catch (Error OutOfMemoryError) {
+			return bit;
+		}
 	}
 
 	private Bitmap decodeResource(Resources resources,int id){
@@ -632,6 +632,9 @@ public class RgbLightView extends View {
 	    resources.openRawResource(id, value);
 	    BitmapFactory.Options opts = new BitmapFactory.Options();
 	    opts.inTargetDensity = value.density;
+	    opts.inPreferredConfig = Bitmap.Config.RGB_565;   
+	    opts.inPurgeable = true;  
+	    opts.inInputShareable = true;
 	    return BitmapFactory.decodeResource(resources, id, opts);
 	}
 	

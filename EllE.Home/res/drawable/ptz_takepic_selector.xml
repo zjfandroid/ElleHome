@@ -3,7 +3,7 @@
 
      <item
         android:state_pressed="true"
-        android:drawable="@color/ptz_blue"
+        android:drawable="@drawable/title_bk"
         ></item>
         
 <!--        <item -->

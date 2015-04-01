@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.umeng.analytics.MobclickAgent;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +28,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
+
 import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
 import elle.home.app.PlugActivity;
@@ -164,7 +165,6 @@ public class LocationDevFragment extends Fragment {
 	
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		timer.cancel();
 		super.onDestroy();
 	}
@@ -251,6 +251,9 @@ public class LocationDevFragment extends Fragment {
 					MobclickAgent.onEvent(mContext,UMengConstant.EVENT_ID_CLICK_DEV ,map);
 					break;
 				}
+//			}else{
+//				Intent aintent2 = new Intent(mContext,PlayActivity.class);
+//				startActivity(aintent2);
 			}
 			
 		}
