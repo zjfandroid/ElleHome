@@ -3,13 +3,6 @@ package elle.home.partactivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import elle.home.app.R;
-import elle.home.database.DevLocationInfo;
-import elle.home.partactivity.SceneAddActivity.GridAdapter;
-import elle.home.partactivity.SceneAddActivity.ItemClickListener;
-import elle.home.partactivity.SceneAddActivity.ViewHolder;
-import elle.home.publicfun.PublicDefine;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -20,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -27,7 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import elle.home.app.R;
+import elle.home.database.DevLocationInfo;
+import elle.home.publicfun.PublicDefine;
 
 public class AddLocationActivity extends BaseActivity {
 
@@ -47,7 +43,6 @@ public class AddLocationActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_add_location);
 		mcontext = this;
@@ -58,7 +53,6 @@ public class AddLocationActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					PublicDefine.vibratorNormal(mcontext);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -71,7 +65,6 @@ public class AddLocationActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					addbtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.add_signal_dev_add_press));

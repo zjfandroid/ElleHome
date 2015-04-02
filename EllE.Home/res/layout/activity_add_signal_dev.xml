@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/common_bk"
-    android:orientation="vertical" 
-    android:windowSoftInputMode="stateHidden"
-    >
+    android:orientation="vertical"
+    android:windowSoftInputMode="stateHidden" >
 
     <LinearLayout
         android:id="@+id/layout_top"
@@ -41,7 +40,7 @@
         </FrameLayout>
     </LinearLayout>
 
-   		<FrameLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -80,11 +79,13 @@
                     android:background="@color/transparent"
                     android:ems="10"
                     android:hint="@string/tips_bename"
+                    android:imeOptions="actionDone"
+                    android:maxLength="7"
+                    android:singleLine="true"
                     android:textColor="@color/aliceblue" >
 
                     <requestFocus />
                 </EditText>
-
             </FrameLayout>
 
             <FrameLayout
@@ -109,9 +110,8 @@
                     android:layout_gravity="right|center_vertical"
                     android:layout_marginRight="10dp"
                     android:text="" />
-
             </FrameLayout>
-            
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -137,11 +137,11 @@
                     android:ems="10"
                     android:hint="@string/link_config_input_ssid"
                     android:textColor="@color/turquoise" >
+
                     <requestFocus />
                 </EditText>
-
             </FrameLayout>
-            
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
@@ -171,9 +171,7 @@
 
                     <requestFocus />
                 </EditText>
-
             </FrameLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -206,7 +204,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/whitesmoke"
                     android:textSize="18sp" />
-                
+
                 <TextView
                     android:id="@+id/info2"
                     android:layout_width="match_parent"
@@ -217,7 +215,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/whitesmoke"
                     android:textSize="18sp" />
-                
+
                 <TextView
                     android:id="@+id/info3"
                     android:layout_width="match_parent"
@@ -228,7 +226,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/whitesmoke"
                     android:textSize="18sp" />
-                
+
                 <TextView
                     android:id="@+id/info4"
                     android:layout_width="match_parent"
@@ -239,9 +237,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/whitesmoke"
                     android:textSize="18sp" />
-
             </LinearLayout>
-
         </LinearLayout>
 
         <Button
@@ -256,7 +252,6 @@
             android:text="@string/link_config_add"
             android:textColor="@color/white"
             android:textSize="25sp" />
-
     </FrameLayout>
 
 </LinearLayout>

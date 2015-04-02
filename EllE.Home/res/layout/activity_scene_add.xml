@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/common_bk"
     android:orientation="vertical" >
-    
+
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="fill_parent"
@@ -15,16 +15,15 @@
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/title_bk" >
-            
-            <ImageButton 
+
+            <ImageButton
                 android:id="@+id/title_btn_left"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="2dp"                
+                android:layout_marginLeft="2dp"
                 android:background="#00000000"
-                android:src="@drawable/title_back_bk"
-                />
+                android:src="@drawable/title_back_bk" />
 
             <TextView
                 android:id="@+id/title_bar_text"
@@ -35,14 +34,13 @@
                 android:text="@string/new_scene"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-            
         </FrameLayout>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="51dp"
@@ -65,6 +63,9 @@
                     android:background="@color/transparent"
                     android:ems="10"
                     android:hint="起个名字吧~"
+                    android:imeOptions="actionDone"
+                    android:maxLength="8"
+                    android:singleLine="true"
                     android:textColor="@color/whitesmoke" />
 
                 <ImageButton
@@ -75,7 +76,6 @@
                     android:background="@drawable/add_signal_dev_add"
                     android:scaleType="fitCenter"
                     android:src="@color/transparent" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -84,9 +84,7 @@
                 android:layout_weight="1"
                 android:background="@color/whitesmoke"
                 android:orientation="vertical" >
-
             </LinearLayout>
-
         </LinearLayout>
 
         <GridView
@@ -98,9 +96,7 @@
             android:cacheColorHint="@android:color/transparent"
             android:listSelector="@drawable/scene_item_bk"
             android:numColumns="3" >
-
         </GridView>
-        
     </FrameLayout>
 
 </LinearLayout>

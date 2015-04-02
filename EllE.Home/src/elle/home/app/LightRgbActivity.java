@@ -6,12 +6,10 @@ import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +33,7 @@ import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.RgbLightView;
 import elle.home.uipart.RgbLightView.OnRgbLightChange;
 import elle.home.uipart.SilderButton;
+import elle.home.utils.ShowInfo;
 
 public class LightRgbActivity extends BaseActivity {
 
@@ -72,8 +71,10 @@ public class LightRgbActivity extends BaseActivity {
 	LinearLayout randomLayout;
 	
 	//
-	boolean rgbLightStatus;
-	boolean randomStatus;
+	private boolean rgbLightStatus;
+	private boolean randomStatus;
+	private boolean isLightOff;
+	
 	int rgbWhiteStatus;
 	public int colorRed;
 	public int colorGreen;
@@ -132,6 +133,7 @@ public class LightRgbActivity extends BaseActivity {
 				}else if(packetcheck.xdata.length==16){
 					sleeptime = DataExchange.twoByteToInt(packetcheck.xdata[14], packetcheck.xdata[15]);
 				}
+				
 				if(rgbLightStatus == false){
 					if(packetcheck.xdata[0]!=0){
 						//randomLayout.setAlpha((float) 1.0);
@@ -226,7 +228,6 @@ public class LightRgbActivity extends BaseActivity {
 		init();
 		
 		this.userBindService();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 	
 	public void init(){
@@ -249,7 +250,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction() == MotionEvent.ACTION_DOWN){
 					if(menulayout.isShown()){
 						menulayout.setVisibility(View.INVISIBLE);
@@ -263,7 +263,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"点击了睡眠十五分钟的时间");
 				if(menulayout.isShown()){
 					menulayout.setVisibility(View.INVISIBLE);
@@ -283,7 +282,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"点击了睡眠三十分钟的时间");
 				if(menulayout.isShown()){
 					UMeng_OnEventValue(EVENT_ID_CLICK_SLEEP,30);
@@ -303,7 +301,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"点击了取消灯泡睡眠的按钮");
 				if(menulayout.isShown()){
 					menulayout.setVisibility(View.INVISIBLE);
@@ -324,7 +321,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction() == MotionEvent.ACTION_UP){
 					if(menulayout.isShown()){
 						menulayout.setVisibility(View.INVISIBLE);
@@ -414,7 +410,6 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					vibrator.vibrate(vibarator_time);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -428,13 +423,11 @@ public class LightRgbActivity extends BaseActivity {
 
 			@Override
 			public void onLuxStart(RgbLightView view) {
-				// TODO Auto-generated method stub
 				couldFreshLux = false;
 			}
 
 			@Override
 			public void onLuxChange(RgbLightView view, int progress) {
-				// TODO Auto-generated method stub
 				//Log.d(TAG,"onLuxChange:"+progress);
 				couldFreshLux = false;
 
@@ -442,23 +435,22 @@ public class LightRgbActivity extends BaseActivity {
 					if(connectStatus == PublicDefine.ConnectRemote){
 						packet.setPacketRemote(true);
 					}
+					
+					ShowInfo.printLogW(TAG,"____调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
 					if(rgbWhiteStatus==statusColor){
-						//Log.d(TAG,"调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
 						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, ColorToLux(colorRed), 
 								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, rgblight.barMoveAngle, 300);
-						packet.setImportance(BasicPacket.ImportNormal);
-						autoBinder.addPacketToSend(packet);
 					}else{
 						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0,0,0, WhiteToLux(rgblight.barMoveAngle), rgblight.barMoveAngle, 300);
-						packet.setImportance(BasicPacket.ImportNormal);
-						autoBinder.addPacketToSend(packet);
 					}
+					
+					packet.setImportance(BasicPacket.ImportNormal);
+					autoBinder.addPacketToSend(packet);
 				
 			}
 
 			@Override
 			public void onLuxStop(RgbLightView view, int progress) {
-				// TODO Auto-generated method stub
 				//Log.d(TAG,"onLuxStop:"+progress);
 				couldFreshLux = true;
 				
@@ -466,17 +458,38 @@ public class LightRgbActivity extends BaseActivity {
 					if(connectStatus == PublicDefine.ConnectRemote){
 						packet.setPacketRemote(true);
 					}
-					if(rgbWhiteStatus==statusColor){
+					
+					ShowInfo.printLogW(TAG,"__2__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
+					
+					int angle = rgblight.barMoveAngle;
+					if(rgbWhiteStatus == statusColor){
 						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, ColorToLux(colorRed), 
-								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, rgblight.barMoveAngle, 800);
-						packet.setImportance(BasicPacket.ImportNormal);
-						autoBinder.addPacketToSend(packet);
+								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, angle, 300);
 					}else{
-						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0,0,0, WhiteToLux(rgblight.barMoveAngle), rgblight.barMoveAngle, 800);
-						packet.setImportance(BasicPacket.ImportNormal);
-						autoBinder.addPacketToSend(packet);
+						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0, 0, 0, WhiteToLux(rgblight.barMoveAngle), angle, 300);
 					}
+					
+					packet.setImportance(BasicPacket.ImportNormal);
+					autoBinder.addPacketToSend(packet);
+					
 					UMeng_OnEvent(EVENT_ID_CLICK_CHANGE_LUX ,"progress", progress+"" );
+					
+					if(isLightOff && 0 != angle){
+						handler.postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+								setColorLight(0, 0, 0, 255, 100, BasicPacket.ImportHigh);
+							}
+						}, 300);
+					}
+					
+					if(5 > angle){
+						isLightOff = true;
+					}else{
+						isLightOff = false;
+					}
+					
 				
 			}
 
@@ -488,64 +501,30 @@ public class LightRgbActivity extends BaseActivity {
 
 			@Override
 			public void onColorChange(RgbLightView view, int r, int g, int b) {
-				// TODO Auto-generated method stub
-				Log.d(TAG,"onColorChange red:"+r+" green:"+g+" blue:"+b);
-
-					LightControlPacket packet = new LightControlPacket(conip,conport);
-					if(connectStatus == PublicDefine.ConnectRemote){
-						packet.setPacketRemote(true);
-					}
 					
-					colorRed = ColorToLux(r);
-					colorGreen = (int)((float)ColorToLux(g)*GreenAdjust);
-					colorBlue = (int)((float)ColorToLux(b)*BlueAdjust);
-					
-					packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, colorRed, colorGreen, colorBlue, 0, rgblight.barMoveAngle,300);
-					packet.setImportance(BasicPacket.ImportLow);
-					autoBinder.addPacketToSend(packet);
+					ShowInfo.printLogW(TAG,"__3__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
 
+					setColorLight(r, g, b, 0, 300, BasicPacket.ImportLow);
 			}
 
 			@Override
 			public void onColorStop(RgbLightView view, int r, int g, int b) {
-				// TODO Auto-generated method stub
-				Log.d(TAG,"onColorStop red:"+r+" green:"+g+" blue:"+b);
-
-					LightControlPacket packet = new LightControlPacket(conip,conport);
-					if(connectStatus == PublicDefine.ConnectRemote){
-						packet.setPacketRemote(true);
-					}
-					UMeng_OnEvent(EVENT_ID_CLICK_CHANGE_LIGHT_COLOR , "R" , r+"" , "G" , g+"" , "B" , b+"" );
-					colorRed = ColorToLux(r);
-					colorGreen = (int)((float)ColorToLux(g)*GreenAdjust);
-					colorBlue = (int)((float)ColorToLux(b)*BlueAdjust);
-					
-					packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, colorRed, colorGreen, colorBlue, 0, rgblight.barMoveAngle,800);
-					packet.setImportance(BasicPacket.ImportHigh);
-					autoBinder.addPacketToSend(packet);
+				ShowInfo.printLogW(TAG,"__4__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
 				
+				setColorLight(r, g, b, 0, 800, BasicPacket.ImportHigh);
+				
+				UMeng_OnEvent(EVENT_ID_CLICK_CHANGE_LIGHT_COLOR , "R" , r+"" , "G" , g+"" , "B" , b+"" );
 			}
 
 			@Override
 			public void onWhiteClick(RgbLightView view) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"onWhiteClick:"+rgblight.barMoveAngle);
-
-					LightControlPacket packet = new LightControlPacket(conip,conport);
-					if(connectStatus == PublicDefine.ConnectRemote){
-						packet.setPacketRemote(true);
-					}
-					UMeng_OnEvent(EVENT_ID_CLICK_WHITE_LIGHT);
-
-					packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0, 0, 0, WhiteToLux(rgblight.barMoveAngle), rgblight.barMoveAngle,800);
-					packet.setImportance(BasicPacket.ImportHigh);
-					autoBinder.addPacketToSend(packet);
-
+				setColorLight(0, 0, 0, WhiteToLux(rgblight.barMoveAngle), 800, BasicPacket.ImportHigh);
+				UMeng_OnEvent(EVENT_ID_CLICK_WHITE_LIGHT);
 			}
 
 			@Override
 			public void onOnOffClick(RgbLightView view) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"onOnOffClick");
 				
 				if(rgbLightStatus==true){
@@ -575,7 +554,21 @@ public class LightRgbActivity extends BaseActivity {
 				
 			}});
 	}
-	
+
+	private void setColorLight(int r, int g, int b, int white, int time, int importance) {
+		LightControlPacket packet = new LightControlPacket(conip,conport);
+		if(connectStatus == PublicDefine.ConnectRemote){
+			packet.setPacketRemote(true);
+		}
+		
+		colorRed = ColorToLux(r);
+		colorGreen = (int)((float)ColorToLux(g)*GreenAdjust);
+		colorBlue = (int)((float)ColorToLux(b)*BlueAdjust);
+		
+		packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, colorRed, colorGreen, colorBlue, white, rgblight.barMoveAngle, time);
+		packet.setImportance(importance);
+		autoBinder.addPacketToSend(packet);
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -709,7 +702,6 @@ public class LightRgbActivity extends BaseActivity {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			int darkRunCount = 0;
 			float alpha = 0;
@@ -728,7 +720,6 @@ public class LightRgbActivity extends BaseActivity {
 				try {
 					this.sleep(1);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -740,7 +731,6 @@ public class LightRgbActivity extends BaseActivity {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			int hideRunCount = 0;
 			float alpha = 1.0f;
@@ -757,7 +747,6 @@ public class LightRgbActivity extends BaseActivity {
 				try {
 					this.sleep(1);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

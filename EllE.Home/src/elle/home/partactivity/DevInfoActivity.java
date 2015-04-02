@@ -3,7 +3,6 @@ package elle.home.partactivity;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -212,7 +211,9 @@ public class DevInfoActivity extends BaseActivity {
 					
 					@Override
 					public void run() {
+						dev.delFromDatabaseWithName(mContext);
 						ShowToast.show(mContext, "复位成功");
+						finish();
 					}
 				});
 			}else{

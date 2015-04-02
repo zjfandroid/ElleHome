@@ -3,15 +3,6 @@ package elle.home.partactivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import elle.home.Fragment.LocationDevFragment.GridAdapter;
-import elle.home.Fragment.LocationDevFragment.GridAdapter.ViewHolder;
-import elle.home.app.R;
-import elle.home.app.R.id;
-import elle.home.app.R.layout;
-import elle.home.database.AllScene;
-import elle.home.database.DevLocationInfo;
-import elle.home.publicfun.PublicDefine;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -30,6 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import elle.home.app.R;
+import elle.home.database.AllScene;
+import elle.home.publicfun.PublicDefine;
 
 public class SceneAddActivity extends BaseActivity {
 
@@ -49,7 +43,6 @@ public class SceneAddActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_scene_add);
 		mcontext = this;
@@ -60,7 +53,6 @@ public class SceneAddActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					PublicDefine.vibratorNormal(mcontext);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -73,7 +65,6 @@ public class SceneAddActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					addscenebtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.add_signal_dev_add_press));
@@ -87,11 +78,13 @@ public class SceneAddActivity extends BaseActivity {
 					}else{
 						//这里需要判断一下是否已经添加过同一个名字
 						AllScene allscene = new AllScene(mcontext);
-						allscene.aadSceneName(scenename.getText().toString(), getDefineLogoByClick());
-						
-						Toast.makeText(mcontext, getResources().getString(R.string.tips_add_succeed), Toast.LENGTH_SHORT).show();
-						setResult(5);
-						finish();
+						if(1 == allscene.aadSceneName(scenename.getText().toString(), getDefineLogoByClick())){
+							Toast.makeText(mcontext, getResources().getString(R.string.tips_benamed), Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(mcontext, getResources().getString(R.string.tips_add_succeed), Toast.LENGTH_SHORT).show();
+							setResult(5);
+							finish();
+						}
 					}
 					break;
 				}

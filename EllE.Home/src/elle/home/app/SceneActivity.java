@@ -181,7 +181,6 @@ public class SceneActivity extends BaseActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 	
-	
 	private void activityEditOver(){
 		this.setResult(5);
 		this.finish();
@@ -284,7 +283,6 @@ public class SceneActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Log.d(TAG,"点击了 场景的item");
 			for(int i=0;i<sceneItemDevs.size();i++){
 				if(sceneItemDevs.get(i).framelayout == v){
@@ -302,20 +300,7 @@ public class SceneActivity extends BaseActivity {
 	};
 
 	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
-
-	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		this.userUnbindService();
 	}	

@@ -5,7 +5,6 @@ import java.util.List;
 
 import elle.home.app.R;
 import elle.home.publicfun.PublicDefine;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,7 +42,7 @@ public class AllScene {
 		}
 	}
 	
-	public void aadSceneName(String name,int icon){
+	public int aadSceneName(String name,int icon){
 		
 		String[] params = new String[2];
 		params[0] = name;
@@ -52,10 +51,19 @@ public class AllScene {
 		DataBaseHelper dbhelper = new DataBaseHelper(context);
 		SQLiteDatabase db = dbhelper.getWritableDatabase();
 		
+		String[] checkParams = new String[1];
+		checkParams[0] = name;
+		String checkSql = "select * from scenes where scenename = ?";
+		Cursor cursor = db.rawQuery(checkSql, checkParams);
+		while(cursor.moveToNext()){
+			db.close();
+			return 1;
+		}
+		
 		String sql = "INSERT INTO scenes (scenename,sceneicon) VALUES (?,?)";
 		db.execSQL(sql,params);
 		db.close();
-		
+		return 0;
 	}
 	
 }

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/common_bk"
     android:orientation="vertical" >
-    
 
     <LinearLayout
         android:id="@+id/layout_top"
@@ -42,7 +41,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="51dp"
@@ -51,60 +50,58 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical" >
-            
+
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal" >
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal" >
 
-	            <EditText
-	                android:id="@+id/addNameEdit"
-	                android:layout_width="match_parent"
-	                android:layout_height="50dp"
-	                android:layout_weight="1"
-	                android:background="@color/transparent"
-	                android:ems="10"
-	                android:hint="@string/tips_bename"
-	                android:textColor="@color/whitesmoke" >
-	
-	                <requestFocus />
-	            </EditText>
-	
-	            <ImageButton
-	                android:id="@+id/addLocationBtn"
-	                android:layout_width="120dp"
-	                android:layout_height="47dp"
-	                android:layout_weight="1"
-	                android:background="@drawable/add_signal_dev_add"
-	                android:scaleType="fitCenter"
-	                android:src="@color/transparent" />
+                <EditText
+                    android:id="@+id/addNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:ems="10"
+                    android:hint="@string/tips_bename"
+                    android:imeOptions="actionDone"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:textColor="@color/whitesmoke" >
 
-        	</LinearLayout>
-        	
+                    <requestFocus />
+                </EditText>
+
+                <ImageButton
+                    android:id="@+id/addLocationBtn"
+                    android:layout_width="120dp"
+                    android:layout_height="47dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/add_signal_dev_add"
+                    android:scaleType="fitCenter"
+                    android:src="@color/transparent" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="@color/whitesmoke"
                 android:orientation="vertical" >
-            
             </LinearLayout>
-            
         </LinearLayout>
-        
-         <GridView
-             android:id="@+id/location_grid_view"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:layout_marginBottom="66dp"
-             android:layout_weight="1"
-             android:cacheColorHint="@android:color/transparent"
-             android:listSelector="@drawable/scene_item_bk"
-             android:numColumns="3" >
 
+        <GridView
+            android:id="@+id/location_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="66dp"
+            android:layout_weight="1"
+            android:cacheColorHint="@android:color/transparent"
+            android:listSelector="@drawable/scene_item_bk"
+            android:numColumns="3" >
         </GridView>
-
-    </FrameLayout>    
+    </FrameLayout>
 
 </LinearLayout>

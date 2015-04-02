@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:gravity="center">
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/tv_status"
@@ -26,8 +26,8 @@
             android:id="@+id/connect_progress"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_toRightOf="@id/tv_status"
             android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/tv_status"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -52,6 +52,8 @@
             android:layout_weight="1"
             android:background="@drawable/config_wifi_edittext_bk"
             android:ems="10"
+            android:imeOptions="actionDone"
+            android:maxLength="7"
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/black" >

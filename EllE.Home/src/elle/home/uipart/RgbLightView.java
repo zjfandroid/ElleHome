@@ -363,6 +363,7 @@ public class RgbLightView extends View {
 	private void motionMove(MotionEvent ev){
 		if(this.showStatus == this.ShowStatusOff)
 			return;
+		
 		if(this.touchStatus == this.RgbTouchLux){
 			float radius = this.getRadiusToHue(ev.getX(), ev.getY());
 			if(this.isInBarBig(radius)){
@@ -386,10 +387,6 @@ public class RgbLightView extends View {
 					}
 				}
 			}
-			
-
-			
-			
 		}else if(this.touchStatus == this.RgbTouchWhite){
 			
 		}else if(this.touchStatus == this.RgbTouchOnOff){

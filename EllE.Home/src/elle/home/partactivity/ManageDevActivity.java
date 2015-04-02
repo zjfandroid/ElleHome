@@ -64,8 +64,12 @@ public class ManageDevActivity extends BaseActivity {
 			}
 		});
 		allInfo = new AllLocationInfo(this);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		fresh();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 	
 	private void fresh(){

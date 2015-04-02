@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:gravity="center"
-    android:padding="10dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,6 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/black" >
-
         </EditText>
     </LinearLayout>
 
@@ -58,8 +57,10 @@
             android:layout_weight="1"
             android:background="@drawable/config_wifi_edittext_bk"
             android:ems="10"
-            android:paddingLeft="10dp"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
             android:textColor="@color/black" >
 
             <requestFocus />

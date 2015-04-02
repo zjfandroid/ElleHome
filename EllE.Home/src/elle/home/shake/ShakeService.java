@@ -197,7 +197,7 @@ public class ShakeService extends Service{
 			MobclickAgent.onEvent(this, UMengConstant.EVENT_ID_SHAKE_OPEN_LIGHT);
 		}
 		for(OneDev dev : mAllDevInfo.alldevinfo){
-			if(checkFunction("shake_on",dev.function)){
+			if(checkFunction(PublicDefine.CONFIG_SHAKE_ON, dev.function)){
 				System.out.println("turn off " + isOn);
 				LightControlPacket packet = new LightControlPacket(null,PublicDefine.LocalUdpPort);
 				packet.setImportance(BasicPacket.ImportHigh);
@@ -223,7 +223,7 @@ public class ShakeService extends Service{
 		if(function != null && function.contains(key)){
 			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean isDayTime(){
