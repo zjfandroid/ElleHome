@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//src/EllE/Home/Public/BasicPacket.java=UTF-8
+encoding//src/EllE/Home/Public/OnRecvListener.java=UTF-8
+encoding//src/EllE/Home/Public/PacketCheck.java=UTF-8
+encoding//src/EllE/Home/Public/PublicDefine.java=UTF-8
+encoding//src/EllE/Home/RegService/CBsendToClient.java=UTF-8
+encoding//src/EllE/Home/RegService/DevRegControlSql.java=UTF-8
+encoding//src/EllE/Home/RegService/DevRegInfo.java=UTF-8
+encoding//src/EllE/Home/RegService/DevRegUdpService.java=UTF-8
+encoding//src/EllE/Home/RegService/InitService.java=UTF-8
+encoding//src/EllE/Home/RegService/RegClient.java=UTF-8
+encoding//src/EllE/Home/RegService/RegPacket.java=UTF-8

@@ -42,6 +42,7 @@ import elle.home.partactivity.InfraAirActivity;
 import elle.home.partactivity.UMengConstant;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ViewHolder;
 
 public class LocationDevFragment extends Fragment {
 	
@@ -151,7 +152,7 @@ public class LocationDevFragment extends Fragment {
 				}
 			}
 			
-			gridAdapter = new GridAdapter(container.getContext(),gridDevItems);
+			gridAdapter = new GridAdapter(container.getContext(), gridDevItems);
 			
 			gridview.setAdapter(gridAdapter);
 			gridview.setOnItemClickListener(new ItemClickListener());
@@ -289,44 +290,45 @@ public class LocationDevFragment extends Fragment {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
 			if(convertView==null){
-				holder = new ViewHolder();
 				convertView = this.inflater.inflate(R.layout.grid_dev_items, null);
-				holder.iv = (ImageView) convertView.findViewById(R.id.itemlogo);
-				holder.tv = (TextView) convertView.findViewById(R.id.itemtext);
-				holder.coniv = (ImageView) convertView.findViewById(R.id.connectLogo);
-				convertView.setTag(holder);
-			}else{
-				holder=(ViewHolder)convertView.getTag();
 			}
+			
+			ImageView itemlogo = ViewHolder.get(convertView, R.id.itemlogo);
+			TextView itemtext = ViewHolder.get(convertView, R.id.itemtext);
+			ImageView connectLogo = ViewHolder.get(convertView, R.id.connectLogo);
+			TextView turnON = ViewHolder.get(convertView, R.id.tv_turn_on);
 			
 			int tmp = context.getResources().getDisplayMetrics().widthPixels/3;
 			AbsListView.LayoutParams param = new AbsListView.LayoutParams(tmp,tmp);
 			convertView.setLayoutParams(param);
 			
-			holder.iv.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
-			holder.tv.setText((CharSequence) devlist.get(position).get("devname"));
+			itemlogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
+			itemtext.setText((CharSequence) devlist.get(position).get("devname"));
+			
 			switch((Byte) devlist.get(position).get("type")){
 			case PublicDefine.TypeInfra:
 			case PublicDefine.TypeInfraAir:
 			case PublicDefine.TypeLight:
 			case PublicDefine.TypePlug:
-				holder.coniv.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(
-						locatInfo.devLocationList.get(position).getConnectStatus())));
+				OneDev oneDev = locatInfo.devLocationList.get(position);
+				int status = oneDev.getConnectStatus();
+				
+				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(status)));
+				
+				if(oneDev.isTurnOn() && PublicDefine.ConnectNull != status){
+					turnON.setVisibility(View.VISIBLE);
+				}else{
+					turnON.setVisibility(View.GONE);
+				}
 				break;
+				
 			default:
-				holder.coniv.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(PublicDefine.ConnectNullIcon)));
+				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(PublicDefine.ConnectNullIcon)));
+				turnON.setVisibility(View.GONE);
 				break;
 			}
-			
 			return convertView;
-		}
-		
-		public class ViewHolder{
-			ImageView iv;
-			TextView tv;
-			ImageView coniv;
 		}
 		
 	}

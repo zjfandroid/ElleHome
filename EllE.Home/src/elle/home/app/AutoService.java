@@ -1,19 +1,18 @@
 package elle.home.app;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+import android.util.Log;
 import elle.home.database.AllLocationInfo;
 import elle.home.hal.UdpCheckDevLine;
 import elle.home.hal.UdpCheckNewThread;
 import elle.home.hal.UdpThread;
 import elle.home.hal.UserData;
 import elle.home.protocol.BasicPacket;
-import elle.home.protocol.LocalDevCheckList;
 import elle.home.protocol.ProtocolDataList;
 import elle.home.publicfun.PublicDefine;
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-import android.util.Log;
 
 public class AutoService extends Service {
 
@@ -41,7 +40,6 @@ public class AutoService extends Service {
 	
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
 		
 		userdata = new UserData(this);
@@ -77,7 +75,6 @@ public class AutoService extends Service {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		datalist.StopTimer();
 		udpthread.stopThread();
 		udpchecknew.stopCheck();
@@ -89,7 +86,6 @@ public class AutoService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return binder;
 	}
 

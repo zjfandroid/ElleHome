@@ -15,6 +15,7 @@ import android.content.Context;
 import android.util.Log;
 import elle.home.database.AllDevInfo;
 import elle.home.database.AllLocationInfo;
+import elle.home.database.DevLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.PacketCheck;
@@ -54,7 +55,6 @@ public class UdpCheckNewThread {
 			this.allLocationInfo = info;
 			isneedcheck = true;
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -75,7 +75,6 @@ public class UdpCheckNewThread {
 			allinfo = new AllDevInfo(mContext);
 			isneedcheck = true;
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -139,11 +138,23 @@ public class UdpCheckNewThread {
 		
 		//这里查找到的都是本地，因此可以在这里清空本地的离线标识
 		if(allLocationInfo!=null){
-			for(int i=0;i<allLocationInfo.allinfo.size();i++){
-				for(int x=0;x<allLocationInfo.allinfo.get(i).devLocationList.size();x++){
-					if(allLocationInfo.allinfo.get(i).devLocationList.get(x).mac == packet.mac){
-						allLocationInfo.allinfo.get(i).devLocationList.get(x).setDevRemote(false);
-						allLocationInfo.allinfo.get(i).devLocationList.get(x).clearLocalTimer();
+			
+			List<DevLocationInfo> infos = allLocationInfo.allinfo;
+			for(int i=0; i<infos.size(); i++){
+				
+				List<OneDev> lists = infos.get(i).devLocationList;
+				for(int x=0; x<lists.size(); x++){
+					
+					OneDev oneDev = lists.get(x);
+					if(oneDev.mac == packet.mac){
+						oneDev.setDevRemote(false);
+						oneDev.clearLocalTimer();
+						
+						if(1 == packet.xdata[0]){
+							oneDev.setTurnOn(true);
+						}else{
+							oneDev.setTurnOn(false);
+						}
 					}
 				}
 			}
@@ -221,7 +232,6 @@ public class UdpCheckNewThread {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			runFlag = true;
 			byte[] data = new byte[4096];
@@ -252,7 +262,6 @@ public class UdpCheckNewThread {
 						}
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -271,14 +280,12 @@ public class UdpCheckNewThread {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			runFlag = true;
 			InetAddress add = null;
 			try {
 				add = InetAddress.getByName("255.255.255.255");
 			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			BasicPacket basicpacket = new BasicPacket(add,PublicDefine.LocalUdpPort);

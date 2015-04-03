@@ -38,8 +38,10 @@ public class OneDev implements Serializable{
 	public String locateNmae;
 	
 	//在线或者远程的判断标识
-	public boolean isLocal;
-	public boolean isRemote;
+	private boolean isLocal;
+	private boolean isRemote;
+	//是否打开
+	private boolean isTurnOn;
 	public int localTimeCount;
 	public int remoteTimeCount;
 	
@@ -376,6 +378,14 @@ public class OneDev implements Serializable{
 
 	public void setCameraPassWord(String mCameraPassWord) {
 		this.mCameraPassWord = mCameraPassWord;
+	}
+
+	public boolean isTurnOn() {
+		return isTurnOn;
+	}
+
+	public void setTurnOn(boolean isTurnOn) {
+		this.isTurnOn = isTurnOn;
 	}
 
 }

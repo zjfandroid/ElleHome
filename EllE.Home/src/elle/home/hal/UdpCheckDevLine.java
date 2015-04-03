@@ -1,6 +1,5 @@
 package elle.home.hal;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -9,13 +8,12 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.util.Log;
-
 import elle.home.database.AllLocationInfo;
-import elle.home.database.DevLocationInfo;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ShowInfo;
 
 public class UdpCheckDevLine extends UdpPublic {
 
@@ -32,13 +30,13 @@ public class UdpCheckDevLine extends UdpPublic {
 
 		@Override
 		public void onRecv(DatagramPacket packet) {
-			// TODO Auto-generated method stub
 			int length = packet.getLength();
 			if(length>0){
 				if(length>=37){
 					byte[] xdata = new byte[length];
 					System.arraycopy(packet.getData(), 0, xdata, 0, length);
 					PacketCheck packetcheck = new PacketCheck(xdata,length,packet.getAddress(),packet.getPort());
+					
 					if(packetcheck.check()){
 						
 						if(allLocationInfo==null)
@@ -67,7 +65,6 @@ public class UdpCheckDevLine extends UdpPublic {
 										try {
 											allLocationInfo.allinfo.get(i).devLocationList.get(x).updateDevRemoteIp(InetAddress.getByName(ip), port, mContext);
 										} catch (UnknownHostException e) {
-											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
 										
@@ -90,7 +87,6 @@ public class UdpCheckDevLine extends UdpPublic {
 		try {
 			regServiceIp = InetAddress.getByName("198.199.115.33");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -108,7 +104,6 @@ public class UdpCheckDevLine extends UdpPublic {
 		try {
 			regServiceIp = InetAddress.getByName("198.199.115.33");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -137,7 +132,6 @@ public class UdpCheckDevLine extends UdpPublic {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			
 			if(isneedcheck==false){
 				return;

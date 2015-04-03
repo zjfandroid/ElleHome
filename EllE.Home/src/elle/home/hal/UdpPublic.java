@@ -19,7 +19,6 @@ public class UdpPublic {
 		try {
 			dataSocket = new DatagramSocket();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +38,6 @@ public class UdpPublic {
 		try {
 			dataSocket.send(packet);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -57,7 +55,6 @@ public class UdpPublic {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			runFlag = true;
 			byte[] data = new byte[4096];
@@ -73,7 +70,6 @@ public class UdpPublic {
 						}
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
+import android.print.PrinterInfo;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -590,7 +591,8 @@ public class LightRgbActivity extends BaseActivity {
 					if(connectStatus == PublicDefine.ConnectRemote){
 						packet.setPacketRemote(true);
 					}
-					packet.lightCheck(DataExchange.longToEightByte(dev.mac),recvListener);
+					
+					packet.lightCheck(DataExchange.longToEightByte(dev.mac), recvListener);
 					packet.setImportance(BasicPacket.ImportNormal);
 					
 					if(null != autoBinder){
@@ -604,7 +606,6 @@ public class LightRgbActivity extends BaseActivity {
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		timer.cancel();
 	}
@@ -616,7 +617,6 @@ public class LightRgbActivity extends BaseActivity {
 	 * @param a
 	 */
 	private void setBackground(boolean a){
-		
 		if(a!=this.rgbLightStatus){
 			if(a){
 				hidedrak = new hideDarkThread();
@@ -626,15 +626,12 @@ public class LightRgbActivity extends BaseActivity {
 				showdrak.start();
 			}
 		}
-		
-		
 	}
 	
 	Handler handler = new Handler(){
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			if(msg.what == freshBackground){
 				float tmp = msg.getData().getFloat("float");
