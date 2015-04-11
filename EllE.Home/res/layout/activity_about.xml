@@ -52,16 +52,15 @@
             android:layout_width="300dp"
             android:layout_height="100dp"
             android:src="@drawable/about_company_logo1"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="V1.0.0.0312"
+            android:text="V1.02"
             android:textColor="@color/silver"
-            android:textSize="18sp"  />
-
+            android:textSize="18sp" />
     </LinearLayout>
 
     <FrameLayout
@@ -82,7 +81,8 @@
                 android:layout_height="15dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
-                android:src="@drawable/about_copyright" />
+                android:src="@drawable/about_copyright"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -92,10 +92,9 @@
                 android:layout_weight="0"
                 android:text="Shenzhen VStarcam Technology Co., Ltd.,"
                 android:textColor="@color/silver"
-                android:textSize="15sp" />
-
+                android:textSize="15sp"
+                android:visibility="invisible" />
         </LinearLayout>
-
     </FrameLayout>
 
 </FrameLayout>

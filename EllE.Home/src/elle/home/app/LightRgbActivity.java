@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
-import android.print.PrinterInfo;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +34,7 @@ import elle.home.uipart.RgbLightView;
 import elle.home.uipart.RgbLightView.OnRgbLightChange;
 import elle.home.uipart.SilderButton;
 import elle.home.utils.ShowInfo;
+import elle.home.utils.ShowToast;
 
 public class LightRgbActivity extends BaseActivity {
 
@@ -170,7 +170,7 @@ public class LightRgbActivity extends BaseActivity {
 					//Log.d(TAG,"状态颜色："+rgblight.colorRed+" "+rgblight.colorGreen+" "+rgblight.colorBlue);
 				}
 				
-				rgblight.barMoveAngle = DataExchange.twoByteToInt(packetcheck.xdata[12], packetcheck.xdata[13]);
+				rgblight.setBarMoveAngle(DataExchange.twoByteToInt(packetcheck.xdata[12], packetcheck.xdata[13]));
 				
 				Message msg = new Message();
 				msg.what = freshUiPart;
@@ -356,6 +356,10 @@ public class LightRgbActivity extends BaseActivity {
 			
 			@Override
 			public void onoff(boolean tmp) {
+				if (tmp && dev.getConnectStatus() != PublicDefine.ConnectLocal ) {
+					ShowToast.show(mContext, "摇一摇功能仅在本地有效哦（设备与手机连接的是同一个路由）");
+				}
+				
 				dev.setCanShake(mContext, tmp);
 				if(tmp){
 					UMeng_OnEvent(EVENT_ID_CLICK_SHAKE, KEY_SHAKE_ONOFF, R.string.plug_status_on);
@@ -437,12 +441,14 @@ public class LightRgbActivity extends BaseActivity {
 						packet.setPacketRemote(true);
 					}
 					
-					ShowInfo.printLogW(TAG,"____调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
+					int barMoveAngle = rgblight.getBarMoveAngle();
+					ShowInfo.printLogW(TAG,"____调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+barMoveAngle);
+					
 					if(rgbWhiteStatus==statusColor){
 						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, ColorToLux(colorRed), 
-								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, rgblight.barMoveAngle, 300);
+								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, barMoveAngle, 300);
 					}else{
-						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0,0,0, WhiteToLux(rgblight.barMoveAngle), rgblight.barMoveAngle, 300);
+						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0,0,0, WhiteToLux(barMoveAngle), barMoveAngle, 300);
 					}
 					
 					packet.setImportance(BasicPacket.ImportNormal);
@@ -460,14 +466,14 @@ public class LightRgbActivity extends BaseActivity {
 						packet.setPacketRemote(true);
 					}
 					
-					ShowInfo.printLogW(TAG,"__2__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
+					int angle = rgblight.getBarMoveAngle();
+					ShowInfo.printLogW(TAG,"__2__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+angle);
 					
-					int angle = rgblight.barMoveAngle;
 					if(rgbWhiteStatus == statusColor){
 						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, ColorToLux(colorRed), 
 								(int)((float)ColorToLux(colorGreen)*GreenAdjust),(int)((float)ColorToLux(colorBlue)*BlueAdjust), 0, angle, 300);
 					}else{
-						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0, 0, 0, WhiteToLux(rgblight.barMoveAngle), angle, 300);
+						packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, 0, 0, 0, WhiteToLux(angle), angle, 300);
 					}
 					
 					packet.setImportance(BasicPacket.ImportNormal);
@@ -475,21 +481,21 @@ public class LightRgbActivity extends BaseActivity {
 					
 					UMeng_OnEvent(EVENT_ID_CLICK_CHANGE_LUX ,"progress", progress+"" );
 					
-					if(isLightOff && 0 != angle){
-						handler.postDelayed(new Runnable() {
-							
-							@Override
-							public void run() {
-								setColorLight(0, 0, 0, 255, 100, BasicPacket.ImportHigh);
-							}
-						}, 300);
-					}
-					
-					if(5 > angle){
-						isLightOff = true;
-					}else{
-						isLightOff = false;
-					}
+//					if(isLightOff && 0 != angle){
+//						handler.postDelayed(new Runnable() {
+//							
+//							@Override
+//							public void run() {
+//								setColorLight(0, 0, 0, 255, 100, BasicPacket.ImportHigh);
+//							}
+//						}, 300);
+//					}
+//					
+//					if(5 > angle){
+//						isLightOff = true;
+//					}else{
+//						isLightOff = false;
+//					}
 					
 				
 			}
@@ -503,14 +509,14 @@ public class LightRgbActivity extends BaseActivity {
 			@Override
 			public void onColorChange(RgbLightView view, int r, int g, int b) {
 					
-					ShowInfo.printLogW(TAG,"__3__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
+					ShowInfo.printLogW(TAG,"__3__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.getBarMoveAngle());
 
 					setColorLight(r, g, b, 0, 300, BasicPacket.ImportLow);
 			}
 
 			@Override
 			public void onColorStop(RgbLightView view, int r, int g, int b) {
-				ShowInfo.printLogW(TAG,"__4__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.barMoveAngle);
+				ShowInfo.printLogW(TAG,"__4__调整颜色的亮度，r："+rgblight.colorRed+" g:"+rgblight.colorGreen+" b:"+rgblight.colorBlue+" lux:"+rgblight.getBarMoveAngle());
 				
 				setColorLight(r, g, b, 0, 800, BasicPacket.ImportHigh);
 				
@@ -519,14 +525,14 @@ public class LightRgbActivity extends BaseActivity {
 
 			@Override
 			public void onWhiteClick(RgbLightView view) {
-				Log.d(TAG,"onWhiteClick:"+rgblight.barMoveAngle);
-				setColorLight(0, 0, 0, WhiteToLux(rgblight.barMoveAngle), 800, BasicPacket.ImportHigh);
+				Log.d(TAG,"onWhiteClick:"+rgblight.getBarMoveAngle());
+				setColorLight(0, 0, 0, WhiteToLux(rgblight.getBarMoveAngle()), 800, BasicPacket.ImportHigh);
 				UMeng_OnEvent(EVENT_ID_CLICK_WHITE_LIGHT);
 			}
 
 			@Override
 			public void onOnOffClick(RgbLightView view) {
-				Log.d(TAG,"onOnOffClick");
+				Log.d(TAG,"onOnOffClick__点击了开关灯");
 				
 				if(rgbLightStatus==true){
 	
@@ -538,8 +544,6 @@ public class LightRgbActivity extends BaseActivity {
 						packetoff.lightClose(DataExchange.longToEightByte(dev.mac), recvListener);
 						packetoff.setImportance(BasicPacket.ImportHigh);
 						autoBinder.addPacketToSend(packetoff);
-
-					
 				}else{
 	
 						LightControlPacket packeton = new LightControlPacket(conip,conport);
@@ -550,7 +554,6 @@ public class LightRgbActivity extends BaseActivity {
 						packeton.lightOpen(DataExchange.longToEightByte(dev.mac), recvListener);
 						packeton.setImportance(BasicPacket.ImportHigh);
 						autoBinder.addPacketToSend(packeton);
-
 				}
 				
 			}});
@@ -566,7 +569,7 @@ public class LightRgbActivity extends BaseActivity {
 		colorGreen = (int)((float)ColorToLux(g)*GreenAdjust);
 		colorBlue = (int)((float)ColorToLux(b)*BlueAdjust);
 		
-		packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, colorRed, colorGreen, colorBlue, white, rgblight.barMoveAngle, time);
+		packet.lightColor(DataExchange.longToEightByte(dev.mac), recvListener, colorRed, colorGreen, colorBlue, white, rgblight.getBarMoveAngle(), time);
 		packet.setImportance(importance);
 		autoBinder.addPacketToSend(packet);
 	}
@@ -616,7 +619,7 @@ public class LightRgbActivity extends BaseActivity {
 	/**设置背景
 	 * @param a
 	 */
-	private void setBackground(boolean a){
+	private void setBackground(final boolean a){
 		if(a!=this.rgbLightStatus){
 			if(a){
 				hidedrak = new hideDarkThread();
@@ -625,6 +628,15 @@ public class LightRgbActivity extends BaseActivity {
 				showdrak = new showDarkThread();
 				showdrak.start();
 			}
+
+			handler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					randombtn.setEnabled(a);
+					btnShake.setEnabled(a);
+				}
+			});
 		}
 	}
 	
@@ -679,13 +691,13 @@ public class LightRgbActivity extends BaseActivity {
 	
 	public int LuxToColor(int a){
 		int tmp = 0;
-		tmp = (int)((float)a*(float)300/(float)(rgblight.barMoveAngle));
+		tmp = (int)((float)a*(float)300/(float)(rgblight.getBarMoveAngle()));
 		return tmp;
 	}
 	
 	public int ColorToLux(int a){
 		int tmp = 0;
-		tmp = (int)((float)a*(float)(rgblight.barMoveAngle)/(float)300);
+		tmp = (int)((float)a*(float)(rgblight.getBarMoveAngle())/(float)300);
 		return tmp;
 	}
 	

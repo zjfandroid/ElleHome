@@ -175,13 +175,14 @@ public class DevInfoActivity extends BaseActivity {
 			.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
 				@Override
 				public void onClick(SweetAlertDialog sDialog) {
-					sDialog.setConfirmText("OK")
-					.showCancelButton(false)
-					.setCancelClickListener(null)
-					.setConfirmClickListener(null)
-					.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-					
+//					sDialog.setConfirmText("OK")
+//					.showCancelButton(false)
+//					.setCancelClickListener(null)
+//					.setConfirmClickListener(null)
+//					.setTitleText("复位成功")
+//					.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 					sendResetPackage();
+					sDialog.dismiss();
 				}
 			})
 			.show();
@@ -218,6 +219,15 @@ public class DevInfoActivity extends BaseActivity {
 				});
 			}else{
 				ShowInfo.printLogW("_________OnRecvData__null_______");
+//				if(dev.getConnectStatus() != PublicDefine.ConnectLocal){
+				backbtn.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						ShowToast.show(mContext, "复位失败，请确保手机与灯泡连接的是同一个路由器");
+					}
+				});
+//				}
 			}
 		}
 	};

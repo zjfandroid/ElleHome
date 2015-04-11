@@ -142,8 +142,10 @@ public class SilderButton extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		//return super.onTouchEvent(event);
+		if(!isEnabled()){
+			return false;
+		}
+		
 		switch(event.getAction()){
 		case MotionEvent.ACTION_DOWN:
 			if(listener!=null)

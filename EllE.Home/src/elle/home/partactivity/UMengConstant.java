@@ -30,9 +30,9 @@ public interface UMengConstant {
 
 	final String EVENT_ID_CLICK_RANDOM_CHANGE_COLOR = "点击随机变色";
 
-	final String EVENT_ID_CLICK_CLOSE_LIGHT = "点击关闭灯";
+	public final String EVENT_ID_CLICK_CLOSE_LIGHT = "点击关闭灯";
 	
-	final String EVENT_ID_CLICK_OPEN_LIGHT = "点击打开灯";
+	public final String EVENT_ID_CLICK_OPEN_LIGHT = "点击打开灯";
 	
 	final String EVENT_ID_SHAKE_CLOSE_LIGHT = "摇一摇关闭灯";
 	

@@ -96,6 +96,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 	private boolean isNewDeviceFound;
 	
 	private AutoService.AutoBinder autoBinder;
+	public AutoService.AutoBinder getAutoBinder() {
+		return autoBinder;
+	}
+
 	private ServiceConnection connection = new ServiceConnection(){
 
 		@Override
@@ -331,21 +335,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 							goAddCameraActivity();
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_carema);
 						}else if(0 == position){
-							if(isNewDeviceFound || isWifiSaved(ssid)){
-								goAddDevActivity();
-							}else{
-								showConfigWifiDialog(ssid);
-							}
+							onWifiDevClick(ssid, PublicDefine.TypeLight);
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_light_string);
 						}else if( 2 == position){
+							onWifiDevClick(ssid, PublicDefine.TypePlug);
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_plug_string);
-							ShowToast.show(mContext, R.string.device_not_found);
 						}else{
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_infra_string);
 							ShowToast.show(mContext, R.string.device_not_found);
 						}
 						
 						mDeviceListDialog.dissMiss();
+					}
+
+					private void onWifiDevClick(final String ssid, byte type) {
+						if(isNewDeviceFound || isWifiSaved(ssid)){
+							goAddDevActivity(type);
+						}else{
+							showConfigWifiDialog(ssid, type);
+						}
 					}
 				});
 			}
@@ -369,7 +377,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		return true;
 	}
 
-	protected void showConfigWifiDialog(String ssid) {
+	protected void showConfigWifiDialog(String ssid, final int type) {
 		final AlertDialog dlg = new AlertDialog.Builder(this).create();
 		dlg.setCanceledOnTouchOutside(true);
 		dlg.show();
@@ -387,7 +395,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		Button ok = (Button) window.findViewById(R.id.configbtn);
 		ok.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				goAddDevActivity();
+				goAddDevActivity(type);
 				SaveDataPreferences.save(mContext, editText.getText().toString(), editPass.getText().toString());
 				dlg.dismiss();
 			}
@@ -411,8 +419,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		return conssid;
 	}
 
-	protected void goAddDevActivity() {
+	protected void goAddDevActivity(int type) {
 		Intent intent = new Intent(mContext,AddDevNewActivity.class);
+		intent.putExtra("type", type);
 		intent.putExtra("isNewDeviceFound", isNewDeviceFound);
 		intent.putExtra("locatname", locatlist.get(currentLocatViewId).name);
 		intent.putExtra("shownum", autoBinder.getAllInfo().allinfo.get(currentLocatViewId).devLocationList.size());

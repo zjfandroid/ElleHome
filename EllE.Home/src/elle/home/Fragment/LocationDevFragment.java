@@ -1,5 +1,7 @@
 package elle.home.Fragment;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -33,15 +36,20 @@ import com.umeng.analytics.MobclickAgent;
 
 import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
+import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
 import elle.home.app.R;
 import elle.home.database.DevLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.dialog.ConfigCameraDialog;
+import elle.home.partactivity.BaseActivity;
 import elle.home.partactivity.InfraAirActivity;
 import elle.home.partactivity.UMengConstant;
+import elle.home.protocol.BasicPacket;
+import elle.home.protocol.LightControlPacket;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ShowInfo;
 import elle.home.utils.ViewHolder;
 
 public class LocationDevFragment extends Fragment {
@@ -156,6 +164,57 @@ public class LocationDevFragment extends Fragment {
 			
 			gridview.setAdapter(gridAdapter);
 			gridview.setOnItemClickListener(new ItemClickListener());
+			gridview.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					ShowInfo.printLogW("________onItemLongClick________" + position);
+					if(position<locatInfo.devLocationList.size()){
+						OneDev onedev = locatInfo.devLocationList.get(position);
+						
+						switch(onedev.type){
+						case PublicDefine.TypeLight:
+							int connectStatus = onedev.getConnectStatus();
+							InetAddress conip = null;
+							int conport = 0;
+							
+							if(connectStatus == PublicDefine.ConnectRemote){
+								conip = onedev.remoteip;
+								conport = onedev.remoteport;
+							}else{
+								try {
+									conip = InetAddress.getByName("255.255.255.255");
+									conport = PublicDefine.LocalUdpPort;
+								} catch (UnknownHostException e) {
+									e.printStackTrace();
+								}
+							}
+							
+							LightControlPacket packet = new LightControlPacket(conip,conport);
+							if(connectStatus == PublicDefine.ConnectRemote){
+								packet.setPacketRemote(true);
+							}
+							
+							if(onedev.isTurnOn()){
+									((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_CLOSE_LIGHT);
+									packet.lightClose(DataExchange.longToEightByte(onedev.mac), null);
+								}else{
+									((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_OPEN_LIGHT);
+									packet.lightOpen(DataExchange.longToEightByte(onedev.mac), null);
+							}
+							
+							packet.setImportance(BasicPacket.ImportHigh);
+							((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packet);
+							break;
+						default:
+							break;
+						}
+					}
+					
+					return true;
+				}
+			});
 			
 			timer.schedule(task, 1000,1000);			
 		}
@@ -169,8 +228,6 @@ public class LocationDevFragment extends Fragment {
 		timer.cancel();
 		super.onDestroy();
 	}
-
-
 
 	class ItemClickListener implements OnItemClickListener{
 

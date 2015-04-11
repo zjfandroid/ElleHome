@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +18,7 @@ import elle.home.database.OneDev;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.ManageDevItem;
 import elle.home.uipart.ManageDevTitle;
+import elle.home.utils.ShowToast;
 
 /**
  * 设备管理界面
@@ -122,20 +122,27 @@ public class ManageDevActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			UMeng_OnEvent(EVENT_ID_CLICK_DELETE);
-
-			for(int i=0;i<titleList.size();i++){
-				if(v == titleList.get(i).manageDevDeleteBtn){
-					Log.d(TAG,"删除"+titleList.get(i).locatinfo.locatname);
-					delTmp = i;
-					showDeletePlaceDialog(i);
-				}
-			}
 			
 			for(int i=0;i<itemList.size();i++){
 				if(v == itemList.get(i).manageDevDeleteBtn){
 					Log.d(TAG,"删除"+itemList.get(i).dev.devname);
 					delTmp = i;
-					showDeleteDeviceDialog(i);					
+					showDeleteDeviceDialog(i);		
+					return;
+				}
+			}
+
+			int size = titleList.size();
+			if(size < 2){
+				ShowToast.show(mContext, "最后一个地点无法删除哦～");
+			}else{
+				for(int i=0;i<size;i++){
+					if(v == titleList.get(i).manageDevDeleteBtn){
+						Log.d(TAG,"删除"+titleList.get(i).locatinfo.locatname);
+						delTmp = i;
+						showDeletePlaceDialog(i);
+						return;
+					}
 				}
 			}
 		}
@@ -167,6 +174,7 @@ public class ManageDevActivity extends BaseActivity {
 				.showCancelButton(false)
 				.setCancelClickListener(null)
 				.setConfirmClickListener(null)
+				.setTitleText("删除成功")
 				.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 				
 				Log.d(TAG,"确认删除！");
@@ -214,6 +222,7 @@ public class ManageDevActivity extends BaseActivity {
 				.showCancelButton(false)
 				.setCancelClickListener(null)
 				.setConfirmClickListener(null)
+				.setTitleText("删除成功")
 				.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 				
 				Log.d(TAG,"确认删除！");

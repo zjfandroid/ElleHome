@@ -15,9 +15,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +66,8 @@ public class AddDevNewActivity extends Activity{
 	String locatname;
 	//如果增加，在主界面显示的序列号
 	int shownum;
+	//dev type
+	private int type;
 	
 	//返回按钮
 	private ImageButton backbtn;
@@ -139,6 +141,7 @@ public class AddDevNewActivity extends Activity{
 		boolean isNewDeviceFound = intent.getBooleanExtra("isNewDeviceFound", false);
 		locatname = intent.getStringExtra("locatname");
 		shownum = intent.getIntExtra("shownum", 300);
+		type = intent.getIntExtra("type", PublicDefine.TypeLight);
 		Log.d(TAG,TAG+":"+locatname+" shownum:"+shownum);
 		
 		wifiadmin = new WifiAdmin(this);
@@ -276,6 +279,11 @@ public class AddDevNewActivity extends Activity{
 		mProgressHelper.setProgressWheel((ProgressWheel)findViewById(R.id.progressWheel));
 		
 		txtTips = (TextView) findViewById(R.id.txt_tips);
+		if(type == PublicDefine.TypePlug){
+	        	StringBuilder sb = new StringBuilder("请将插座接上电源");
+	        	sb.append("\r\n").append("插座灯快速闪烁时会开始自动配置");
+	        	txtTips.setText(sb);
+		}
 		
 		mCountDownTimer = new CountDownTimer(counter * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -310,10 +318,17 @@ public class AddDevNewActivity extends Activity{
                 counter = -1;
                 if(null != foundDevice){
 	                	foundDevice.stopRippleAnimation();
-	                	StringBuilder sb = new StringBuilder("若自动配置失败，灯泡变为蓝色");
+	                	StringBuilder sb = new StringBuilder("若自动配置失败，");
+	                	if(type == PublicDefine.TypePlug){
+	                		sb .append("灯泡变为蓝色");
+	                	}else{
+	                		sb .append("插座灯会缓慢闪烁");
+	                	}
+	                	
 	                	sb.append("\r\n").append("连接名为EllE.xxxxx的热点")
 	                	.append("\n\r").append("密码:12345678")
 	                	.append("\n\r").append("连接完成返回当前界面即可完成配置");
+	                	
 	                	txtTips.setText(sb);
 	                	mProgressHelper.setProgressVisibility(View.GONE);
 	                	buttonProgress.setText("连接灯泡");

@@ -72,8 +72,8 @@ public class RgbLightView extends View {
 	private int barStartAngle = 120;
 	private int barSweepAngle = 300;
 	private int barCurrentAngle = 0;
-	public int barMoveAngle = 0;
-	
+	private int barMoveAngle = 0;
+
 	//色盘中心点坐标
 	private int hueX;
 	private int hueY;
@@ -167,7 +167,6 @@ public class RgbLightView extends View {
 
 	public RgbLightView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		//Log.d(TAG,"attrs:"+attrs.getAttributeValue("http://schemas.android.com/apk/res/elle.home.app", "testid"));
 		init(context);
 	}
@@ -287,13 +286,11 @@ public class RgbLightView extends View {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// TODO Auto-generated method stub
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.onDraw(canvas);
 		
 		canvas.drawBitmap(this.bgRes, 0, 0,null);
@@ -304,7 +301,6 @@ public class RgbLightView extends View {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
 		switch(event.getAction()){
 		case MotionEvent.ACTION_DOWN:
 			motionDown(event);
@@ -615,6 +611,10 @@ public class RgbLightView extends View {
 	}
 	
 	private Bitmap martixBit(Bitmap bit){
+		if(null == bit){
+			return bit;
+		}
+		
 		try {
 			Bitmap tmp = Bitmap.createBitmap(bit,0,0,bit.getWidth(),bit.getHeight(),this.allMatrix,true);
 			bit.recycle();
@@ -654,5 +654,12 @@ public class RgbLightView extends View {
 		void onOnOffClick(RgbLightView view);
 		
 	}
+
+	public void setBarMoveAngle(int angle) {
+		barMoveAngle = angle;
+	}
 	
+	public int getBarMoveAngle() {
+		return barMoveAngle<5?5:barMoveAngle;
+	}
 }
