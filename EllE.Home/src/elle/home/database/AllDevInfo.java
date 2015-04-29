@@ -47,7 +47,6 @@ public class AllDevInfo {
 				//add by xym 
 				oneDev.function = cursor.getString(cursor.getColumnIndex("function"));
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			alldevinfo.add(oneDev);

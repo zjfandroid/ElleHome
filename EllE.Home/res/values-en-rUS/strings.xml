@@ -173,8 +173,67 @@
     
     <string name="light_shake">Shake</string>
     <string name="light_free">Random</string>
-    	<string name="light_day">Day( 7:00-19:00 )</string>
+    <string name="light_day">Day( 7:00-19:00 )</string>
 	<string name="light_night">Night( 19:00 - 7:00 )</string>
 	
+	<string name="alerm_motion_alarm">motion alarm</string>
+	<string name="alerm_gpio_alarm">IO alarm</string>
+	
+	<string name="login_stuta_camer">Camer Status</string>
+	<string name="camera_id">ID</string>
+	<string name="camera_user">UserName</string>
+	<string name="camera_pwd">Password</string>
+    <string name="camera_link">Connect</string>
+    
+    <string name="input_camera_user">Please enter a username</string>
+	<string name="input_camera_id">Please enter the device name</string>
+	
+	<string name="device_not_on_line">Camera offline</string>
+	<string name="pppp_status_connect_timeout">Connect timeout</string>
+	<string name="pppp_status_initialing">Initialing</string>
+	<string name="pppp_status_unknown">Unknow status</string>
+	<string name="pppp_status_connecting">connecting</string>
+	<string name="pppp_status_online">online</string>
+	<string name="pppp_status_disconnect">disconnect</string>
+	<string name="pppp_status_connect_failed">connect failed</string>
+	<string name="pppp_status_pwd_error">password error</string>
+	<string name="pppp_status_invalid_id">ID invalid</string>
+	<string name="connecting">connecting</string>
+	<string name="videoing">videoing</string>
+	<string name="main_show_back">Back again to finish</string>
+	<string name="str_ok">OK</string>
+	<string name="str_cancel">Cancel</string>
+	<string name="exit_alert">Sure to exit?</string>
+	<string name="exit">Exit</string>
+	<string name="p2p_view_time_out">View time out</string>
+	<string name="ptz_default_vedio_params">Reset</string>
+	<string name="p2p_relay_mode_time_out">Time left:</string>
+	<string name="str_second">second</string>
+	<string name="ptz_control">请按菜单键,进行云台控制</string>
+	<string name="exit_show">   Tips：</string>
+	<string name="exit_play_show">Sure to exit?</string>
+	<string name="eixt_show_toast">Please stop first!</string>
+	
+	<string name="chose_device_to_add">Choose device to add</string>
+	<string name="chose_wifi_to_add">Choose wifi</string>
     <string name="device_not_found">Device not found</string>
+    <string name="dialog_default_title">Here\'s a message!</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="LOADING">Loading...</string>
+    
+    <string name="enter_wifi_password">Please input password</string>
+    <string name="enter_wifi_name">Please input wifi name</string>
+    
+    <string name="connect_by_user">Connect</string>
+    <string name="connect_bulb_0">Open the bulb\r\nAutomatically connected will be started when the color changing</string>
+    <string name="connect_plug_0">Open the plug\r\nAutomatically connected will be started when the plug flashing</string>
+    <string name="connect_bulb_fail">If failed，bulb change to blue\r\nConnect Wifi:EllE.xxxxx\r\nPassword:12345678\r\nManual connection</string>
+    <string name="connect_plug_fail">If failed，plug will Blinking slowly\r\nConnect Wifi:EllE.xxxxx\r\nPassword:12345678\r\nManual connection</string>
+    
+    <string name="scene">scene</string>
+    <string name="execute">execute</string>
+    
+    <string name="last_place_can_not_delete">Last place can not delete</string>
+    <string name="delete_success">Success</string>
 </resources>

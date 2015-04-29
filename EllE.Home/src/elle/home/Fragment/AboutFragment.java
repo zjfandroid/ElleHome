@@ -14,7 +14,6 @@ public class AboutFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		parentView = inflater.inflate(R.layout.about_fragment, container, false);
 		return parentView;
 	}

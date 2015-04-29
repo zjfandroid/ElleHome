@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="场景"
+                android:text="@string/scene"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
             
@@ -96,6 +96,6 @@
             android:layout_margin="10dp"
             android:background="@drawable/blue_button_background"
             android:layout_gravity="bottom"
-            android:text="执行" />
+            android:text="@string/execute" />
 
 </FrameLayout>

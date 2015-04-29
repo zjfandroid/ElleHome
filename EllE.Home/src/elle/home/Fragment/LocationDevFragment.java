@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +36,8 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+import elle.home.app.ControlWaysActivity;
+import elle.home.app.GatewayActivity;
 import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
 import elle.home.app.MainActivity;
@@ -47,6 +51,7 @@ import elle.home.partactivity.InfraAirActivity;
 import elle.home.partactivity.UMengConstant;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.LightControlPacket;
+import elle.home.protocol.PlugControlPacket;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.ShowInfo;
@@ -118,6 +123,7 @@ public class LocationDevFragment extends Fragment {
 		//locatInfo.setAllDevToLocal();
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -175,37 +181,10 @@ public class LocationDevFragment extends Fragment {
 						
 						switch(onedev.type){
 						case PublicDefine.TypeLight:
-							int connectStatus = onedev.getConnectStatus();
-							InetAddress conip = null;
-							int conport = 0;
-							
-							if(connectStatus == PublicDefine.ConnectRemote){
-								conip = onedev.remoteip;
-								conport = onedev.remoteport;
-							}else{
-								try {
-									conip = InetAddress.getByName("255.255.255.255");
-									conport = PublicDefine.LocalUdpPort;
-								} catch (UnknownHostException e) {
-									e.printStackTrace();
-								}
-							}
-							
-							LightControlPacket packet = new LightControlPacket(conip,conport);
-							if(connectStatus == PublicDefine.ConnectRemote){
-								packet.setPacketRemote(true);
-							}
-							
-							if(onedev.isTurnOn()){
-									((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_CLOSE_LIGHT);
-									packet.lightClose(DataExchange.longToEightByte(onedev.mac), null);
-								}else{
-									((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_OPEN_LIGHT);
-									packet.lightOpen(DataExchange.longToEightByte(onedev.mac), null);
-							}
-							
-							packet.setImportance(BasicPacket.ImportHigh);
-							((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packet);
+							packetLight(onedev);
+							break;
+						case PublicDefine.TypePlug:
+							packetPlug(onedev);
 							break;
 						default:
 							break;
@@ -218,8 +197,6 @@ public class LocationDevFragment extends Fragment {
 			
 			timer.schedule(task, 1000,1000);			
 		}
-		
-		
 		return parentView;
 	}
 	
@@ -227,6 +204,72 @@ public class LocationDevFragment extends Fragment {
 	public void onDestroy() {
 		timer.cancel();
 		super.onDestroy();
+	}
+
+	private void packetPlug(OneDev onedev) {
+		int connectStatus = onedev.getConnectStatus();
+		InetAddress conip = null;
+		int conport = 0;
+		
+		if(connectStatus == PublicDefine.ConnectRemote){
+			conip = onedev.remoteip;
+			conport = onedev.remoteport;
+		}else{
+			try {
+				conip = InetAddress.getByName("255.255.255.255");
+				conport = PublicDefine.LocalUdpPort;
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		PlugControlPacket packetoff = new PlugControlPacket(conip,conport);
+		if(connectStatus == PublicDefine.ConnectRemote){
+			packetoff.setPacketRemote(true);
+		}
+		
+		if(onedev.isTurnOn()){
+			packetoff.plugOff(DataExchange.longToEightByte(onedev.mac), null);
+		}else{
+			packetoff.plugOn(DataExchange.longToEightByte(onedev.mac), null);
+		}
+		
+		packetoff.setImportance(BasicPacket.ImportHigh);
+		((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packetoff);
+	}
+	
+	private void packetLight(OneDev onedev) {
+		int connectStatus = onedev.getConnectStatus();
+		InetAddress conip = null;
+		int conport = 0;
+		
+		if(connectStatus == PublicDefine.ConnectRemote){
+			conip = onedev.remoteip;
+			conport = onedev.remoteport;
+		}else{
+			try {
+				conip = InetAddress.getByName("255.255.255.255");
+				conport = PublicDefine.LocalUdpPort;
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		LightControlPacket packet = new LightControlPacket(conip,conport);
+		if(connectStatus == PublicDefine.ConnectRemote){
+			packet.setPacketRemote(true);
+		}
+		
+		if(onedev.isTurnOn()){
+				((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_CLOSE_LIGHT);
+				packet.lightClose(DataExchange.longToEightByte(onedev.mac), null);
+			}else{
+				((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_OPEN_LIGHT);
+				packet.lightOpen(DataExchange.longToEightByte(onedev.mac), null);
+		}
+		
+		packet.setImportance(BasicPacket.ImportHigh);
+		((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packet);
 	}
 
 	class ItemClickListener implements OnItemClickListener{
@@ -241,6 +284,11 @@ public class LocationDevFragment extends Fragment {
 				
 				switch(onedev.type){
 				case PublicDefine.TypeNull:
+//					Intent intentG = new Intent(mContext,GatewayActivity.class);
+//					intentG.putExtra("mac", onedev.mac);
+//					intentG.putExtra("devname", onedev.devname);
+//					intentG.putExtra("connect", onedev.getConnectStatus());
+//					mContext.startActivity(intentG);
 					break;
 				case PublicDefine.TypeLight:
 					Intent xintent = new Intent(mContext,LightRgbActivity.class);
@@ -310,8 +358,13 @@ public class LocationDevFragment extends Fragment {
 					break;
 				}
 //			}else{
-//				Intent aintent2 = new Intent(mContext,PlayActivity.class);
-//				startActivity(aintent2);
+//				Intent intentG = null;
+//				if(position%2 == 0){
+//					intentG = new Intent(mContext,GatewayActivity.class);
+//				}else{
+//					intentG = new Intent(mContext,ControlWaysActivity.class);
+//				}
+//				mContext.startActivity(intentG);
 			}
 			
 		}

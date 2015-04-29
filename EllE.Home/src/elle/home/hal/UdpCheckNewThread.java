@@ -150,7 +150,7 @@ public class UdpCheckNewThread {
 						oneDev.setDevRemote(false);
 						oneDev.clearLocalTimer();
 						
-						if(1 == packet.xdata[0]){
+						if(null != packet.xdata && 1 == packet.xdata[0]){
 							oneDev.setTurnOn(true);
 						}else{
 							oneDev.setTurnOn(false);

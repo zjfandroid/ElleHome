@@ -36,6 +36,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
@@ -192,6 +195,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		Log.d(TAG,"onCreate");
 		
 		setContentView(R.layout.activity_main);
+		
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				doOnCreate();
+			}
+		}, 200);
+		
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				final View view = findViewById(R.id.home);
+			    ObjectAnimator anim = ObjectAnimator
+			            .ofFloat(view, "zhy", 1.0F,  0.0F)
+			            .setDuration(500);
+			    anim.start();  
+			    anim.addUpdateListener(new AnimatorUpdateListener()  
+			    {  
+			        @Override  
+			        public void onAnimationUpdate(ValueAnimator animation)  
+			        {  
+			            float cVal = (Float) animation.getAnimatedValue();  
+			            view.setAlpha(cVal);  
+			        }  
+			    }); 
+			}
+		}, 800);
+		
+	}
+
+	private void doOnCreate() {
 		this.startService(new Intent(this, ShakeService.class));
 		mContext = this;
 		
@@ -226,7 +262,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		        }
 		    }
 		});
-		
 	}
 
 	private void initCameraConfig() {
@@ -408,9 +443,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		String conssid = "";
 		
 		if(PublicDefine.isWiFiConnect(this)){
-			Log.d(TAG,"con ssid:"+wifiadmin.getWifiInfo().getSSID());
-			conssid = wifiadmin.getWifiInfo().getSSID();			
-			conssid = conssid.substring(1, conssid.length()-1);
+			conssid = wifiadmin.getWifiInfo().getSSID();	
+			if(null != conssid){
+				conssid = conssid.substring(1, conssid.length()-1);
+			}
 		}else{
 			Log.d(TAG,"wifi not connect,auto enable wifi");
 			PublicDefine.toggleWiFi(mContext, true);
@@ -452,6 +488,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if(null == resideMenu){
+			return false;
+		}
 		return resideMenu.dispatchTouchEvent(ev);
 	}
 
@@ -470,13 +509,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 	@Override
 	public void onClick(View v) {
+		if(null == locatlist || null == resideMenu){
+			return;
+		}
+		
 		if(v==resideMenu.btnsetting){
 			Log.d(TAG,"点击了设置按钮");
 		}
 		
-		for(int i=0;i<locatlist.size();i++){
+		int size = locatlist.size();
+		for(int i=0;i<size;i++){
 			if(v==locatlist.get(i)){
-				if(i == locatlist.size()-1){
+				if(i == size-1){
 					//添加地点
 					Log.d(TAG,"添加地点");
 					Intent intent = new Intent(mContext,AddLocationActivity.class);
@@ -494,9 +538,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 			}
 		}
 		
-		for(int i=0;i<senseItem.size();i++){
+		size = senseItem.size();
+		for(int i=0;i<size;i++){
 			if(v == senseItem.get(i)){
-				if(i == senseItem.size()-1){
+				if(i == size-1){
 					Log.d(TAG,"点中了添加场景");
 					Intent intent = new Intent(mContext,SceneAddActivity.class);
 					startActivityForResult(intent, 2);
@@ -517,7 +562,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 	
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-		// TODO Auto-generated method stub
 		if(arg0 == 0){	//从添加设备界面返回
 			Log.d(TAG,"从添加设备界面返回");
 			if(autoBinder!=null){

@@ -1,11 +1,15 @@
 package elle.home.shake;
 
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
-
-import com.umeng.analytics.MobclickAgent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Service;
 import android.content.Context;
@@ -24,18 +28,19 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.umeng.analytics.MobclickAgent;
+
 import elle.home.app.R;
 import elle.home.database.AllDevInfo;
 import elle.home.database.OneDev;
-import elle.home.hal.UdpThread;
 import elle.home.partactivity.UMengConstant;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.LightControlPacket;
-import elle.home.protocol.ProtocolDataList;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.SaveDataPreferences;
+import elle.home.utils.ShowInfo;
 
 public class ShakeService extends Service{
 
@@ -45,8 +50,9 @@ public class ShakeService extends Service{
 	private int soundId_on;
 	private int soundId_off;
 
-	private UdpThread udpThread = null;
-	
+//	private UdpThread udpThread = null;
+	//udp通道
+	public DatagramSocket dataSocket;
 	
 	private static final int DAYTIME_BEGIN = 7;
 	private static final int DAYTIME_END = 19;
@@ -73,11 +79,17 @@ public class ShakeService extends Service{
 					SensorManager.SENSOR_DELAY_NORMAL);
 			// 第一个参数是Listener，第二个参数是所得传感器类型，第三个参数值获取传感器信息的频率
 		}
-		udpThread = new UdpThread();
-		udpThread.setDataList(new ProtocolDataList());
-		udpThread.startThread();
+//		udpThread = new UdpThread();
+//		udpThread.setDataList(new ProtocolDataList());
+//		udpThread.startThread();
 		mAllDevInfo = new AllDevInfo(ShakeService.this);
 		acquireWakeLock();
+		
+		try {
+			dataSocket = new DatagramSocket();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private WakeLock wakeLock = null;
@@ -116,10 +128,22 @@ public class ShakeService extends Service{
 		if (sensorManager != null) {// 取消监听器
 			sensorManager.unregisterListener(sensorEventListener);
 		}
-		if(udpThread != null){
-			udpThread.stopThread();
-		}
+//		if(udpThread != null){
+//			udpThread.stopThread();
+//		}
 		releaseWakeLock();
+		
+		if(null != dataSocket){
+			dataSocket.disconnect();
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask(){
+				
+				@Override
+				public void run() {
+					Log.d(TAG,"udp thread stop2");
+					dataSocket.close();
+				}}, 500);
+		}
 	}
 	
 	private int mShakeCounter = 0;
@@ -159,46 +183,48 @@ public class ShakeService extends Service{
 //				Toast.LENGTH_SHORT).show();
 		
 		if(isNetworkEnabled()){
-			System.out.println("network enabled");
+			ShowInfo.printLogW("network enabled");
 			mAllDevInfo.getAllDev();
 			if(isDayTime()){
-				System.out.println("day time");
+				ShowInfo.printLogW("day time");
 				if(SaveDataPreferences.loadBoolean(this, PublicDefine.SHAKE_DAY, true)){
-					System.out.println("day on");
+					ShowInfo.printLogW("day on");
 					vibrator.vibrate(VIB_TIMER);
 					sendPacket();
 				}else{
-					System.out.println("day off");
+					ShowInfo.printLogW("day off");
 				}
 			}else{
-				System.out.println("night time");
+				ShowInfo.printLogW("night time");
 				if(SaveDataPreferences.loadBoolean(this, PublicDefine.SHAKE_NIGHT, true)){
-					System.out.println("night on");
+					ShowInfo.printLogW("night on");
 					vibrator.vibrate(VIB_TIMER);
 					sendPacket();
 				}else{
-					System.out.println("night off");
+					ShowInfo.printLogW("night off");
 				}
 			}
 		}else{
-			System.out.println("network disnabled");
+			ShowInfo.printLogW("network disnabled");
 		}
 		
 	}
 	
-	
 	private void sendPacket(){
 		boolean isOn = SaveDataPreferences.loadBoolean(this, "LIGHT_ON", true);
+		boolean isNeedSound = false;
+		
 		if(isOn){
-			playSound(isOn);
 			MobclickAgent.onEvent(this, UMengConstant.EVENT_ID_SHAKE_CLOSE_LIGHT);
 		}else{
-			playSound(isOn);
 			MobclickAgent.onEvent(this, UMengConstant.EVENT_ID_SHAKE_OPEN_LIGHT);
 		}
+		
 		for(OneDev dev : mAllDevInfo.alldevinfo){
 			if(checkFunction(PublicDefine.CONFIG_SHAKE_ON, dev.function)){
-				System.out.println("turn off " + isOn);
+				ShowInfo.printLogW("turn off " + isOn);
+				isNeedSound = true;
+				
 				LightControlPacket packet = new LightControlPacket(null,PublicDefine.LocalUdpPort);
 				packet.setImportance(BasicPacket.ImportHigh);
 				try {
@@ -206,15 +232,33 @@ public class ShakeService extends Service{
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}	
+				
 				if(isOn){
 					packet.lightClose(DataExchange.longToEightByte(dev.mac), null);
 				}else{
 					packet.lightOpen(DataExchange.longToEightByte(dev.mac), null);
 				}
-				udpThread.getProtocolDataList().addOnePacketToSend(packet);
-				udpThread.getProtocolDataList().addOnePacketToSend(packet);
-				udpThread.getProtocolDataList().addOnePacketToSend(packet);
+				
+				final DatagramPacket mDatagramPacket = packet.getUdpData();
+				new Thread(){
+					public void run() {
+						try {
+							dataSocket.send(mDatagramPacket);
+							dataSocket.send(mDatagramPacket);
+							dataSocket.send(mDatagramPacket);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					};
+				}.start();
+//				udpThread.getProtocolDataList().addOnePacketToSend(packet);
+//				udpThread.getProtocolDataList().addOnePacketToSend(packet);
+//				udpThread.getProtocolDataList().addOnePacketToSend(packet);
 			}
+		}
+		
+		if(isNeedSound){
+			playSound(isOn);
 		}
 		SaveDataPreferences.saveBoolean(this, "LIGHT_ON", !isOn);
 	}
@@ -230,7 +274,7 @@ public class ShakeService extends Service{
 		Calendar calendar = Calendar.getInstance();
 		int dayHour = calendar.get(Calendar.HOUR_OF_DAY);
 
-		System.out.println("dayHour:"+dayHour);
+		ShowInfo.printLogW("dayHour:"+dayHour);
 		if(dayHour >= DAYTIME_BEGIN && dayHour <DAYTIME_END){ 
 			return true;
 		}
@@ -242,7 +286,7 @@ public class ShakeService extends Service{
 		float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);   
 		float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);       
 		float volume = streamVolumeCurrent / streamVolumeMax; 
-		System.out.println("volume:"+volume);
+		ShowInfo.printLogW("volume:"+volume);
 		if(isOn){
 			soundPool.play(soundId_off,  volume,volume,1, 0, 1.0f); 
 		}else{
@@ -288,9 +332,5 @@ public class ShakeService extends Service{
 
 		}
 	};
-
-
-	
-	
 
 }

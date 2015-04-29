@@ -280,9 +280,7 @@ public class AddDevNewActivity extends Activity{
 		
 		txtTips = (TextView) findViewById(R.id.txt_tips);
 		if(type == PublicDefine.TypePlug){
-	        	StringBuilder sb = new StringBuilder("请将插座接上电源");
-	        	sb.append("\r\n").append("插座灯快速闪烁时会开始自动配置");
-	        	txtTips.setText(sb);
+	        	txtTips.setText(mContext.getResources().getString(R.string.connect_plug_0));
 		}
 		
 		mCountDownTimer = new CountDownTimer(counter * 1000, 1000) {
@@ -318,20 +316,14 @@ public class AddDevNewActivity extends Activity{
                 counter = -1;
                 if(null != foundDevice){
 	                	foundDevice.stopRippleAnimation();
-	                	StringBuilder sb = new StringBuilder("若自动配置失败，");
 	                	if(type == PublicDefine.TypePlug){
-	                		sb .append("灯泡变为蓝色");
+	                		txtTips.setText(getResources().getString(R.string.connect_plug_fail));
 	                	}else{
-	                		sb .append("插座灯会缓慢闪烁");
+	                		txtTips.setText(getResources().getString(R.string.connect_bulb_fail));
 	                	}
 	                	
-	                	sb.append("\r\n").append("连接名为EllE.xxxxx的热点")
-	                	.append("\n\r").append("密码:12345678")
-	                	.append("\n\r").append("连接完成返回当前界面即可完成配置");
-	                	
-	                	txtTips.setText(sb);
 	                	mProgressHelper.setProgressVisibility(View.GONE);
-	                	buttonProgress.setText("连接灯泡");
+	                	buttonProgress.setText(getResources().getString(R.string.connect_by_user));
 	                	buttonProgress.setEnabled(true);
 	                	findViewById(R.id.txt_tips_wifi).setVisibility(View.GONE);
                 }

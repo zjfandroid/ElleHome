@@ -660,6 +660,6 @@ public class RgbLightView extends View {
 	}
 	
 	public int getBarMoveAngle() {
-		return barMoveAngle<5?5:barMoveAngle;
+		return barMoveAngle<6?6:barMoveAngle;
 	}
 }

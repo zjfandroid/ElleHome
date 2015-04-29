@@ -37,6 +37,14 @@ public class PublicDefine {
 	
 	public static final byte TypeNull = (byte)0x00;
 
+	public static final byte TypeGateWay = (byte)0x01;
+	public static final byte GateWayOrgin = (byte)0x00;
+	public static final byte GateWayAllowIn = (byte)0x01;
+	public static final byte GateWayBan = (byte)0x02;
+	public static final byte GateWayRequestDevOut = (byte)0x03;
+	public static final byte GateWayPostDevIn = (byte)0x04;
+	public static final byte GateWayAllowDevIn = (byte)0x05;
+	
 	public static final byte TypeLight = (byte)0x20;
 	public static final byte LightVerOrgin = (byte)0x00;
 	public static final byte FunLightOpen = (byte)0x01;

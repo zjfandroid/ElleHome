@@ -7,10 +7,13 @@ import java.net.SocketException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
-
 import elle.home.protocol.PacketCheck;
 import elle.home.protocol.ProtocolDataList;
+import elle.home.shake.ShakeService;
 
 public class UdpThread {
 	
@@ -28,7 +31,6 @@ public class UdpThread {
 		try {
 			dataSocket = new DatagramSocket();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -51,7 +53,6 @@ public class UdpThread {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				
 				Log.d(TAG,"udp thread start");
 				
@@ -99,7 +100,6 @@ public class UdpThread {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			runFlag = true;
 			byte[] data = new byte[4096];
@@ -122,7 +122,6 @@ public class UdpThread {
 						}
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -141,7 +140,6 @@ public class UdpThread {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			runFlag = true;
 			DatagramPacket packet = null;
@@ -155,14 +153,12 @@ public class UdpThread {
 						Log.d(TAG,"send once:"+packet.getAddress().toString()+" port:"+packet.getPort());
 						dataSocket.send(packet);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				try {
 					this.sleep(5);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

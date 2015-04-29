@@ -2,7 +2,6 @@ package elle.home.protocol;
 
 import java.net.InetAddress;
 
-import elle.home.database.OneDev;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 

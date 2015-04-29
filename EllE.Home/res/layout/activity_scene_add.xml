@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:ems="10"
-                    android:hint="起个名字吧~"
+                    android:hint="@string/tips_bename"
                     android:imeOptions="actionDone"
                     android:maxLength="8"
                     android:singleLine="true"

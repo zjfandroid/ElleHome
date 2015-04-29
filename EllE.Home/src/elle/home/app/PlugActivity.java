@@ -97,7 +97,6 @@ public class PlugActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch(msg.what){
 			case 0:
 				if(plugStatus){
@@ -125,13 +124,11 @@ public class PlugActivity extends BaseActivity {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			// TODO Auto-generated method stub
 			autoBinder = (AutoService.AutoBinder) service;
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			// TODO Auto-generated method stub
 			autoBinder = null;
 		}
 		
@@ -150,7 +147,6 @@ public class PlugActivity extends BaseActivity {
 
 		@Override
 		public void OnRecvData(PacketCheck packetcheck) {
-			// TODO Auto-generated method stub
 			//Log.d(TAG,"收到插座发出信息的回掉");
 			if(packetcheck!=null){
 				//Log.d(TAG,DataExchange.byteArrayToHexString(packetcheck.data));
@@ -196,7 +192,6 @@ public class PlugActivity extends BaseActivity {
 	Timer timer;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_plug);
 		
@@ -223,7 +218,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"timer change:"+hourOfDay+" min:"+minute);
 			}
 		});
@@ -247,7 +241,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				return true;
 			}
 		});
@@ -261,7 +254,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				setTimerLayout.setVisibility(View.INVISIBLE);
 				Calendar c = Calendar.getInstance();
 				
@@ -297,7 +289,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				setTimerLayout.setVisibility(View.INVISIBLE);
 			}
 		});
@@ -308,7 +299,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public void onoff(boolean tmp) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"open timer onoff");
 				if(!tmp){
 					setOpenTime(0);
@@ -317,13 +307,11 @@ public class PlugActivity extends BaseActivity {
 
 			@Override
 			public void clickDown() {
-				// TODO Auto-generated method stub
 				isFresh = false;
 			}
 
 			@Override
 			public void clickUp() {
-				// TODO Auto-generated method stub
 				isFresh = true;
 			}
 		});
@@ -332,7 +320,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public void onoff(boolean tmp) {
-				// TODO Auto-generated method stub
 				Log.d(TAG,"close timer onoff");
 				if(!tmp){
 					setCloseTime(0);
@@ -341,13 +328,11 @@ public class PlugActivity extends BaseActivity {
 
 			@Override
 			public void clickDown() {
-				// TODO Auto-generated method stub
 				isFresh = false;
 			}
 
 			@Override
 			public void clickUp() {
-				// TODO Auto-generated method stub
 				isFresh = true;
 			}
 		});
@@ -356,7 +341,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					plugTimerDown.setImageDrawable(getResources().getDrawable(R.drawable.plug_time_down));
@@ -419,8 +403,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				
 				if(event.getAction() == MotionEvent.ACTION_DOWN){
 					vibrator.vibrate(vibarator_time);
 					if(plugStatus){
@@ -469,7 +451,6 @@ public class PlugActivity extends BaseActivity {
 				this.conip = InetAddress.getByName("255.255.255.255");
 				this.conport = PublicDefine.LocalUdpPort;
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -484,19 +465,14 @@ public class PlugActivity extends BaseActivity {
 		this.userBindService();
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
-	
-	
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 		timer = new Timer();
 		TimerTask timetask = new TimerTask(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
 					PlugControlPacket packet = new PlugControlPacket(conip,conport);
 					if(connectStatus == PublicDefine.ConnectRemote){
 						packet.setPacketRemote(true);
@@ -513,25 +489,21 @@ public class PlugActivity extends BaseActivity {
 
 	@Override
 	protected void onRestart() {
-		// TODO Auto-generated method stub
 		super.onRestart();
 	}
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		timer.cancel();
 		super.onStop();
 	}
@@ -539,7 +511,6 @@ public class PlugActivity extends BaseActivity {
 	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		this.userUnbindService();
 		openTimerOnOff.recyleBit();
 		closeTimerOnOff.recyleBit();

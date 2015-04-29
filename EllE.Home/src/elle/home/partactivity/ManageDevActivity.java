@@ -134,7 +134,7 @@ public class ManageDevActivity extends BaseActivity {
 
 			int size = titleList.size();
 			if(size < 2){
-				ShowToast.show(mContext, "最后一个地点无法删除哦～");
+				ShowToast.show(mContext, getResources().getString(R.string.last_place_can_not_delete));
 			}else{
 				for(int i=0;i<size;i++){
 					if(v == titleList.get(i).manageDevDeleteBtn){
@@ -174,7 +174,7 @@ public class ManageDevActivity extends BaseActivity {
 				.showCancelButton(false)
 				.setCancelClickListener(null)
 				.setConfirmClickListener(null)
-				.setTitleText("删除成功")
+				.setTitleText(getResources().getString(R.string.delete_success))
 				.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 				
 				Log.d(TAG,"确认删除！");
@@ -222,7 +222,7 @@ public class ManageDevActivity extends BaseActivity {
 				.showCancelButton(false)
 				.setCancelClickListener(null)
 				.setConfirmClickListener(null)
-				.setTitleText("删除成功")
+				.setTitleText(getResources().getString(R.string.delete_success))
 				.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 				
 				Log.d(TAG,"确认删除！");

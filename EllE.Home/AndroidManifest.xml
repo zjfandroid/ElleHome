@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="elle.home.app"
-    android:versionCode="3"
-    android:versionName="1.02" >
+    android:versionCode="6"
+    android:versionName="1.05" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <uses-feature
@@ -45,7 +45,6 @@
         <activity
             android:name="vstc2.nativecaller.PlayActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:label="play" >
         </activity>
@@ -55,15 +54,19 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="elle.home.app.PlugActivity"
+            android:name="elle.home.app.GatewayActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
-            android:name="elle.home.partactivity.AddDevActivity"
+            android:name="elle.home.app.ControlWaysActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="elle.home.app.PlugActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity
             android:name="elle.home.partactivity.AddSignalDevActivity"

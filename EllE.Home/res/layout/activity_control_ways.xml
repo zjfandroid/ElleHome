@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/plug_backbk" >
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:onClick="doBackClick"
+        android:src="@drawable/title_back_bk" />
+
+    <TextView
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="多路控制器"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_bar_right_menu"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/transparent"
+        android:onClick="doAddClick"
+        android:src="@drawable/title_add" />
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" >
+
+        <CheckBox
+            android:id="@+id/btn_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selecter_on_off"
+            android:text="" />
+
+        <CheckBox
+            android:id="@+id/btn_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/selecter_on_off"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout1"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp" >
+
+        <CheckBox
+            android:id="@+id/btn_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selecter_on_off"
+            android:text="" />
+
+        <CheckBox
+            android:id="@+id/btn_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:button="@drawable/selecter_on_off"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/tips1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_circle"
+            android:layout_margin="6dp"
+            android:onClick="doClick"
+            android:text="" />
+
+        <Button
+            android:id="@+id/tips2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_circle"
+            android:layout_margin="6dp"
+            android:onClick="doClick"
+            android:text="" />
+
+        <Button
+            android:id="@+id/tips3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_circle"
+            android:layout_margin="6dp"
+            android:onClick="doClick"
+            android:text="" />
+    </LinearLayout>
+
+</RelativeLayout>

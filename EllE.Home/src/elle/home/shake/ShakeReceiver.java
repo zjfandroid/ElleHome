@@ -19,13 +19,11 @@ package elle.home.shake;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 /**
  * Receives system broadcasts (boot, network connectivity)
  */
 public class ShakeReceiver extends BroadcastReceiver {
-	
 	
 	@Override
 	public void onReceive(final Context context, final Intent intent) {
@@ -35,7 +33,6 @@ public class ShakeReceiver extends BroadcastReceiver {
 			startService(context);
 		}
 	}
-
 
 	private void startService(Context context) {
 		context.startService(new Intent(context, ShakeService.class));

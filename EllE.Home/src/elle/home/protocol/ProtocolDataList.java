@@ -25,7 +25,6 @@ public class ProtocolDataList {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			sendtime++;
 			if(sendtime >30000){
 				sendtime = 0;

@@ -3,11 +3,6 @@ package elle.home.partactivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import elle.home.app.R;
-import elle.home.database.AllScene;
-import elle.home.publicfun.PublicDefine;
-import elle.home.uipart.ManageSceneItem;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -16,6 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import elle.home.app.R;
+import elle.home.database.AllScene;
+import elle.home.publicfun.PublicDefine;
+import elle.home.uipart.ManageSceneItem;
 
 public class ManageSceneActivity extends BaseActivity {
 
@@ -34,7 +33,6 @@ public class ManageSceneActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_manage_scene);
 		mContext = this;
@@ -44,7 +42,6 @@ public class ManageSceneActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					PublicDefine.vibratorNormal(mContext);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -75,7 +72,6 @@ public class ManageSceneActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			for(int i=0;i<itemList.size();i++){
 				if(v == itemList.get(i).manageSceneDeleteBtn){
 					Log.d(TAG,"删除场景："+itemList.get(i).scenedata.sceneName);
@@ -90,7 +86,6 @@ public class ManageSceneActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			for(int i=0;i<itemList.size();i++){
 				if(v == itemList.get(i)){
 					itemList.get(i).togBtn();
@@ -101,24 +96,4 @@ public class ManageSceneActivity extends BaseActivity {
 		}
 	};
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	
-	
 }

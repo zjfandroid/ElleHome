@@ -221,4 +221,18 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="LOADING">Loading...</string>
 	
+    <string name="enter_wifi_password">需要输入WiFi密码啦</string>
+    <string name="enter_wifi_name">需要输入WiFi名称啦</string>
+    
+    <string name="connect_by_user">手动连接</string>
+    <string name="connect_bulb_0">请打开灯泡\r\n灯泡随机改变颜色时会开始自动配置</string>
+    <string name="connect_plug_0">请将插座接上电源\r\n插座灯快速闪烁时会开始自动配置</string>
+    <string name="connect_bulb_fail">若自动配置失败，灯泡变为蓝色\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
+    <string name="connect_plug_fail">若自动配置失败，插座灯会缓慢闪烁\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
+    
+    <string name="scene">场景</string>
+    <string name="execute">执行</string>
+    
+    <string name="last_place_can_not_delete">最后一个地点无法删除哦～</string>
+    <string name="delete_success">删除成功</string>
 </resources>

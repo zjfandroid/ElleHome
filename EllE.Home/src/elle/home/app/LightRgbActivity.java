@@ -50,7 +50,6 @@ public class LightRgbActivity extends BaseActivity {
 	public final float GreenAdjust = 0.8f;
 	
 	//两张背景
-	private Drawable statusOnDrawable;
 	private Drawable statusOffDrawable;
 	private ImageButton ibtn;
 	private ImageButton rightbtn;
@@ -74,7 +73,6 @@ public class LightRgbActivity extends BaseActivity {
 	//
 	private boolean rgbLightStatus;
 	private boolean randomStatus;
-	private boolean isLightOff;
 	
 	int rgbWhiteStatus;
 	public int colorRed;
@@ -172,9 +170,8 @@ public class LightRgbActivity extends BaseActivity {
 				
 				rgblight.setBarMoveAngle(DataExchange.twoByteToInt(packetcheck.xdata[12], packetcheck.xdata[13]));
 				
-				Message msg = new Message();
-				msg.what = freshUiPart;
-				handler.sendMessage(msg);
+				handler.removeMessages(freshUiPart);
+				handler.sendEmptyMessageDelayed(freshUiPart, 500);
 				
 			}
 		}
@@ -235,12 +232,11 @@ public class LightRgbActivity extends BaseActivity {
 		
 		rgbWhiteStatus = statusWhite;
 		
-		vibrator = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+		vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 		couldFreshLux = true;
 		rgbLightStatus = true;
 		
 		this.statusOffDrawable = this.getResources().getDrawable(R.drawable.rgb_light_bk_black);
-		this.statusOnDrawable = this.getResources().getDrawable(R.drawable.rgb_light_bk);
 		
 		this.linearbackground2.setBackground(statusOffDrawable);
 		this.linearbackground2.setAlpha(0);
@@ -640,7 +636,7 @@ public class LightRgbActivity extends BaseActivity {
 		}
 	}
 	
-	Handler handler = new Handler(){
+	private Handler handler = new Handler(){
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -727,7 +723,7 @@ public class LightRgbActivity extends BaseActivity {
 				
 				darkRunCount++;
 				try {
-					this.sleep(1);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -754,7 +750,7 @@ public class LightRgbActivity extends BaseActivity {
 				msg.setData(bundle);
 				handler.sendMessage(msg);
 				try {
-					this.sleep(1);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

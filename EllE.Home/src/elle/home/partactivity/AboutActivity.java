@@ -33,7 +33,5 @@ public class AboutActivity extends BaseActivity {
 		});
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
-
-	
 	
 }

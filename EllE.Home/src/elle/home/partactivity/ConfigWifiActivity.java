@@ -3,7 +3,6 @@ package elle.home.partactivity;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +26,7 @@ import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ShowToast;
 
 /**
  * 设备信息界面
@@ -114,11 +114,10 @@ public class ConfigWifiActivity extends BaseActivity {
 						e.printStackTrace();
 					}
 			} else {
-				Toast.makeText(mContext, "需要输入WiFi密码啦", Toast.LENGTH_SHORT)
-						.show();
+				ShowToast.show(mContext, R.string.enter_wifi_password);
 			}
 		} else {
-			Toast.makeText(mContext, "需要输入WiFi名称啦", Toast.LENGTH_SHORT).show();
+			ShowToast.show(mContext, R.string.enter_wifi_name);
 		}
 	}
 	
