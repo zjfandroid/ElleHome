@@ -1,5 +1,11 @@
 ﻿package elle.home.publicfun;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class DataExchange {
 	
 	public static byte[] longToEightByte(long data){
@@ -135,5 +141,37 @@ public class DataExchange {
 			hexString.append(Integer.toHexString(intVal));
 		}	
 		return hexString.toString();    
+	}
+    
+	public static int getOffset(int hourOfDay, int minute) {
+		Calendar c = Calendar.getInstance();
+		
+		int setTimeCount = hourOfDay*3600 + minute*60;
+		int curTimeCount = c.get(Calendar.HOUR_OF_DAY)*3600+c.get(Calendar.MINUTE)*60;
+		
+		int offSet = 0;
+		if(Math.abs(setTimeCount - curTimeCount)<10){
+			
+		}else if(setTimeCount>curTimeCount){
+			offSet = setTimeCount - curTimeCount;
+		}else{
+			offSet = (24*3600 - curTimeCount)+setTimeCount;
+		}
+		
+		return offSet;
+	}
+	
+	public static String getClockExchange(int sec)
+	{
+		String tmp = null;
+		Date date = new Date();
+		Calendar now = Calendar.getInstance();
+	    TimeZone timeZone = now.getTimeZone();
+	    
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+		date.setTime(sec*1000+(System.currentTimeMillis()));
+		tmp = sdf.format(date);
+		
+		return tmp;
 	}
 }

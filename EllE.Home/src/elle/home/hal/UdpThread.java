@@ -104,7 +104,7 @@ public class UdpThread {
 			runFlag = true;
 			byte[] data = new byte[4096];
 			int length;
-			while(runFlag){
+			while(runFlag && !dataSocket.isClosed()){
 				DatagramPacket packet = new DatagramPacket(data,data.length);
 				try {
 					dataSocket.receive(packet);

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@drawable/plug_backbk"
-    >
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_color" >
 
     <LinearLayout
         android:id="@+id/layout_top"
@@ -15,7 +14,7 @@
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/title_bk" >
-            
+
             <ImageButton
                 android:id="@+id/title_btn_left"
                 android:layout_width="50dp"
@@ -34,7 +33,6 @@
                 android:text="智能插座"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-            
         </FrameLayout>
     </LinearLayout>
 
@@ -42,16 +40,15 @@
         android:layout_width="300dp"
         android:layout_height="181dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/plug_time_bk"
         android:orientation="vertical" >
 
         <LinearLayout
-			android:id="@+id/plug_timer_up_layout"
+            android:id="@+id/plug_timer_up_layout"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:orientation="horizontal"
-             >
+            android:orientation="horizontal" >
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -78,8 +75,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="4dp"
                         android:layout_marginLeft="20dp"
+                        android:text="@string/plug_status_on"
                         android:gravity="bottom"
-                        android:text="@string/plug_switch_on"
                         android:textColor="@color/whitesmoke"
                         android:textSize="22sp" />
 
@@ -100,11 +97,8 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="10dp" />
-                    
                 </LinearLayout>
-
             </FrameLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -113,15 +107,13 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/darkgray"
             android:orientation="vertical" >
-            
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/plug_timer_down_layout"
             android:layout_width="match_parent"
-            android:layout_height="90dp" 
-            android:orientation="horizontal"
-            >
+            android:layout_height="90dp"
+            android:orientation="horizontal" >
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -147,7 +139,7 @@
                         android:layout_marginBottom="4dp"
                         android:layout_marginLeft="20dp"
                         android:gravity="bottom"
-                        android:text="@string/plug_switch_off"
+                        android:text="@string/plug_status_off"
                         android:textColor="@color/whitesmoke"
                         android:textSize="22sp" />
 
@@ -169,98 +161,33 @@
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="10dp" />
                 </LinearLayout>
-
             </FrameLayout>
-            
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="210dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical" >
 
         <ImageButton
-        android:id="@+id/plugbutton"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        
-        android:background="#00000000"
-        android:scaleType="fitCenter" />
+            android:id="@+id/plugbutton"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="#00000000"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/plugtext"
             android:layout_width="160dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/plug_status_on"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white" />
-
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/setTimeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/common_bk_shadow"
-        android:visibility="invisible" >
-
-        <LinearLayout
-            android:layout_width="220dp"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="120dp"
-            android:orientation="vertical" >
-
-            <TimePicker
-                android:id="@+id/timePicker1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="30dp" >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <Button
-                        android:id="@+id/timerSetBtn"
-                        android:layout_width="80dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="right|center_vertical"
-                        android:text="@string/plug_set_time_btn_add" />
-
-                    <Button
-                        android:id="@+id/timerCancel"
-                        android:layout_width="80dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="left|center_vertical"
-                        android:text="@string/plug_set_time_btn_cancel" />
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/setTimerShowText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="400dp"
-            android:text="设定插座打开时间"
-            android:textColor="@color/whitesmoke"
-            android:textSize="35sp" />
-
-    </FrameLayout>
 
 </FrameLayout>

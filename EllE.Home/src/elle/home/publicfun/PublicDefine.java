@@ -38,12 +38,21 @@ public class PublicDefine {
 	public static final byte TypeNull = (byte)0x00;
 
 	public static final byte TypeGateWay = (byte)0x01;
-	public static final byte GateWayOrgin = (byte)0x00;
+	public static final byte GateWayOrgin = (byte)0x01;
 	public static final byte GateWayAllowIn = (byte)0x01;
 	public static final byte GateWayBan = (byte)0x02;
 	public static final byte GateWayRequestDevOut = (byte)0x03;
 	public static final byte GateWayPostDevIn = (byte)0x04;
 	public static final byte GateWayAllowDevIn = (byte)0x05;
+	
+	/*zigbee多路控制器*/
+	public static final byte TypeController = (byte)0x11;
+	public static final byte TypeFreeStickers = (byte)0x31;
+	public static final byte CLEAR_FreeStickers = (byte)0x02;
+	public static final byte VerControllers[] = {(byte)0x01, (byte)0x02, (byte)0x03, (byte)0x04};
+	public static final byte FunControllersSwitch[] = {(byte)0x10, (byte)0x20, (byte)0x30, (byte)0x40};
+	public static final byte FunControllersTimeOn[] = {(byte)0x11, (byte)0x21, (byte)0x31, (byte)0x41};
+	public static final byte FunControllersTimeOff[] = {(byte)0x12, (byte)0x22, (byte)0x32, (byte)0x42};
 	
 	public static final byte TypeLight = (byte)0x20;
 	public static final byte LightVerOrgin = (byte)0x00;
@@ -106,6 +115,10 @@ public class PublicDefine {
 			return R.drawable.icon_null_normal;
 		case TypeInfraCamera:
 			return R.drawable.icon_camera_normal;
+		case TypeController:
+		case TypeGateWay:
+			return R.drawable.icon_gateway_normal;
+			
 		}
 		return R.drawable.icon_null_normal;
 	}
@@ -123,23 +136,11 @@ public class PublicDefine {
 			return R.drawable.icon_little_air;
 		case TypeInfraCamera:
 			return R.drawable.icon_camera_normal;
+		case TypeGateWay:
+		case TypeController:
+			return R.drawable.icon_gateway_normal;
 		}
 		return R.drawable.icon_little_light;
-	}
-	
-	//得到介绍相应类型的介绍背景
-	public static int getIntroduceBkByType(byte type){
-		switch(type){
-		case TypeLight:
-			return R.drawable.introduct_light;
-		case TypePlug:
-			return R.drawable.introduce_plug;
-		case TypeInfra:
-			return R.drawable.introduce_infra;
-		case TypeInfraAir:
-			return R.drawable.introduce_air;
-		}
-		return R.drawable.common_bk;
 	}
 	
 	public static final int ResideIconLocatHome = 0;	
@@ -389,6 +390,8 @@ public class PublicDefine {
 			return res.getString(R.string.type_light_string);
 		case PublicDefine.TypePlug:
 			return res.getString(R.string.type_plug_string);
+		case PublicDefine.TypeGateWay:
+			return res.getString(R.string.type_gateway);
 		}
 		return res.getString(R.string.type_unknow_string);
 	}

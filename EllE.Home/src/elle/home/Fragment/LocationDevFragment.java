@@ -36,13 +36,14 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-import elle.home.app.ControlWaysActivity;
+import elle.home.app.ControllersActivity;
 import elle.home.app.GatewayActivity;
 import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
 import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
 import elle.home.app.R;
+import elle.home.app.view.SizeAdjustingTextView;
 import elle.home.database.DevLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.dialog.ConfigCameraDialog;
@@ -61,21 +62,21 @@ public class LocationDevFragment extends Fragment {
 	
 	public String TAG = "LocationDevFragment";
 	
-	ArrayList<HashMap<String,Object>> gridDevItems = new ArrayList<HashMap<String,Object>>();
+	private ArrayList<HashMap<String,Object>> gridDevItems = new ArrayList<HashMap<String,Object>>();
 	
 	private View parentView;
-	GridView gridview;
+	private GridView gridview;
 	private Context mContext;
 	
-	DevLocationInfo locatInfo;
-	GridAdapter gridAdapter;
+	private DevLocationInfo locatInfo;
+	private GridAdapter gridAdapter;
 	
 	public Activity xcontext;
 	
-	startActivity listener;
+	private startActivity listener;
 	
-	Timer timer = new Timer();
-	TimerTask task = new TimerTask(){
+	private Timer timer = new Timer();
+	private TimerTask task = new TimerTask(){
 
 		@Override
 		public void run() {
@@ -284,11 +285,6 @@ public class LocationDevFragment extends Fragment {
 				
 				switch(onedev.type){
 				case PublicDefine.TypeNull:
-//					Intent intentG = new Intent(mContext,GatewayActivity.class);
-//					intentG.putExtra("mac", onedev.mac);
-//					intentG.putExtra("devname", onedev.devname);
-//					intentG.putExtra("connect", onedev.getConnectStatus());
-//					mContext.startActivity(intentG);
 					break;
 				case PublicDefine.TypeLight:
 					Intent xintent = new Intent(mContext,LightRgbActivity.class);
@@ -356,14 +352,28 @@ public class LocationDevFragment extends Fragment {
 					map.put(UMengConstant.KEY_DEV_TYPE, mContext.getString(R.string.type_carema));
 					MobclickAgent.onEvent(mContext,UMengConstant.EVENT_ID_CLICK_DEV ,map);
 					break;
+				case PublicDefine.TypeGateWay:
+					Intent in = new Intent(mContext,GatewayActivity.class);
+					in.putExtra("mac", onedev.mac);
+					in.putExtra("devname", onedev.devname);
+					in.putExtra("connect", onedev.getConnectStatus());
+					
+					in.putExtra("locatname", locatInfo.locatname);
+					in.putExtra("shownum", locatInfo.devLocationList.size());
+					getActivity().startActivityForResult(in, 0);
+					break;
+				case PublicDefine.TypeController:
+					Intent cvin = new Intent(mContext,ControllersActivity.class);
+					cvin.putExtra("mac", onedev.mac);
+					cvin.putExtra("devname", onedev.devname);
+					cvin.putExtra("connect", onedev.getConnectStatus());
+					ShowInfo.printLogW("----onedev.getConnectStatus()----" + onedev.getConnectStatus());
+					mContext.startActivity(cvin);
+					break;
 				}
 //			}else{
 //				Intent intentG = null;
-//				if(position%2 == 0){
-//					intentG = new Intent(mContext,GatewayActivity.class);
-//				}else{
-//					intentG = new Intent(mContext,ControlWaysActivity.class);
-//				}
+//				intentG = new Intent(mContext,ControlWaysActivity.class);
 //				mContext.startActivity(intentG);
 			}
 			
@@ -405,7 +415,7 @@ public class LocationDevFragment extends Fragment {
 			}
 			
 			ImageView itemlogo = ViewHolder.get(convertView, R.id.itemlogo);
-			TextView itemtext = ViewHolder.get(convertView, R.id.itemtext);
+			SizeAdjustingTextView itemtext = ViewHolder.get(convertView, R.id.itemtext);
 			ImageView connectLogo = ViewHolder.get(convertView, R.id.connectLogo);
 			TextView turnON = ViewHolder.get(convertView, R.id.tv_turn_on);
 			
@@ -414,13 +424,14 @@ public class LocationDevFragment extends Fragment {
 			convertView.setLayoutParams(param);
 			
 			itemlogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
-			itemtext.setText((CharSequence) devlist.get(position).get("devname"));
+			itemtext.setText((String) devlist.get(position).get("devname"));
 			
 			switch((Byte) devlist.get(position).get("type")){
 			case PublicDefine.TypeInfra:
 			case PublicDefine.TypeInfraAir:
 			case PublicDefine.TypeLight:
 			case PublicDefine.TypePlug:
+			case PublicDefine.TypeGateWay:
 				OneDev oneDev = locatInfo.devLocationList.get(position);
 				int status = oneDev.getConnectStatus();
 				

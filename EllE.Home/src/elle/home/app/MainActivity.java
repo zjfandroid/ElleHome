@@ -56,6 +56,8 @@ import elle.home.partactivity.BaseActivity;
 import elle.home.partactivity.ManageDevActivity;
 import elle.home.partactivity.MoreActivity;
 import elle.home.partactivity.SceneAddActivity;
+import elle.home.publicfun.GetSSID;
+import elle.home.publicfun.GetSSID.OnSSIDListener;
 import elle.home.publicfun.PublicDefine;
 import elle.home.residemenu.ResideLocatItem;
 import elle.home.residemenu.ResideMenu;
@@ -211,7 +213,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 				final View view = findViewById(R.id.home);
 			    ObjectAnimator anim = ObjectAnimator
 			            .ofFloat(view, "zhy", 1.0F,  0.0F)
-			            .setDuration(500);
+			            .setDuration(1200);
 			    anim.start();  
 			    anim.addUpdateListener(new AnimatorUpdateListener()  
 			    {  
@@ -366,15 +368,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						if(1 == position){
+						if(3 == position){
 							goAddCameraActivity();
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_carema);
 						}else if(0 == position){
 							onWifiDevClick(ssid, PublicDefine.TypeLight);
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_light_string);
-						}else if( 2 == position){
+						}else if( 1 == position){
 							onWifiDevClick(ssid, PublicDefine.TypePlug);
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_plug_string);
+						}else if( 2 == position){
+//							onWifiDevClick(ssid, PublicDefine.TypeGateWay);
+							ShowToast.show(mContext, R.string.device_not_found);
+							UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_gateway);
 						}else{
 				            UMeng_OnEvent(EVENT_ID_CLICK_ADD_DEV , KEY_DEV_TYPE , R.string.type_infra_string);
 							ShowToast.show(mContext, R.string.device_not_found);
@@ -435,6 +441,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 				dlg.dismiss();
 			}
 
+		});
+		
+		new GetSSID(new OnSSIDListener() {
+			
+			@Override
+			public void onSSIDGet(final String ssid, final String pass) {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						setSSID(editPass, editText, ssid, pass);
+					}
+				});
+			}
+			
+			@Override
+			public void onFail(final String info) {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						ShowToast.show(mContext, info);
+					}
+				});
+			}
+
+			private void setSSID(final EditText editPass,
+					final EditText editText, String ssid, String pass) {
+				if(null != ssid && !ssid.isEmpty()){
+					editText.setText(ssid);
+				}
+				
+				if(null != pass && !pass.isEmpty()){
+					editPass.setText(pass);
+				}
+			}
 		});
 	}
 
@@ -670,7 +712,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						isQuit = false;
 					}}, 1600);
 			}

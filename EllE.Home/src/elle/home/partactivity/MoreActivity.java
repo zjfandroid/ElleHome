@@ -1,19 +1,16 @@
 package elle.home.partactivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import com.umeng.update.UmengDialogButtonListener;
@@ -111,7 +108,7 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			});
 			
 			final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-            .setTitleText("正在检测...");
+            .setTitleText(getResources().getString(R.string.checking));
 			pDialog.show();
 			pDialog.setCancelable(false);
 
@@ -125,18 +122,18 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 						 UmengUpdateAgent.showUpdateDialog(MoreActivity.this,arg1);
 						break;
 					case UpdateStatus.No: // has no update
-						 pDialog.setTitleText("没有更新!")
-	                     .setConfirmText("确定")
+						 pDialog.setTitleText(getResources().getString(R.string.update_no))
+	                     .setConfirmText(getResources().getString(R.string.dialog_ok))
 	                     .changeAlertType(SweetAlertDialog.NORMAL_TYPE);
 						break;
 					case UpdateStatus.NoneWifi: // none wifi
-						 pDialog.setTitleText("没有wifi连接， 只在wifi下更新!")
-	                     .setConfirmText("确定")
+						 pDialog.setTitleText(getResources().getString(R.string.update_with_wifi))
+	                     .setConfirmText(getResources().getString(R.string.dialog_ok))
 	                     .changeAlertType(SweetAlertDialog.NORMAL_TYPE);
 						break;
 					case UpdateStatus.Timeout: // time out
-						pDialog.setTitleText("请求超时!")
-	                     .setConfirmText("确定")
+						pDialog.setTitleText(getResources().getString(R.string.pppp_status_connect_timeout))
+	                     .setConfirmText(getResources().getString(R.string.dialog_ok))
 	                     .changeAlertType(SweetAlertDialog.NORMAL_TYPE);
 						break;
 					}

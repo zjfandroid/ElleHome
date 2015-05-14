@@ -4,7 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -219,6 +219,7 @@ public class AddSignalDevActivity extends BaseActivity {
 		unbindService(connection);
 	}
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -384,6 +385,7 @@ public class AddSignalDevActivity extends BaseActivity {
 		default:
 			break;
 		}
+		
 		userBindService();
 		xtimer = new Timer();
 		xtimer.schedule(new TimerTask(){
@@ -400,29 +402,16 @@ public class AddSignalDevActivity extends BaseActivity {
 					autoBinder.addPacketToSend(packet);
 					
 				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}}, 500);
+		
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
-
-	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		userUnbindService();
 		xtimer.cancel();
@@ -432,7 +421,6 @@ public class AddSignalDevActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch(msg.what)
 			{

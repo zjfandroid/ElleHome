@@ -90,6 +90,8 @@ public class ShakeService extends Service{
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+		
+		ShowInfo.printLogW("__________shake service onCreate___________");
 	}
 	
 	private WakeLock wakeLock = null;
@@ -140,10 +142,12 @@ public class ShakeService extends Service{
 				
 				@Override
 				public void run() {
-					Log.d(TAG,"udp thread stop2");
+					ShowInfo.printLogW("__________udp thread stop___________");
 					dataSocket.close();
 				}}, 500);
 		}
+		
+		ShowInfo.printLogW("__________shake service onDestroy___________");
 	}
 	
 	private int mShakeCounter = 0;
@@ -204,8 +208,8 @@ public class ShakeService extends Service{
 					ShowInfo.printLogW("night off");
 				}
 			}
-		}else{
-			ShowInfo.printLogW("network disnabled");
+//		}else{
+//			ShowInfo.printLogW("network disnabled");
 		}
 		
 	}
@@ -304,7 +308,6 @@ public class ShakeService extends Service{
 		}
 		return false;
 	}
-	
 
 	/**
 	 * 重力感应监听

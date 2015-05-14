@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<string name="app_name">Eye4 Smart</string>
+	<string name="app_name">HomeGenius</string>
+	<string name="app_name_vstar">Eye4 Smart</string>
 	
     <string name="residemenu_manage_dev">DM</string>
     <string name="residemenu_about">About</string>
@@ -84,11 +85,14 @@
     <string name="type_infra_string">Remote Box</string>
     <string name="type_air_string">Air Control</string>
     <string name="type_tv_string">TV Control</string>
+    <string name="type_gateway">Gateway</string>
+	<string name="type_control_ways">Controller</string>
     <string name="type_unknow_string">Unknown device</string>
     <string name="manage_dev_tips_del_location_text">Sure to delete the location?</string>
     <string name="manage_dev_tips_del_location_yes">YES</string>
     <string name="manage_dev_tips_del_location_no">NO</string>
     <string name="manage_dev_tips_del_dev_text">Sure to delete the device?</string>
+    <string name="manage_dev_tips_del_dev">Sure to delete this device?</string>
     <string name="manage_dev_tips_del_dev_title">Note</string>
     <string name="manage_dev_tips_del_dev_yes">YES</string>
     <string name="manage_dev_tips_del_dev_no">NO</string>
@@ -110,8 +114,8 @@
 	<string name="link_config_light_4">AC100-240V 50/60Hz</string>    
 
 	<string name="link_config_plug_1">Global Controllability</string>
-	<string name="link_config_plug_2"></string>
-	<string name="link_config_plug_3"></string>
+	<string name="link_config_plug_2">Timing life with more intimate</string>
+	<string name="link_config_plug_3">Max current:10A</string>
 	<string name="link_config_plug_4">AC100-240V 50/60Hz</string>
 	
 	<string name="link_config_infra_1">Global Controllability</string>
@@ -133,12 +137,10 @@
     <string name="feedback_item">Feedback</string>
     <string name="current_versionname">Current version：%s</string>     
     
-    <string name="plug_status_on">ON</string>
+    <string name="plug_status_on">&#160;&#160;ON</string>
     <string name="plug_status_off">OFF</string>
-    <string name="plug_switch_on">Switch\nOn</string>
-    <string name="plug_switch_off">Switch\nOff</string>
-    <string name="plug_set_switch_on_time">set time to switch on</string>
-    <string name="plug_set_switch_off_time">set time to switch off</string>
+    <string name="plug_set_switch_on_time">set switch on</string>
+    <string name="plug_set_switch_off_time">set switch off</string>
     <string name="plug_set_time_btn_cancel">cancel</string>
     <string name="plug_set_time_btn_add">set</string>
     
@@ -236,4 +238,16 @@
     
     <string name="last_place_can_not_delete">Last place can not delete</string>
     <string name="delete_success">Success</string>
+    
+    <string name="reset_success">Reset success!</string>
+    <string name="reset_fail">Failed!make sure that your phone used the same wifi with device.</string>
+    
+    <string name="checking">checking...</string>
+    <string name="update_no">No update!</string>
+    <string name="update_with_wifi">Please update with wifi!</string>
+    
+    <string name="allow_in">Allow in</string>
+    <string name="ban_in">Ban in</string>
+    <string name="selected_all">All</string>
+    <string name="off_label">Time off</string>
 </resources>

@@ -16,9 +16,12 @@
 
 package elle.home.shake;
 
+import elle.home.utils.ShowInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 /**
  * Receives system broadcasts (boot, network connectivity)
@@ -28,9 +31,17 @@ public class ShakeReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(final Context context, final Intent intent) {
 
-		String action = intent.getAction();
-		if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+        ConnectivityManager connectivityManager=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo  wifiNetInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        
+//		String action = intent.getAction();
+//		if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if(wifiNetInfo.isConnected()){
 			startService(context);
+			ShowInfo.printLogW("_________wifiNetInfo.isConnected()________");
+		}else{
+			context.stopService(new Intent(context, ShakeService.class));
+			ShowInfo.printLogW("_________wifiNetInfo not Connected()________");
 		}
 	}
 

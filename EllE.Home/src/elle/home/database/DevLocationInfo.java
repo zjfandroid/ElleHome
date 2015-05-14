@@ -99,25 +99,31 @@ public class DevLocationInfo {
 		while(cursor.moveToNext()){
 			OneDev oneDev = new OneDev();
 			try {
-				oneDev.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
-				oneDev.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
-				oneDev.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
-				oneDev.devname = cursor.getString(cursor.getColumnIndex("devname"));
-				oneDev.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
-				oneDev.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
-				oneDev.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
-				oneDev.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
-				oneDev.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
-				oneDev.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));
-				oneDev.setCameraDeviceID(cursor.getString(cursor.getColumnIndex("deviceid")));	
-				oneDev.setCameraUserName(cursor.getString(cursor.getColumnIndex("username")));	
-				oneDev.setCameraPassWord(cursor.getString(cursor.getColumnIndex("password")));	
+				getDevInfos(cursor, oneDev);	
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
 			devLocationList.add(oneDev);
 		}
 		Log.d(TAG,"地点："+locatname+" 设备数量："+devLocationList.size());
+	}
+
+	private void getDevInfos(Cursor cursor, OneDev oneDev)
+			throws UnknownHostException {
+		oneDev.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
+		oneDev.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
+		oneDev.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
+		oneDev.devname = cursor.getString(cursor.getColumnIndex("devname"));
+		oneDev.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
+		oneDev.ver = Byte.parseByte(cursor.getString(cursor.getColumnIndex("ver")));
+		oneDev.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
+		oneDev.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
+		oneDev.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
+		oneDev.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
+		oneDev.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));
+		oneDev.setCameraDeviceID(cursor.getString(cursor.getColumnIndex("deviceid")));	
+		oneDev.setCameraUserName(cursor.getString(cursor.getColumnIndex("username")));	
+		oneDev.setCameraPassWord(cursor.getString(cursor.getColumnIndex("password")));
 	}
 	
 	public synchronized void getAllDevByLocationInfo(String name){
@@ -135,19 +141,7 @@ public class DevLocationInfo {
 		while(cursor.moveToNext()){
 			OneDev oneDev = new OneDev();
 			try {
-				oneDev.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
-				oneDev.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
-				oneDev.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
-				oneDev.devname = cursor.getString(cursor.getColumnIndex("devname"));
-				oneDev.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
-				oneDev.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
-				oneDev.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
-				oneDev.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
-				oneDev.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
-				oneDev.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));
-				oneDev.setCameraDeviceID(cursor.getString(cursor.getColumnIndex("deviceid")));	
-				oneDev.setCameraUserName(cursor.getString(cursor.getColumnIndex("username")));	
-				oneDev.setCameraPassWord(cursor.getString(cursor.getColumnIndex("password")));	
+				getDevInfos(cursor, oneDev);	
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}

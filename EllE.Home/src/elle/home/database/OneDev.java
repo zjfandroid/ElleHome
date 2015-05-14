@@ -42,6 +42,10 @@ public class OneDev implements Serializable{
 	private boolean isRemote;
 	//是否打开
 	private boolean isTurnOn;
+	//是否选中
+	private boolean isChecked;
+	//是否已添加
+	private boolean isAdded;
 	public int localTimeCount;
 	public int remoteTimeCount;
 	
@@ -386,6 +390,22 @@ public class OneDev implements Serializable{
 
 	public void setTurnOn(boolean isTurnOn) {
 		this.isTurnOn = isTurnOn;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
+	}
+
+	public boolean isAdded() {
+		return isAdded;
+	}
+
+	public void setAdded(boolean isAdded) {
+		this.isAdded = isAdded;
 	}
 
 }

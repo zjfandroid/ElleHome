@@ -120,7 +120,5 @@ public class AutoService extends Service {
 		}
 		
 	}
-	
-	
-	
+
 }

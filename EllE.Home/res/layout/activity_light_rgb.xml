@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/common_bk" >
+    android:background="@drawable/bg_color" >
 
     <ImageButton
         android:id="@+id/title_btn_left"
@@ -21,7 +21,6 @@
         android:layout_gravity="center"
         android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="智能灯泡"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

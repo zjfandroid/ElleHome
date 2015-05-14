@@ -150,7 +150,7 @@ public class UdpCheckNewThread {
 						oneDev.setDevRemote(false);
 						oneDev.clearLocalTimer();
 						
-						if(null != packet.xdata && 1 == packet.xdata[0]){
+						if(null != packet.xdata && packet.xdata.length>0 && 1 == packet.xdata[0]){
 							oneDev.setTurnOn(true);
 						}else{
 							oneDev.setTurnOn(false);
@@ -236,7 +236,7 @@ public class UdpCheckNewThread {
 			runFlag = true;
 			byte[] data = new byte[4096];
 			int length;
-			while(runFlag){
+			while(runFlag && !dataSocket.isClosed()){
 				DatagramPacket packet = new DatagramPacket(data,data.length);
 				try {
 					dataSocket.receive(packet);

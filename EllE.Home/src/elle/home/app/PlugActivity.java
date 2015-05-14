@@ -2,10 +2,7 @@ package elle.home.app;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,12 +19,13 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
+
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;
@@ -38,13 +36,12 @@ import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.SilderButton;
 
-public class PlugActivity extends BaseActivity {
+public class PlugActivity extends BaseActivity implements TimePickerDialog.OnTimeSetListener{
 
 	public String TAG = "PlugActivity";
 	//
 	ImageButton plugBtn;
 	TextView plugtext;
-	TextView plugShowText;
 	boolean plugStatus;
 	boolean isSetOpen;
 	boolean isSetClose;
@@ -79,6 +76,7 @@ public class PlugActivity extends BaseActivity {
 	SilderButton openTimerOnOff;
 	TextView openTimerTv;
 	String openTimerStr = "--:--:--";
+	
 	//定时关闭背景
 	LinearLayout closeLayoutDown;
 	ImageButton plugTimerDown;
@@ -86,11 +84,6 @@ public class PlugActivity extends BaseActivity {
 	TextView closeTimerTv ;
 	String closeTimerStr = "--:--:--";
 	
-	//设定时间显示背景
-	FrameLayout setTimerLayout;
-	TimePicker timerpicker;
-	Button timerBtnSet;
-	Button timerBtnCancel;
 	boolean setOpenOrClose;
 	
 	private Handler handler = new Handler(){
@@ -101,11 +94,11 @@ public class PlugActivity extends BaseActivity {
 			case 0:
 				if(plugStatus){
 					plugBtn.setImageDrawable(plugOndraw);
-					plugtext.setText(getResources().getString(R.string.plug_switch_on));
+					plugtext.setText(getResources().getString(R.string.plug_status_on));
 					
 				}else{
 					plugBtn.setImageDrawable(plugOffdraw);
-					plugtext.setText(getResources().getString(R.string.plug_switch_off));
+					plugtext.setText(getResources().getString(R.string.plug_status_off));
 				}
 				openTimerTv.setText(openTimerStr);
 				closeTimerTv.setText(closeTimerStr);
@@ -170,18 +163,17 @@ public class PlugActivity extends BaseActivity {
 				int tmp  = 0;
 				tmp = DataExchange.fourByteToInt(packetcheck.xdata[2], packetcheck.xdata[3], packetcheck.xdata[4], packetcheck.xdata[5]);
 				if(tmp!=0){	
-					openTimerStr = getClockExchange(tmp);
+					openTimerStr = DataExchange.getClockExchange(tmp);
 				}else{
 					openTimerStr = "--:--:--";
 				}
 				
 				tmp = DataExchange.fourByteToInt(packetcheck.xdata[7], packetcheck.xdata[8], packetcheck.xdata[9], packetcheck.xdata[10]);
 				if(tmp!=0){	
-					closeTimerStr = getClockExchange(tmp);
+					closeTimerStr = DataExchange.getClockExchange(tmp);
 				}else{
 					closeTimerStr = "--:--:--";
 				}
-				
 				
 				Message msg = new Message();
 				msg.what = 0;
@@ -211,17 +203,6 @@ public class PlugActivity extends BaseActivity {
 		this.plugOffdraw = this.getResources().getDrawable(R.drawable.plug_off_logo);
 		this.plugOffPressdraw = this.getResources().getDrawable(R.drawable.plug_off_logo_press);
 		
-		timerpicker= (TimePicker)this.findViewById(R.id.timePicker1);
-		timerpicker.setIs24HourView(true);
-		
-		timerpicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-			
-			@Override
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				Log.d(TAG,"timer change:"+hourOfDay+" min:"+minute);
-			}
-		});
-		
 		openLayoutUp = (LinearLayout)this.findViewById(R.id.plug_timer_up_layout);
 		closeLayoutDown = (LinearLayout)this.findViewById(R.id.plug_timer_down_layout);
 		
@@ -233,65 +214,6 @@ public class PlugActivity extends BaseActivity {
 		
 		openTimerTv = (TextView)this.findViewById(R.id.openTimerTv);
 		closeTimerTv = (TextView)this.findViewById(R.id.closeTimerTv);
-		
-		setTimerLayout = (FrameLayout)this.findViewById(R.id.setTimeLayout);
-		setTimerLayout.setVisibility(View.INVISIBLE);
-		
-		setTimerLayout.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
-		
-		timerBtnSet = (Button)this.findViewById(R.id.timerSetBtn);
-		timerBtnCancel = (Button)this.findViewById(R.id.timerCancel);
-		
-		plugShowText = (TextView)this.findViewById(R.id.setTimerShowText);
-		
-		timerBtnSet.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				setTimerLayout.setVisibility(View.INVISIBLE);
-				Calendar c = Calendar.getInstance();
-				
-				int setTimeCount = timerpicker.getCurrentHour()*3600+timerpicker.getCurrentMinute()*60;
-				int curTimeCount = c.get(Calendar.HOUR_OF_DAY)*3600+c.get(Calendar.MINUTE)*60;
-				
-				Log.d(TAG,"btn set timer hour:"+timerpicker.getCurrentHour()+" min:"+timerpicker.getCurrentMinute()+" timeCount:"+setTimeCount);
-				Log.d(TAG,"sys hour:"+c.get(Calendar.HOUR_OF_DAY)+" sys min:"+c.get(Calendar.MINUTE)+" curTimeCount:"+curTimeCount);
-				
-				int offSet = 0;
-				if(Math.abs(setTimeCount - curTimeCount)<10){
-					
-				}else if(setTimeCount>curTimeCount){
-					offSet = setTimeCount - curTimeCount;
-				}else{
-					offSet = (24*3600 - curTimeCount)+setTimeCount;
-				}
-				
-				if(setOpenOrClose){
-					//set open
-					Log.d(TAG, "plug time set open offset:"+offSet);
-					setOpenTime(offSet);
-				}else{
-					//set close
-					Log.d(TAG, "plug time set close offset:"+offSet);
-					setCloseTime(offSet);
-				}
-				
-			}
-		});
-		
-		timerBtnCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				setTimerLayout.setVisibility(View.INVISIBLE);
-			}
-		});
 	
 		isFresh = true;
 		
@@ -348,11 +270,8 @@ public class PlugActivity extends BaseActivity {
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_CANCEL:
 					setOpenOrClose = false;
-					plugShowText.setText(getResources().getString(R.string.plug_set_switch_off_time));
 					plugTimerDown.setImageDrawable(getResources().getDrawable(R.drawable.plug_time_null));
-					setTimerLayout.setVisibility(View.VISIBLE);
-					Calendar c = Calendar.getInstance();
-					timerpicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+					showTimePicker();
 					break;
 				}
 				return true;
@@ -363,7 +282,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					plugTimerUp.setImageDrawable(getResources().getDrawable(R.drawable.plug_time_up));
@@ -371,17 +289,13 @@ public class PlugActivity extends BaseActivity {
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_CANCEL:
 					setOpenOrClose = true;
-					plugShowText.setText(getResources().getString(R.string.plug_set_switch_on_time));
 					plugTimerUp.setImageDrawable(getResources().getDrawable(R.drawable.plug_time_null));
-					setTimerLayout.setVisibility(View.VISIBLE);
-					Calendar c = Calendar.getInstance();
-					timerpicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+					showTimePicker();
 					break;
 				}
 				return true;
 			}
 		});
-		
 		
 		vibrator = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
 		
@@ -389,7 +303,6 @@ public class PlugActivity extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					vibrator.vibrate(vibarator_time);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
@@ -432,7 +345,6 @@ public class PlugActivity extends BaseActivity {
 						packeton.plugOn(DataExchange.longToEightByte(dev.mac), recvListener);
 						packeton.setImportance(BasicPacket.ImportHigh);
 						autoBinder.addPacketToSend(packeton);
-						
 					}
 				}
 				
@@ -466,6 +378,14 @@ public class PlugActivity extends BaseActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
+	protected void showTimePicker() {
+		Calendar calendar = Calendar.getInstance();
+		TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+        timePickerDialog.setVibrate(true);
+        timePickerDialog.show(getSupportFragmentManager(), "");
+//        timePickerDialog.setCloseOnSingleTapMinute(false);
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -538,24 +458,17 @@ public class PlugActivity extends BaseActivity {
 		packet.plugSetClose(DataExchange.longToEightByte(dev.mac),count,recvListener);
 		packet.setImportance(BasicPacket.ImportHigh);
 		if(autoBinder!=null){
-			//Log.d(TAG,"plug data --> send");
 			autoBinder.addPacketToSend(packet);
 		}
 	}
 	
-	private String getClockExchange(int sec)
-	{
-		String tmp = null;
-		Date date = new Date();
-		Calendar now = Calendar.getInstance();
-	    TimeZone timeZone = now.getTimeZone();
-	    
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		date.setTime(sec*1000+(System.currentTimeMillis()));
-		tmp = sdf.format(date);
-		
-		//Log.d(TAG,"plug activity:"+timeZone.getDisplayName()+" offset:"+timeZone.getRawOffset());
-		return tmp;
+	@Override
+	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int tag) {
+		int offSet = DataExchange.getOffset(hourOfDay, minute);
+		if(tag == TimePickerDialog.TAG_LEFT){
+			setOpenTime(offSet);
+		}else{
+			setCloseTime(offSet);
+		}
 	}
-	
 }

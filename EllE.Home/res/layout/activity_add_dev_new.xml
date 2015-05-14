@@ -72,7 +72,7 @@
 
             <Button
                 android:id="@+id/centerImage"
-                android:layout_width="64dp"
+                android:layout_width="128dp"
                 android:layout_height="64dp"
                 android:layout_centerInParent="true"
                 android:background="@null"

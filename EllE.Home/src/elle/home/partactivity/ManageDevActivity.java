@@ -18,6 +18,7 @@ import elle.home.database.OneDev;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.ManageDevItem;
 import elle.home.uipart.ManageDevTitle;
+import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
 /**
@@ -88,13 +89,14 @@ public class ManageDevActivity extends BaseActivity {
 			for(int x=0; x<devs.size(); x++){
 				ManageDevItem dev = new ManageDevItem(this, devs.get(x));
 				dev.manageDevDeleteBtn.setOnClickListener(dellistener);
-				if(PublicDefine.TypeLight == devs.get(x).type){
-					dev.manageDevConfigBtn.setOnClickListener(configlistener);
-				}else{
+				if(PublicDefine.TypeInfraCamera == devs.get(x).type){
 					dev.manageDevConfigBtn.setText("");
+				}else{
+					dev.manageDevConfigBtn.setOnClickListener(configlistener);
 				}
 				dev.setOnClickListener(listener);
 				itemList.add(dev);
+				ShowInfo.printLogW(dev.dev.type + "_________sendResetPackage_________" + dev.dev.ver + "___name = ___" + dev.dev.devname);
 				this.addlayout.addView(dev);
 			}
 		}

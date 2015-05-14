@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<string name="app_name">Eye4 Smart</string>
+	<string name="app_name">HomeGenius</string>
+	<string name="app_name_vstar">Eye4 Smart</string>
 	
     <string name="residemenu_manage_dev">设备管理</string>
     <string name="residemenu_about">关于</string>
@@ -84,11 +85,14 @@
     <string name="type_infra_string">遥控盒子</string>
     <string name="type_air_string">空调遥控器</string>
     <string name="type_tv_string">电视遥控器</string>
+    <string name="type_gateway">智能网关</string>
+    <string name="type_control_ways">多路控制器</string>
     <string name="type_unknow_string">未知设备</string>
     <string name="manage_dev_tips_del_location_text">要删除地点:</string>
     <string name="manage_dev_tips_del_location_yes">确认</string>
     <string name="manage_dev_tips_del_location_no">取消</string>
     <string name="manage_dev_tips_del_dev_text">要删除设备:</string>
+    <string name="manage_dev_tips_del_dev">确定要删除这个设备？</string>
     <string name="manage_dev_tips_del_dev_title">询问</string>
     <string name="manage_dev_tips_del_dev_yes">确认</string>
     <string name="manage_dev_tips_del_dev_no">取消</string>
@@ -134,8 +138,6 @@
        
     <string name="plug_status_on">打开</string>
     <string name="plug_status_off">关闭</string>
-    <string name="plug_switch_on">打开\n插座</string>
-    <string name="plug_switch_off">关闭\n插座</string>
     <string name="plug_set_switch_on_time">设定插座打开时间</string>
     <string name="plug_set_switch_off_time">设定插座关闭时间</string>
     <string name="plug_set_time_btn_cancel">取消</string>
@@ -183,7 +185,7 @@
 	<string name="camera_user">用户名</string>
 	<string name="camera_pwd">密码</string>
     <string name="camera_link">连接</string>
-    	<string name="input_camera_user">请输入用户名</string>
+    <string name="input_camera_user">请输入用户名</string>
 	<string name="input_camera_id">请输入设备名称</string>
 	
 	<string name="device_not_on_line">摄像机不在线</string>
@@ -226,13 +228,25 @@
     
     <string name="connect_by_user">手动连接</string>
     <string name="connect_bulb_0">请打开灯泡\r\n灯泡随机改变颜色时会开始自动配置</string>
-    <string name="connect_plug_0">请将插座接上电源\r\n插座灯快速闪烁时会开始自动配置</string>
+    <string name="connect_plug_0">请将插座接上电源\r\n插座灯缓慢闪烁时会开始自动配置</string>
     <string name="connect_bulb_fail">若自动配置失败，灯泡变为蓝色\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
-    <string name="connect_plug_fail">若自动配置失败，插座灯会缓慢闪烁\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
+    <string name="connect_plug_fail">若自动配置失败，插座灯会快速闪烁\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
     
     <string name="scene">场景</string>
     <string name="execute">执行</string>
     
     <string name="last_place_can_not_delete">最后一个地点无法删除哦～</string>
     <string name="delete_success">删除成功</string>
+    
+    <string name="reset_success">复位成功!</string>
+    <string name="reset_fail">复位失败，请确保手机与灯泡连接的是同一个路由器</string>
+    
+    <string name="checking">正在检测...</string>
+    <string name="update_no">没有更新!</string>
+    <string name="update_with_wifi">没有wifi连接， 只在wifi下更新!</string>
+    
+    <string name="allow_in">允许入网</string>
+    <string name="ban_in">禁止入网</string>
+    <string name="selected_all">全选</string>
+    <string name="off_label">定时关闭</string>
 </resources>

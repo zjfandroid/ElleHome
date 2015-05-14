@@ -45,7 +45,6 @@ public class ManageDevItem extends LinearLayout {
 	
 	public ManageDevItem(Context context,OneDev dev) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.dev = dev;
 		this.context = context;
 		initview(context);

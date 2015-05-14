@@ -41,8 +41,9 @@ public class DeviceListDialog{
 		Resources res = mContext.getResources();
 		
 		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_light, res.getString(R.string.type_light_string)));		
-		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_camera, res.getString(R.string.type_carema)));		
 		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_plug, res.getString(R.string.type_plug_string)));		
+		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_gateway, res.getString(R.string.type_gateway)));		
+		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_camera, res.getString(R.string.type_carema)));		
 		mDeviceLists.add(new DeviceItem(R.drawable.icon_black_infra, res.getString(R.string.type_infra_string)));		
 //		mDeviceLists.add(new DeviceItem(R.drawable.icon_infra_air_normal, res.getString(R.string.type_air_string)));	
 //		mDeviceLists.add(new DeviceItem(R.drawable.icon_infra_tv_normal, res.getString(R.string.type_tv_string)));	

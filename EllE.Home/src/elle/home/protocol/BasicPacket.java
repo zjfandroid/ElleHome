@@ -131,6 +131,13 @@ public class BasicPacket {
 	}
 	
 	/**
+	 * Zigbee复位包
+	 * **/
+	public void packZigbeeReset(OneDev dev){
+		this.packZigbeeData(dev.type, dev.ver, PublicDefine.FunReset, DataExchange.longToEightByte(dev.mac), PublicDefine.getPhoneMac(), PublicDefine.getSeq(), null);
+	}
+	
+	/**
 	 * 通用查询打包函数，seq传入0，即可查询所有的设备
 	 * */
 	public void packCheckPacket(int seq){
@@ -153,10 +160,21 @@ public class BasicPacket {
 		this.packData(dev.type, dev.ver, PublicDefine.FunReg, DataExchange.longToEightByte(dev.mac), PublicDefine.getPhoneMac(), PublicDefine.getSeq(), null);		
 	}
 	
+	public void packData(byte devcode,byte devver,byte devfun,byte[] mac,byte[] controlid,int seq,byte[] xdata){
+		packData(devcode, devver, devfun, mac, controlid, seq, xdata, (byte)0, (byte)0);
+	}
+	
+	/**
+	 * Zigbee设备打包函数
+	 * **/
+	public void packZigbeeData(byte devcode,byte devver,byte devfun,byte[] mac,byte[] controlid,int seq,byte[] xdata){
+		packData(devcode, devver, devfun, mac, controlid, seq, xdata, (byte)0x01, (byte)0x01);
+	}
+	
 	/**
 	 * 基础打包函数
 	 * **/
-	public void packData(byte devcode,byte devver,byte devfun,byte[] mac,byte[] controlid,int seq,byte[] xdata){
+	public void packData(byte devcode,byte devver,byte devfun,byte[] mac,byte[] controlid,int seq,byte[] xdata, byte typeBig, byte typeSmall){
 		
 		byte[] tmp;
 		int len = 0;
@@ -204,9 +222,9 @@ public class BasicPacket {
 		//dev fun
 		data[len++] = devfun;
 		//typebig
-		data[len++] = 0;
+		data[len++] = typeBig;
 		//typesmall
-		data[len++] = 0;
+		data[len++] = typeSmall;
 		//control id
 		System.arraycopy(controlid, 0, data, len, 4);
 		len = len+4;

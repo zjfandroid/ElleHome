@@ -2,7 +2,7 @@ package elle.home.partactivity;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +46,8 @@ public class DevInfoActivity extends BaseActivity {
 	private TextView info4;
 	
 	private OneDev dev;
+	
+	private boolean isZigbeeDev;
 	
 	private AutoService.AutoBinder autoBinder;
 	private ServiceConnection connection = new ServiceConnection(){
@@ -94,6 +96,7 @@ public class DevInfoActivity extends BaseActivity {
 		unbindService(connection);
 	}
 
+	@SuppressLint("NewApi")
 	private void initViews() {
 		dev = (OneDev) getIntent().getSerializableExtra("dev");
 		TextView textView = (TextView) findViewById(R.id.title_place_info);
@@ -138,6 +141,14 @@ public class DevInfoActivity extends BaseActivity {
 			info3.setText(getResources().getString(R.string.link_config_air_3));
 			info4.setText(getResources().getString(R.string.link_config_air_4));
 			break;
+		case PublicDefine.TypeController:
+			isZigbeeDev = true;
+			findViewById(R.id.btn_config).setVisibility(View.GONE);
+			break;
+		case PublicDefine.TypeGateWay:
+			isZigbeeDev = true;
+			break;
+			
 		default:
 			break;
 		}
@@ -195,7 +206,13 @@ public class DevInfoActivity extends BaseActivity {
 			packet.setImportance(BasicPacket.ImportHigh);
 			packet.setPacketRemote(false);
 			packet.setListener(recvListener);
-			packet.packReset(dev);
+			
+			ShowInfo.printLogW(dev.type + "_________sendResetPackage_________" + dev.ver);
+			if(isZigbeeDev){
+				packet.packZigbeeReset(dev);
+			}else{
+				packet.packReset(dev);
+			}
 			
 			autoBinder.addPacketToSend(packet);
 		} catch (UnknownHostException e) {
@@ -213,7 +230,7 @@ public class DevInfoActivity extends BaseActivity {
 					@Override
 					public void run() {
 						dev.delFromDatabaseWithName(mContext);
-						ShowToast.show(mContext, "复位成功");
+						ShowToast.show(mContext, R.string.reset_success);
 						finish();
 					}
 				});
@@ -224,7 +241,7 @@ public class DevInfoActivity extends BaseActivity {
 					
 					@Override
 					public void run() {
-						ShowToast.show(mContext, "复位失败，请确保手机与灯泡连接的是同一个路由器");
+						ShowToast.show(mContext, R.string.reset_fail);
 					}
 				});
 //				}

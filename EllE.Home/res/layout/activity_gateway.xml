@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/plug_backbk" >
+    android:background="@drawable/bg_color" >
 
     <ImageButton
         android:id="@+id/title_btn_left"
@@ -11,6 +11,7 @@
         android:layout_gravity="left|center_vertical"
         android:layout_marginLeft="0dp"
         android:background="#00000000"
+        android:contentDescription="@string/app_name"
         android:onClick="doBackClick"
         android:src="@drawable/title_back_bk" />
 
@@ -21,60 +22,65 @@
         android:layout_gravity="center"
         android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="智能网关"
+        android:text="@string/type_gateway"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <ImageButton
+    <!--
+         <ImageButton
         android:id="@+id/title_bar_right_menu"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:background="@color/transparent"
+        android:onClick="doClick"
         android:src="@drawable/title_add" />
+    -->
 
-    <LinearLayout
+    <com.skyfishjy.library.RippleBackground
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/content_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_text"
+        android:visibility="visible"
+        app:rb_color="#0099CC"
+        app:rb_duration="3000"
+        app:rb_radius="32dp"
+        app:rb_rippleAmount="8"
+        app:rb_scale="6" >
+
+        <!--
+             <ImageView
+            android:id="@+id/centerImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/phone1" />
+        -->
+    </com.skyfishjy.library.RippleBackground>
+
+    <Button
+        android:id="@+id/btn_allow_in"
+        style="@style/dialog_blue_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar_text"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_alignParentBottom="true"
+        android:onClick="doClick"
+        android:text="@string/allow_in"
+        android:layout_margin="8dp"
+        android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/btn_allow_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doClick"
-            android:text="allow in" />
-
-        <Button
-            android:id="@+id/btn_ban_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doClick"
-            android:text="ban in" />
-
-        <Button
-            android:id="@+id/btn_request_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doClick"
-            android:text="requestDevOut" />
-
-        <Button
-            android:id="@+id/btn_post_devin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doClick"
-            android:text="post_devin" />
-
-        <Button
-            android:id="@+id/btn_allow_devin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doClick"
-            android:text="allow_devin" />
-    </LinearLayout>
+    <ListView
+        android:id="@+id/lists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_allow_in"
+        android:layout_below="@id/title_bar_text"
+        android:layout_margin="8dp"
+        android:cacheColorHint="#000"
+        android:visibility="invisible" >
+    </ListView>
 
 </RelativeLayout>

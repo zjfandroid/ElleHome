@@ -9,7 +9,6 @@ public class PlugControlPacket extends BasicPacket {
 
 	public PlugControlPacket(InetAddress ip, int port) {
 		super(ip, port);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void plugOn(byte[] mac,OnRecvListener listener){

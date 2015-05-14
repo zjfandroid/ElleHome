@@ -53,6 +53,7 @@ public class AllLocationInfo {
 			allinfo.add(tmp);
 			tmp.getAllDevByLocationInfo(tmp.locatname);
 		}
+		
 		if(allinfo.size()==0){
 			//加入一个默认的家庭
 			String[] name = new String[2];

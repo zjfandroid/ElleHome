@@ -161,8 +161,9 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			switch (msg.what) {
 
 			case 1004:
-				Toast.makeText(PlayActivity.this, "相机断线", 0).show();
-				PlayActivity.this.finish();
+//				Toast.makeText(PlayActivity.this, "相机断线", 0).show();
+//				PlayActivity.this.finish();
+				ShowInfo.printLogW("_______相机断线________");
 				break;
 			default:
 				break;
@@ -1246,7 +1247,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			unregisterReceiver(brodCast);
 		}
 		Log.d("tag", "PlayActivity onDestroy");
-
 		super.onDestroy();
 	}
 
