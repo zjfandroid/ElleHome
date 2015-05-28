@@ -3,7 +3,7 @@ package elle.home.uipart;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.AllLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.database.OneSceneData;
@@ -114,10 +114,10 @@ public class SceneItemDev extends LinearLayout {
 				if(scenedata.scenelist.get(i).devname!=null){
 					if(scenedata.scenelist.get(i).devname.equalsIgnoreCase(dev.devname)){
 						//this.scene_item_iv.setBackgroundResource(PublicDefine.getFragmentIconByType(dev.type));
-						this.scene_item_iv.setImageDrawable(this.getResources().getDrawable(PublicDefine.getLittleIconByType(dev.type)));
+						this.scene_item_iv.setImageDrawable(this.getResources().getDrawable(PublicResDefine.getLittleIconByType(dev.type)));
 						this.scene_item_tv.setText(dev.devname);
 						//this.scene_item_tips_tv.setText(" ");
-						this.scene_item_tips_iv.setImageDrawable(this.getResources().getDrawable(PublicDefine.getIconByTypeFun(dev.type,scenedata.scenelist.get(i).funid)));
+						this.scene_item_tips_iv.setImageDrawable(this.getResources().getDrawable(PublicResDefine.getIconByTypeFun(dev.type,scenedata.scenelist.get(i).funid)));
 						this.scene_item_connect.setImageDrawable(this.getResources().getDrawable(R.drawable.scene_item_empty));
 						break;
 					}
@@ -126,7 +126,7 @@ public class SceneItemDev extends LinearLayout {
 			}
 			if(i == (scenedata.scenelist.size()-1)){
 				//this.scene_item_iv.setBackgroundResource(PublicDefine.getFragmentIconByType(dev.type));
-				this.scene_item_iv.setImageDrawable(this.getResources().getDrawable(PublicDefine.getLittleIconByType(dev.type)));
+				this.scene_item_iv.setImageDrawable(this.getResources().getDrawable(PublicResDefine.getLittleIconByType(dev.type)));
 				this.scene_item_tv.setText(dev.devname);
 				//this.scene_item_tips_tv.setText(" ");
 				this.scene_item_tips_iv.setImageDrawable(this.getResources().getDrawable(R.drawable.scene_cancel));
@@ -178,7 +178,7 @@ public class SceneItemDev extends LinearLayout {
 					
 					scenedata.scenelist.get(i).funid = funid;
 					scenedata.scenelist.get(i).commandData = new byte[10];
-					this.scene_item_tips_iv.setImageDrawable(this.getResources().getDrawable(PublicDefine.getIconByTypeFun(dev.type,scenedata.scenelist.get(i).funid)));
+					this.scene_item_tips_iv.setImageDrawable(this.getResources().getDrawable(PublicResDefine.getIconByTypeFun(dev.type,scenedata.scenelist.get(i).funid)));
 					Log.d(TAG,"更新场景数据ok");
 					break;
 				}

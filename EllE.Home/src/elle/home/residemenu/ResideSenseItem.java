@@ -1,6 +1,6 @@
 package elle.home.residemenu;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;

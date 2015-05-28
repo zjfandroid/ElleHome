@@ -13,7 +13,7 @@ import elle.home.protocol.BasicPacket;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
-import elle.home.utils.ShowInfo;
+import elle.home.utils.NetUtils;
 
 public class UdpCheckDevLine extends UdpPublic {
 
@@ -133,14 +133,12 @@ public class UdpCheckDevLine extends UdpPublic {
 		@Override
 		public void run() {
 			
-			if(isneedcheck==false){
+			if(isneedcheck==false || null == allLocationInfo || !NetUtils.isNetworkEnabled(mContext)){
 				return;
 			}
 			
-			if(allLocationInfo == null)
-				return;
-			
-			for(int i=0;i<allLocationInfo.allinfo.size();i++){
+			int infoSize = allLocationInfo.allinfo.size();
+			for(int i=0; i<infoSize; i++){
 				for(int x=0;x<allLocationInfo.allinfo.get(i).devLocationList.size();x++){
 					
 					allLocationInfo.allinfo.get(i).devLocationList.get(x).lineCountAdd();
@@ -169,9 +167,5 @@ public class UdpCheckDevLine extends UdpPublic {
 				}
 			}
 		}};
-	
-		
-		
-		
 		
 }

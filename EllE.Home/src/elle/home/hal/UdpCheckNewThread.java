@@ -20,6 +20,7 @@ import elle.home.database.OneDev;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.NetUtils;
 
 public class UdpCheckNewThread {
 
@@ -281,6 +282,7 @@ public class UdpCheckNewThread {
 		@Override
 		public void run() {
 			super.run();
+			
 			runFlag = true;
 			InetAddress add = null;
 			try {
@@ -292,7 +294,7 @@ public class UdpCheckNewThread {
 			basicpacket.packCheckPacket(0);
 			DatagramPacket packet = null;
 			while(runFlag){
-				if(isneedcheck == true){
+				if(isneedcheck == true && NetUtils.isNetworkEnabled(mContext)){
 					if(newdevs.size()==0){
 						isanynew = false;
 						if(listener!=null)
@@ -309,7 +311,7 @@ public class UdpCheckNewThread {
 					}
 				}
 				try {
-					this.sleep(1000);
+					this.sleep(1800);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

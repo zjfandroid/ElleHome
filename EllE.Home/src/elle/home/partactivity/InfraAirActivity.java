@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import org.json.JSONObject;
 
 import elle.home.app.AutoService;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.DevInfraData;
 import elle.home.database.OneDev;
 import elle.home.database.OneInfraData;

@@ -36,13 +36,14 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import com.skyfishjy.library.RippleBackground;
 
 import elle.home.airkiss.AirKiss;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.hal.UdpCheckNewThread;
 import elle.home.hal.WifiAdmin;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.AddDevItemView;
 import elle.home.uipart.AddDevItemView.OnAddDev;
+import elle.home.uipart.PublicResDefine;
 import elle.home.utils.SaveDataPreferences;
 
 public class AddDevNewActivity extends Activity{
@@ -95,7 +96,7 @@ public class AddDevNewActivity extends Activity{
 				final List<OneDev> devs = udpchecknew.newdevs;
 				for(int i=0;i<devs.size();i++){
 					//AddDevItemView item = new AddDevItemView(mcontext,R.drawable.ic_launcher,String.valueOf(udpchecknew.newdevs.get(i).mac),R.drawable.ic_launcher);
-					AddDevItemView item = new AddDevItemView(mContext,PublicDefine.getLittleIconByType(devs.get(i).type),String.valueOf(devs.get(i).mac),R.drawable.add_dev_add_icon);
+					AddDevItemView item = new AddDevItemView(mContext,PublicResDefine.getLittleIconByType(devs.get(i).type),String.valueOf(devs.get(i).mac),R.drawable.add_dev_add_icon);
 					item.setIsWifi(false);
 					item.setListener(new OnAddDev(){
 						@Override
@@ -149,8 +150,11 @@ public class AddDevNewActivity extends Activity{
 		
 		if(PublicDefine.isWiFiConnect(this)){
 			conssid = wifiadmin.getWifiInfo().getSSID();			
-			Log.d(TAG,"con ssid:"+conssid);
-			conssid = conssid.substring(1, conssid.length()-1);
+			Log.d(TAG,conssid.length() + "__con ssid:"+conssid);
+			if(conssid.contains("\"")){
+				conssid = conssid.substring(1, conssid.length()-1);
+			}
+			Log.d(TAG,conssid.length() +  "__con ssid sub:"+conssid);
 			startAirkiss();
 		}else{
 			Log.d(TAG,"wifi not connect,auto enable wifi");

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class SampleActivity extends Activity implements View.OnClickListener {
 

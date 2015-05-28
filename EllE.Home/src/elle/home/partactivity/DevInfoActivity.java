@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import elle.home.app.AutoService;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.OnRecvListener;

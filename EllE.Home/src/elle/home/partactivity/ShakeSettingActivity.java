@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.publicfun.PublicDefine;
 import elle.home.shake.ShakeService;
 import elle.home.uipart.SilderButton;

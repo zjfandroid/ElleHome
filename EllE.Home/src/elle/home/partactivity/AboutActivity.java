@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class AboutActivity extends BaseActivity {
 	

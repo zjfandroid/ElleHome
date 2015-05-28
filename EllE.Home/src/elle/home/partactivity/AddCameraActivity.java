@@ -31,7 +31,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.skyfishjy.library.RippleBackground;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.DataBaseHelper;
 import elle.home.database.OneDev;
 import elle.home.dialog.ConfigCameraDialog;
@@ -39,6 +39,7 @@ import elle.home.pojo.DevCamera;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.AddDevItemView;
 import elle.home.uipart.AddDevItemView.OnAddDev;
+import elle.home.uipart.PublicResDefine;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
@@ -140,7 +141,7 @@ public class AddCameraActivity extends Activity implements AddCameraInterface ,C
 			}
 			
 			if(!isExist){
-				AddDevItemView item = new AddDevItemView(mContext,PublicDefine.getLittleIconByType(PublicDefine.TypeInfraCamera), camera.getStrName(),R.drawable.add_dev_add_icon);
+				AddDevItemView item = new AddDevItemView(mContext,PublicResDefine.getLittleIconByType(PublicDefine.TypeInfraCamera), camera.getStrName(),R.drawable.add_dev_add_icon);
 				item.setIsWifi(false);
 				addCaremaLayout.addView(item, 0);
 				count++;

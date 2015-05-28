@@ -14,7 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.hal.WifiAdmin;
 import elle.home.utils.ViewHolder;
 

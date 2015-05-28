@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class ProgressHelper {
     private ProgressWheel mProgressWheel;

@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 /**
  * Created by daimajia on 14-4-30.

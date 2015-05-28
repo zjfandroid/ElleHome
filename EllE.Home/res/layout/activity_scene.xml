@@ -3,7 +3,7 @@
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/scene_new_bk" >
+    android:background="@drawable/common_bk" >
 
     <LinearLayout
         android:id="@+id/layout_top"

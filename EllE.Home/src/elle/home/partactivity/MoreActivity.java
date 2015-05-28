@@ -19,7 +19,10 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
+import elle.home.dialog.RegisterDialog;
+import elle.home.utils.SaveDataPreferences;
+import elle.home.utils.StringUtils;
 
 public class MoreActivity extends BaseActivity implements OnClickListener {
 
@@ -27,7 +30,6 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_more);
 		btnback = (ImageButton) this.findViewById(R.id.title_btn_left);
@@ -35,7 +37,6 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 
@@ -56,6 +57,11 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		String name = SaveDataPreferences.load(this, RegisterDialog.KEY_USER_NAME, "");
+		if(StringUtils.isEmpty(name)){
+			findViewById(R.id.item_exit).setVisibility(View.GONE);
 		}
 	}
 
@@ -79,6 +85,9 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.item_feedback:
 
+			break;
+		case R.id.item_exit:
+			showLogOffDialog();
 			break;
 		case R.id.item_shake:
 			Intent intent2 = new Intent(this, ShakeSettingActivity.class);
@@ -144,6 +153,32 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	private void showLogOffDialog() {
+		SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+		dialog.setCancelable(true);
+		dialog.setCanceledOnTouchOutside(true);
+		
+		dialog.setTitleText(getResources().getString(R.string.sure_to_logoff))
+		.setCancelText(getResources().getString(R.string.manage_dev_tips_del_dev_no))
+		.setConfirmText(getResources().getString(R.string.manage_dev_tips_del_dev_yes))
+		.showCancelButton(true)
+		.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			@Override
+			public void onClick(SweetAlertDialog sDialog) {
+				sDialog.dismiss();
+			}
+		})
+		.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			@Override
+			public void onClick(SweetAlertDialog sDialog) {
+				SaveDataPreferences.save(MoreActivity.this, RegisterDialog.KEY_USER_NAME, "");
+				findViewById(R.id.item_exit).setVisibility(View.GONE);
+				sDialog.dismiss();
+			}
+		})
+		.show();		
 	}
 
 }

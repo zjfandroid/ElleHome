@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,9 +27,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.skyfishjy.library.RippleBackground;
-
+import elle.home.app.smart.R;
 import elle.home.database.DataBaseHelper;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
@@ -40,6 +38,7 @@ import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.SaveDataPreferences;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 import elle.home.utils.ViewHolder;
@@ -47,6 +46,9 @@ import elle.home.utils.ViewHolder;
 public class GatewayActivity extends BaseActivity {
 
 	public String TAG = "PlugActivity";
+	public static final int STATE_BAN_IN = 0;
+	public static final int STATE_ALLOW_IN = 1;
+	public static final int STATE_ADD = 2;
 	
 	boolean isFresh;
 	
@@ -71,7 +73,7 @@ public class GatewayActivity extends BaseActivity {
 	private RippleBackground foundDevice;
 	private ListView mlistView;
 	private Button mBtnAllowIn;
-	private boolean isAllowin;
+	private int mBtnStates;
 	
 	private LongSparseArray<OneDev> devs = new LongSparseArray<OneDev>(5);
 	
@@ -115,6 +117,10 @@ public class GatewayActivity extends BaseActivity {
 
 				for(int i = 0; i<size; i++){
 					int index = start + ( i * 4 );
+					if(0 == datas[index] && 0 == datas[index+1]){
+						continue;
+					}
+					
 					long mac = DataExchange.eightByteToLong((byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, datas[index], datas[index+1]);
 					
 					OneDev oneDev = devs.get(mac);
@@ -147,34 +153,33 @@ public class GatewayActivity extends BaseActivity {
 
 		@Override
 		public void OnRecvData(PacketCheck packetcheck) {
-			if(null == packetcheck){
-				ShowInfo.printLogW("---xdata___getmac_____null__>");
-				return;
-			}
-			
-			ShowInfo.printLogW(DataExchange.dbBytesToString(DataExchange.longToEightByte(packetcheck.mac)) + "---xdata___getmac_______>" + packetcheck.devcode);
-			
-			int size = devs.size();
-			for (int i = 0; i < size; i++) {
-				OneDev oneDev = devs.valueAt(i);
-				byte[] bytes = DataExchange.longToEightByte(oneDev.mac);
-				byte[] newBytes = DataExchange.longToEightByte(packetcheck.mac);
+			if(null != packetcheck){
+				ShowInfo.printLogW(DataExchange.dbBytesToString(DataExchange.longToEightByte(packetcheck.mac)) + "---xdata___getmac_______>" + packetcheck.devcode);
 				
-				if(bytes[6] == newBytes[6] && bytes[7] == newBytes[7]){
-					oneDev.mac = packetcheck.mac;
-					oneDev.remoteip = packetcheck.ip;
-					oneDev.remoteport = packetcheck.port;
-					if(isDevAdded(packetcheck.mac)){
-						oneDev.setChecked(true);
-						oneDev.setAdded(true);
-					}else{
-						oneDev.setAdded(false);
+				int size = devs.size();
+				for (int i = 0; i < size; i++) {
+					OneDev oneDev = devs.valueAt(i);
+					byte[] bytes = DataExchange.longToEightByte(oneDev.mac);
+					byte[] newBytes = DataExchange.longToEightByte(packetcheck.mac);
+					
+					if(bytes[6] == newBytes[6] && bytes[7] == newBytes[7]){
+						oneDev.mac = packetcheck.mac;
+						oneDev.remoteip = packetcheck.ip;
+						oneDev.remoteport = packetcheck.port;
+						if(isDevAdded(packetcheck.mac)){
+							oneDev.setChecked(true);
+							oneDev.setAdded(true);
+						}else{
+							oneDev.setAdded(false);
+						}
+						
+						ShowInfo.printLogW("---xdata___getmac_____name__>" + oneDev.devname);
+						
+						break;
 					}
-					
-					ShowInfo.printLogW("---xdata___getmac_____name__>" + oneDev.devname);
-					
-					break;
 				}
+			}else{
+				ShowInfo.printLogW("---xdata___getmac_____null__>");
 			}
 			
 			GatewayActivity.this.runOnUiThread(new Runnable() {
@@ -271,15 +276,15 @@ public class GatewayActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				ShowInfo.printLogW("_______onItemClick_______");
+				ShowInfo.printLogW("_______onItemClick_______" + position);
 				
-				OneDev oneDev = devs.get(position);
+				OneDev oneDev = devs.valueAt(position);
 				if(oneDev.isAdded()){
 					if(oneDev.isChecked()){
 						Intent cvin = new Intent(getApplicationContext(), ControllersActivity.class);
 						cvin.putExtra("mac", oneDev.mac);
 						cvin.putExtra("devname", oneDev.devname);
-						cvin.putExtra("connect", oneDev.getConnectStatus());
+						cvin.putExtra("connect", connectStatus);
 						startActivity(cvin);
 					}else{
 						ShowToast.show(getApplicationContext(), "无法添加此设备！");
@@ -379,7 +384,7 @@ public class GatewayActivity extends BaseActivity {
 		baseAdapter.notifyDataSetChanged();
 	}
 	
-	public void doAdd(View v){
+	public void doAdd(){
 		for (int i = 0; i < devs.size(); i++) {
 			OneDev oneDev = devs.valueAt(i);
 			if(oneDev.isChecked()){
@@ -391,13 +396,16 @@ public class GatewayActivity extends BaseActivity {
 				
 				oneDev.locateNmae = locatname;
 				oneDev.shownum = shownum;
-				oneDev.setChecked(false);
+				oneDev.setChecked(true);
 				oneDev.setAdded(true);
+				
+				SaveDataPreferences.save(getApplicationContext(), oneDev.devname, Long.toString(dev.mac));
 				
 				if(0 == oneDev.addToDatabase(getApplicationContext())){
 					shownum++;
-				}else{
-					ShowToast.show(getApplicationContext(), oneDev.devname + "已存在！");
+					ShowToast.show(getApplicationContext(), R.string.tips_add_succeed);
+//				}else{
+//					ShowToast.show(getApplicationContext(), oneDev.devname + "已存在！");
 				}
 			}
 		}
@@ -406,7 +414,7 @@ public class GatewayActivity extends BaseActivity {
 	}
 	
 	private void banIn() {
-		if(isAllowin){
+		if(mBtnStates != STATE_ALLOW_IN){
 			GateWayControlPacket packet = getPacket();
 			packet.banIn(DataExchange.longToEightByte(dev.mac), recvListener);
 			autoBinder.addPacketToSend(packet);
@@ -415,7 +423,7 @@ public class GatewayActivity extends BaseActivity {
 			mBtnAllowIn.setText(R.string.allow_in);
 		}
 		
-		isAllowin = false;
+		mBtnStates = STATE_BAN_IN;
 	}
 
 	public void doClick(View v){
@@ -424,27 +432,31 @@ public class GatewayActivity extends BaseActivity {
 		
 		switch (v.getId()) {
 		case R.id.btn_allow_in:
-			if(isAllowin){
+			if(mBtnStates == STATE_ALLOW_IN){
+				mBtnStates = STATE_BAN_IN;
 				packet.banIn(DataExchange.longToEightByte(dev.mac), recvListener);
 				if(devs.size() > 0){
 					foundDevice.stopRippleAnimation();
 				}
 				mBtnAllowIn.setText(R.string.allow_in);
-			}else{
+				autoBinder.addPacketToSend(packet);
+			}else if(mBtnStates == STATE_BAN_IN){
+				mBtnStates = STATE_ALLOW_IN;
 				packet.allowIn(DataExchange.longToEightByte(dev.mac), recvListener);
 				mBtnAllowIn.setText(R.string.ban_in);
 				if(devs.size()<1){
 					foundDevice.startRippleAnimation();
 				}
+				autoBinder.addPacketToSend(packet);
+			}else{
+				doAdd();
 			}
-			isAllowin = !isAllowin;
 			break;
 		default:
 			break;
 		}
 		
-		autoBinder.addPacketToSend(packet);
-		ShowInfo.printLogW("xdata___send_______>" + DataExchange.dbBytesToString(packet.data));
+//		ShowInfo.printLogW("xdata___send_______>" + DataExchange.dbBytesToString(packet.data));
 	}
 	
 	BaseAdapter baseAdapter = new BaseAdapter() {
@@ -462,14 +474,41 @@ public class GatewayActivity extends BaseActivity {
 			
 			CheckBox checkBox = ViewHolder.get(convertView, R.id.checkbox);
 			checkBox.setEnabled(!oneDev.isAdded());
-			checkBox.setChecked(oneDev.isChecked());
-			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					oneDev.setChecked(isChecked);
-				}
-			});
+			if(checkBox.isEnabled()){
+				checkBox.setVisibility(View.VISIBLE);
+				checkBox.setChecked(oneDev.isChecked());
+				checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						oneDev.setChecked(isChecked);
+						checkIsNeedAddBtn();
+					}
+
+					private void checkIsNeedAddBtn() {
+						boolean isChecked = false;
+						for (int i = 0; i < devs.size(); i++) {
+							OneDev dev = devs.valueAt(i);
+							if(dev.isChecked()){
+								mBtnStates = STATE_ADD;
+								mBtnAllowIn.setText(R.string.add_add_string);
+								isChecked = true;
+								break;
+							}
+						}
+						
+						if(!isChecked){
+							if(mBtnStates == STATE_BAN_IN){
+								mBtnAllowIn.setText(R.string.ban_in);
+							}else if(mBtnStates == STATE_ALLOW_IN){
+								mBtnAllowIn.setText(R.string.allow_in);
+							}
+						}
+					}
+				});
+			}else{
+				checkBox.setVisibility(View.INVISIBLE);
+			}
 			
 			return convertView;
 		}

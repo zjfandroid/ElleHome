@@ -56,7 +56,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.partactivity.BaseActivity;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
@@ -1119,7 +1119,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		videoViewStandard.setDrawingCacheEnabled(true);
 		Bitmap bitmap = videoViewStandard.getDrawingCache();
 		if(null == bitmap){
-			ShowToast.show(this, "截图失败～");
+			ShowToast.show(this, getResources().getString(R.string.screenshot_failed));
 			return;
 		}
 		
@@ -1133,7 +1133,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
         		FileOutputStream fos = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 			fos.close();
-			ShowToast.show(this, "截图成功：" + file.getAbsolutePath());
+			ShowToast.show(this, getResources().getString(R.string.screenshot_successed) + file.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -3,7 +3,7 @@ package elle.home.uipart;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;

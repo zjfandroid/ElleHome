@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,10 +21,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;
@@ -133,8 +131,8 @@ public class ControllersActivity extends BaseActivity implements TimePickerDialo
 		
 		Intent intent = this.getIntent();
 		devmac = intent.getLongExtra("mac", 0);
-//		this.connectStatus = intent.getIntExtra("connect", PublicDefine.ConnectNull);
-		this.connectStatus = PublicDefine.ConnectRemote;
+		this.connectStatus = intent.getIntExtra("connect", PublicDefine.ConnectNull);
+//		this.connectStatus = PublicDefine.ConnectRemote;
 		Log.d(TAG,"传输状态:"+this.connectStatus);
 		
 		vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
@@ -252,15 +250,12 @@ public class ControllersActivity extends BaseActivity implements TimePickerDialo
 		TimerTask timetask = new TimerTask(){
 			@Override
 			public void run() {
-				ControllersPacket packet = getPacket();
-				
-//				for (int i = 0; i < PublicDefine.VerControllers.length; i++) {
-					if(autoBinder!=null){
-						packet.check(DataExchange.longToEightByte(dev.mac), 3, recvListener);
-						autoBinder.addPacketToSend(packet);
-						ShowInfo.printLogW("____packet send_____" + DataExchange.dbBytesToString(packet.data));
-					}
-//				}
+				if(autoBinder!=null){
+					ControllersPacket packet = getPacket();
+					packet.check(DataExchange.longToEightByte(dev.mac), 3, recvListener);
+					autoBinder.addPacketToSend(packet);
+//					ShowInfo.printLogW("____packet send_____" + DataExchange.dbBytesToString(packetGetMac.data));
+				}
 			}};
 		timer.schedule(timetask, 500, 1000);
 	}

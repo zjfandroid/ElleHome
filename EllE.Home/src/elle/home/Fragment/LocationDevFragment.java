@@ -37,12 +37,13 @@ import android.widget.TextView;
 import com.umeng.analytics.MobclickAgent;
 
 import elle.home.app.ControllersActivity;
+import elle.home.app.CurtainActivity;
 import elle.home.app.GatewayActivity;
 import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
 import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.app.view.SizeAdjustingTextView;
 import elle.home.database.DevLocationInfo;
 import elle.home.database.OneDev;
@@ -55,6 +56,8 @@ import elle.home.protocol.LightControlPacket;
 import elle.home.protocol.PlugControlPacket;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.uipart.PublicResDefine;
+import elle.home.utils.SaveDataPreferences;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ViewHolder;
 
@@ -72,8 +75,6 @@ public class LocationDevFragment extends Fragment {
 	private GridAdapter gridAdapter;
 	
 	public Activity xcontext;
-	
-	private startActivity listener;
 	
 	private Timer timer = new Timer();
 	private TimerTask task = new TimerTask(){
@@ -109,12 +110,6 @@ public class LocationDevFragment extends Fragment {
 	
 	public LocationDevFragment(DevLocationInfo tmp){
 		locatInfo = tmp;
-		//locatInfo.setAllDevToLocal();
-	}
-	
-	public LocationDevFragment(DevLocationInfo tmp,startActivity listener){
-		locatInfo = tmp;
-		this.listener = listener;
 		//locatInfo.setAllDevToLocal();
 	}
 	
@@ -280,7 +275,8 @@ public class LocationDevFragment extends Fragment {
 				long id) {
 			Log.d(TAG,"click num:"+position);
 			HashMap<String, String> map = null;
-			if(position<locatInfo.devLocationList.size()){
+			int size = locatInfo.devLocationList.size();
+			if(position < size){
 				OneDev onedev = locatInfo.devLocationList.get(position);
 				
 				switch(onedev.type){
@@ -366,14 +362,20 @@ public class LocationDevFragment extends Fragment {
 					Intent cvin = new Intent(mContext,ControllersActivity.class);
 					cvin.putExtra("mac", onedev.mac);
 					cvin.putExtra("devname", onedev.devname);
-					cvin.putExtra("connect", onedev.getConnectStatus());
-					ShowInfo.printLogW("----onedev.getConnectStatus()----" + onedev.getConnectStatus());
+					cvin.putExtra("connect", getControllerConnectStatus(onedev.devname));
 					mContext.startActivity(cvin);
+					break;
+				case PublicDefine.TypeCurtain:
+					Intent curtain = new Intent(mContext, CurtainActivity.class);
+					curtain.putExtra("mac", onedev.mac);
+					curtain.putExtra("devname", onedev.devname);
+					curtain.putExtra("connect", getControllerConnectStatus(onedev.devname));
+					mContext.startActivity(curtain);
 					break;
 				}
 //			}else{
 //				Intent intentG = null;
-//				intentG = new Intent(mContext,ControlWaysActivity.class);
+//				intentG = new Intent(mContext,CurtainActivity.class);
 //				mContext.startActivity(intentG);
 			}
 			
@@ -423,7 +425,7 @@ public class LocationDevFragment extends Fragment {
 			AbsListView.LayoutParams param = new AbsListView.LayoutParams(tmp,tmp);
 			convertView.setLayoutParams(param);
 			
-			itemlogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
+			itemlogo.setImageDrawable(mContext.getResources().getDrawable(PublicResDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
 			itemtext.setText((String) devlist.get(position).get("devname"));
 			
 			switch((Byte) devlist.get(position).get("type")){
@@ -435,7 +437,7 @@ public class LocationDevFragment extends Fragment {
 				OneDev oneDev = locatInfo.devLocationList.get(position);
 				int status = oneDev.getConnectStatus();
 				
-				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(status)));
+				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicResDefine.getConnectFragmentLogo(status)));
 				
 				if(oneDev.isTurnOn() && PublicDefine.ConnectNull != status){
 					turnON.setVisibility(View.VISIBLE);
@@ -445,7 +447,7 @@ public class LocationDevFragment extends Fragment {
 				break;
 				
 			default:
-				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicDefine.getConnectFragmentLogo(PublicDefine.ConnectNullIcon)));
+				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicResDefine.getConnectFragmentLogo(PublicDefine.ConnectNullIcon)));
 				turnON.setVisibility(View.GONE);
 				break;
 			}
@@ -461,13 +463,20 @@ public class LocationDevFragment extends Fragment {
 	    opts.inTargetDensity = value.density;
 	    return BitmapFactory.decodeResource(resources, id, opts);
 	}
-	
-	public void setListener(startActivity listener){
-		this.listener = listener;
-	}
-	
-	public interface startActivity{
-		void initActivity(Intent intent);
+
+	public int getControllerConnectStatus(String devname) {
+		String mac = SaveDataPreferences.load(mContext, devname, "");
+		int size = locatInfo.devLocationList.size();
+		int status = 0;
+		for(int index = 0; index < size; index++){
+			OneDev dev = locatInfo.devLocationList.get(index);
+			if(Long.toString(dev.mac).equals(mac)){
+				status = dev.getConnectStatus();
+				break;
+			}
+					
+		}
+		return status;
 	}
 	
 }

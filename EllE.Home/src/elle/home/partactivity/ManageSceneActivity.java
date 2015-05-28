@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.AllScene;
 import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.ManageSceneItem;

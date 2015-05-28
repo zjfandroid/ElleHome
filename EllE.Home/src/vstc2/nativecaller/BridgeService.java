@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class BridgeService extends Service {
 	private String TAG = BridgeService.class.getSimpleName();

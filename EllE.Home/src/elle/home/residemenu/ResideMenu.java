@@ -5,10 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,20 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
-import elle.home.app.MainActivity;
-import elle.home.app.R;
-import elle.home.app.R.id;
-import elle.home.partactivity.ManageDevActivity;
+import elle.home.app.smart.R;
+import elle.home.dialog.RegisterDialog;
 import elle.home.uipart.KickView;
+import elle.home.utils.SaveDataPreferences;
+import elle.home.utils.StringUtils;
 
 public class ResideMenu extends FrameLayout {
 	
@@ -42,9 +40,6 @@ public class ResideMenu extends FrameLayout {
     private static final int PRESSED_DONE = 4;
     private static final int PRESSED_MOVE_VERTICAL = 5;
 
-    private ImageView imageViewShadow;
-    private ImageView imageViewBackground;
-    private LinearLayout layout_left;
     private LinearLayout layoutLeftMenu;
     private LinearLayout layoutRightMenu;
     //private ScrollView scrollViewLeftMenu;
@@ -82,14 +77,13 @@ public class ResideMenu extends FrameLayout {
     //valid scale factor is between 0.0f and 1.0f.
     private float mScaleValue = 0.5f;	
     
-    public LinearLayout btnsetting;
-    public LinearLayout btnscene;
+    public View btnsetting;
+    public View btnscene;
     
     Context mcontext;
 
 	public ResideMenu(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.mcontext = context;
 		initViews(context);
 	}
@@ -99,14 +93,10 @@ public class ResideMenu extends FrameLayout {
 		inflater.inflate(R.layout.residemenu, this);
 		//this.scrollViewLeftMenu = (ScrollView) findViewById(R.id.sv_left_menu);
 		this.scrollViewLeftMenu = (KickView) findViewById(R.id.sv_left_menu);
-		imageViewShadow = (ImageView)this.findViewById(R.id.iv_shadow);
-		imageViewBackground = (ImageView)this.findViewById(R.id.iv_background);
 		layoutLeftMenu = (LinearLayout)this.findViewById(R.id.layout_left_menu);
-		layout_left = (LinearLayout)this.findViewById(R.id.linear_left);
-		btnsetting = (LinearLayout)this.findViewById(R.id.setting_layout);
-		btnscene = (LinearLayout)this.findViewById(R.id.scene_layout);
+		btnsetting = this.findViewById(R.id.reside_set);
+		btnscene = this.findViewById(R.id.reside_more);
 		funlayout = (LinearLayout)this.findViewById(R.id.funlayout);
-		
 	}
 	
 	public void attachToActivity(Activity activity){
@@ -142,18 +132,6 @@ public class ResideMenu extends FrameLayout {
 	
 	private void setViewPadding(){
 		this.setPadding(viewActivity.getPaddingLeft(), viewActivity.getPaddingTop(), viewActivity.getPaddingRight(), viewActivity.getPaddingBottom());
-	}
-	
-	public void setBackground(int imageResrouce){
-		this.imageViewBackground.setImageResource(imageResrouce);
-	}
-	
-	public void setShadowVisible(boolean isVisable){
-		if(isVisable){
-			this.imageViewBackground.setBackgroundResource(R.drawable.shadow);
-		}else{
-			this.imageViewBackground.setBackgroundResource(0);
-		}
 	}
 	
 	/**设置侧边栏的标题
@@ -228,12 +206,8 @@ public class ResideMenu extends FrameLayout {
 
         isOpened = true;
         AnimatorSet scaleDown_activity = buildScaleDownAnimation(viewActivity, mScaleValue, mScaleValue);
-        AnimatorSet scaleDown_shadow = buildScaleDownAnimation(imageViewShadow,
-        		mScaleValue + shadowAdjustScaleX, mScaleValue + shadowAdjustScaleY);
         AnimatorSet alpha_menu = buildMenuAnimation(scrollViewMenu, 1.0f);
         AnimatorSet alpha_fun = buildMenuAnimation(funlayout, 1.0f);
-        scaleDown_shadow.addListener(animationListener);
-        scaleDown_activity.playTogether(scaleDown_shadow);
         scaleDown_activity.playTogether(alpha_menu);
         scaleDown_activity.playTogether(alpha_fun);
         scaleDown_activity.start();
@@ -242,11 +216,9 @@ public class ResideMenu extends FrameLayout {
 	public void closeMenu(){
 		isOpened = false;
         AnimatorSet scaleUp_activity = buildScaleUpAnimation(viewActivity, 1.0f, 1.0f);
-        AnimatorSet scaleUp_shadow = buildScaleUpAnimation(imageViewShadow, 1.0f, 1.0f);
         AnimatorSet alpha_menu = buildMenuAnimation(scrollViewMenu, 0.0f);
         AnimatorSet alpha_fun = buildMenuAnimation(funlayout, 0.0f);
         scaleUp_activity.addListener(animationListener);
-        scaleUp_activity.playTogether(scaleUp_shadow);
         scaleUp_activity.playTogether(alpha_menu);
         scaleUp_activity.playTogether(alpha_fun);
         scaleUp_activity.start();
@@ -269,8 +241,6 @@ public class ResideMenu extends FrameLayout {
         
         ViewHelper.setPivotX(viewActivity, pivotX);
         ViewHelper.setPivotY(viewActivity, pivotY);
-        ViewHelper.setPivotX(imageViewShadow, pivotX);
-        ViewHelper.setPivotY(imageViewShadow, pivotY);
         scaleDirection = direction;
 	}
 	
@@ -462,8 +432,6 @@ public class ResideMenu extends FrameLayout {
                     float targetScale = getTargetScale(ev.getRawX());
                     ViewHelper.setScaleX(viewActivity, targetScale);
                     ViewHelper.setScaleY(viewActivity, targetScale);
-                    ViewHelper.setScaleX(imageViewShadow, targetScale + shadowAdjustScaleX);
-                    ViewHelper.setScaleY(imageViewShadow, targetScale + shadowAdjustScaleY);
                     ViewHelper.setAlpha(scrollViewMenu, (1 - targetScale) * 2.0f);
                     ViewHelper.setAlpha(funlayout, (1 - targetScale) * 2.0f);
                     
@@ -509,5 +477,33 @@ public class ResideMenu extends FrameLayout {
         public void closeMenu();
     }
 	
-	
+	public void setOnBtnClickListener(OnClickListener onClickListener) {
+		final TextView btn = (TextView) findViewById(R.id.tv_login);
+		btn.setOnClickListener(onClickListener);
+		
+		String name = SaveDataPreferences.load(mcontext, RegisterDialog.KEY_USER_NAME, "");
+		if(!StringUtils.isEmpty(name)){
+			btn.setText(name);
+		}
+		
+		btn.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				SaveDataPreferences.save(mcontext, RegisterDialog.KEY_USER_NAME, "");
+				btn.setText(mcontext.getResources().getString(R.string.login));
+				return true;
+			}
+		});
+	}
+
+	public void checkLogin() {
+		TextView btn = (TextView) findViewById(R.id.tv_login);
+		String name = SaveDataPreferences.load(mcontext, RegisterDialog.KEY_USER_NAME, "");
+		if(StringUtils.isEmpty(name)){
+			btn.setText(getResources().getString(R.string.login));
+		}else{
+			btn.setText(name);
+		}
+	}
 }

@@ -29,7 +29,6 @@ public class KickView extends ScrollView {
 	
 	@Override
 	protected void onFinishInflate() {
-		// TODO Auto-generated method stub
 		if(getChildCount()>0){
 			inner = getChildAt(0);
 			Log.d(TAG,"inner get a child");
@@ -40,7 +39,6 @@ public class KickView extends ScrollView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
 		//Log.d(TAG,"on touch event");
 		if(inner == null){
 			

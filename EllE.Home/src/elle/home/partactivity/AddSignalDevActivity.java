@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,13 +32,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import elle.home.app.AutoService;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.dialog.WifiListDialog;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.PublicDefine;
+import elle.home.uipart.PublicResDefine;
 import elle.home.utils.SaveDataPreferences;
 
 public class AddSignalDevActivity extends BaseActivity {
@@ -344,7 +346,7 @@ public class AddSignalDevActivity extends BaseActivity {
 		});
 		
 		titletext = (TextView)this.findViewById(R.id.title_bar_text);
-		titletext.setText(getResources().getString(R.string.add_add_string)+PublicDefine.getStringByType(getResources(),onedev.type));
+		titletext.setText(getResources().getString(R.string.add_add_string)+PublicResDefine.getStringByType(getResources(),onedev.type));
 		bk = (LinearLayout)this.findViewById(R.id.add_dev_name_bk);
 		
 		addlogo = (ImageView)this.findViewById(R.id.addlogo);

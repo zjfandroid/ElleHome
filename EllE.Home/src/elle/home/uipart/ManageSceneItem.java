@@ -1,6 +1,6 @@
 package elle.home.uipart;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.SceneData;
 import elle.home.publicfun.PublicDefine;
 import android.content.Context;
@@ -36,7 +36,7 @@ public class ManageSceneItem extends LinearLayout {
 		this.manageSceneItemLogo = (ImageView)this.findViewById(R.id.manage_scene_item_iv);
 		this.manageSceneItemTv = (TextView)this.findViewById(R.id.manage_scene_item_tv);
 		
-		this.manageSceneItemLogo.setImageDrawable(getResources().getDrawable(PublicDefine.getManageSceneIcon(scenedata.sceneicon)));
+		this.manageSceneItemLogo.setImageDrawable(getResources().getDrawable(PublicResDefine.getManageSceneIcon(scenedata.sceneicon)));
 		this.manageSceneItemTv.setText(scenedata.sceneName);
 		
 		this.manageSceneDeleteBtn = (Button)this.findViewById(R.id.manage_scene_delete_btn);

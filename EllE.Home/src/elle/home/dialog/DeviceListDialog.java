@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.utils.ViewHolder;
 
 /**

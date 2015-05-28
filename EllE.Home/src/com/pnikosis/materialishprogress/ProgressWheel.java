@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 /**
  * A Material style progress wheel, compatible up to 2.2.

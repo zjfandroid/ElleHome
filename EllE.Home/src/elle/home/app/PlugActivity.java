@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -22,10 +21,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;

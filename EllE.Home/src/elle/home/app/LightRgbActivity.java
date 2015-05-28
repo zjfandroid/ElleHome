@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;
@@ -228,6 +230,7 @@ public class LightRgbActivity extends BaseActivity {
 		this.userBindService();
 	}
 	
+	@SuppressLint("NewApi")
 	public void init(){
 		
 		rgbWhiteStatus = statusWhite;

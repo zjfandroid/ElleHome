@@ -26,7 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.hal.UdpAddDev;
 import elle.home.hal.WiFiExchange;
 import elle.home.hal.WifiAdmin;

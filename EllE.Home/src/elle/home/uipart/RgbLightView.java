@@ -16,7 +16,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 /**
  * @author 律

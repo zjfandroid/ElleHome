@@ -21,7 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
@@ -258,7 +258,7 @@ public class ConfigCameraDialog implements IpcamClientInterface{
 				mContext.startActivity(intent2);
 			}else{
 				onedev.addToDatabase(mContext);
-				ShowToast.show(mContext, "添加成功！");
+				ShowToast.show(mContext, mContext.getResources().getString(R.string.tips_add_succeed));
 				((Activity)mContext).finish();
 			}
 			return resid;

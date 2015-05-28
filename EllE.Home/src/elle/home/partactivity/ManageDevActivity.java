@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.AllLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.publicfun.PublicDefine;
@@ -90,7 +90,8 @@ public class ManageDevActivity extends BaseActivity {
 				ManageDevItem dev = new ManageDevItem(this, devs.get(x));
 				dev.manageDevDeleteBtn.setOnClickListener(dellistener);
 				if(PublicDefine.TypeInfraCamera == devs.get(x).type){
-					dev.manageDevConfigBtn.setText("");
+					dev.manageDevConfigBtn.setVisibility(View.GONE);
+//					dev.manageDevConfigBtn.setText("");
 				}else{
 					dev.manageDevConfigBtn.setOnClickListener(configlistener);
 				}

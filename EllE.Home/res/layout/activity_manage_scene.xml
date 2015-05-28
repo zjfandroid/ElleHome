@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="设备管理"
+                android:text="@string/device_manager"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </FrameLayout>

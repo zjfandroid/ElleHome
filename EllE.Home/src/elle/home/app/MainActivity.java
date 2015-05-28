@@ -1,16 +1,22 @@
 package elle.home.app;
 
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import vstc2.nativecaller.BridgeService;
 import vstc2.nativecaller.NativeCaller;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -24,6 +30,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -44,9 +51,15 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
 import elle.home.Fragment.LocationDevFragment;
+import elle.home.app.smart.R;
 import elle.home.database.AllScene;
 import elle.home.database.DevLocationInfo;
+import elle.home.dialog.BackupDialog;
+import elle.home.dialog.BackupDialog.OnRecoverListener;
 import elle.home.dialog.DeviceListDialog;
+import elle.home.dialog.RegisterDialog;
+import elle.home.hal.GetSSID;
+import elle.home.hal.GetSSID.OnSSIDListener;
 import elle.home.hal.UdpCheckNewThread;
 import elle.home.hal.WifiAdmin;
 import elle.home.partactivity.AddCameraActivity;
@@ -56,15 +69,16 @@ import elle.home.partactivity.BaseActivity;
 import elle.home.partactivity.ManageDevActivity;
 import elle.home.partactivity.MoreActivity;
 import elle.home.partactivity.SceneAddActivity;
-import elle.home.publicfun.GetSSID;
-import elle.home.publicfun.GetSSID.OnSSIDListener;
 import elle.home.publicfun.PublicDefine;
 import elle.home.residemenu.ResideLocatItem;
 import elle.home.residemenu.ResideMenu;
 import elle.home.residemenu.ResideSenseItem;
 import elle.home.shake.ShakeService;
+import elle.home.uipart.PublicResDefine;
 import elle.home.utils.SaveDataPreferences;
+import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
+import elle.home.utils.StringUtils;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -284,6 +298,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		if(null != resideMenu){
+			resideMenu.checkLogin();
+		}
+	}
+	
+	@Override
 	protected void onDestroy() {
 		Log.d(TAG,"onDestroy");
 		super.onDestroy();
@@ -307,11 +329,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		//mainShowBk.setBackgroundResource(R.drawable.main_home_bk1);
 		
 		resideMenu = new ResideMenu(this);
-		resideMenu.setBackground(R.drawable.residemenu_bk);
 		resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
         resideMenu.setScaleValue(0.6f);
         resideMenu.setOnClickListener(this);
+        resideMenu.setOnBtnClickListener(mOnBtnClickListener);
         
         resideMenu.btnscene.setOnTouchListener(new View.OnTouchListener() {
 			
@@ -345,7 +367,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 				}else if(event.getAction() == MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL){
 					v.setBackgroundColor(getResources().getColor(R.color.transparent));
 					Log.d(TAG,"btnsetting click");
-					Intent intent = new Intent(mContext,ManageDevActivity.class);
+					Intent intent = new Intent(mContext, ManageDevActivity.class);
 					startActivityForResult(intent, 3);
 					UMeng_OnEvent(EVENT_ID_CLICK_DEV_MANAGER);
 				}
@@ -458,13 +480,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 			
 			@Override
 			public void onFail(final String info) {
-				MainActivity.this.runOnUiThread(new Runnable() {
-					
-					@Override
-					public void run() {
-						ShowToast.show(mContext, info);
-					}
-				});
+//				MainActivity.this.runOnUiThread(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						ShowToast.show(mContext, info);
+//					}
+//				});
 			}
 
 			private void setSSID(final EditText editPass,
@@ -486,9 +508,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		
 		if(PublicDefine.isWiFiConnect(this)){
 			conssid = wifiadmin.getWifiInfo().getSSID();	
-			if(null != conssid){
+			if(null != conssid && conssid.contains("\"")){
 				conssid = conssid.substring(1, conssid.length()-1);
 			}
+			ShowInfo.printLogW("______getCurrentSSID_______" + conssid);
 		}else{
 			Log.d(TAG,"wifi not connect,auto enable wifi");
 			PublicDefine.toggleWiFi(mContext, true);
@@ -498,7 +521,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 	}
 
 	protected void goAddDevActivity(int type) {
-		Intent intent = new Intent(mContext,AddDevNewActivity.class);
+		Intent intent = new Intent(mContext, AddDevNewActivity.class);
 		intent.putExtra("type", type);
 		intent.putExtra("isNewDeviceFound", isNewDeviceFound);
 		intent.putExtra("locatname", locatlist.get(currentLocatViewId).name);
@@ -668,7 +691,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     	List<ResideLocatItem> tmp = new ArrayList<ResideLocatItem>();
     	for(int i=0;i<autoBinder.getAllInfo().allinfo.size();i++){
     		ResideLocatItem item = new ResideLocatItem(this);
-    		item.setView(PublicDefine.getResideLocatIcon(autoBinder.getAllInfo().allinfo.get(i).locaticon), autoBinder.getAllInfo().allinfo.get(i).locatname);
+    		item.setView(PublicResDefine.getResideLocatIcon(autoBinder.getAllInfo().allinfo.get(i).locaticon), autoBinder.getAllInfo().allinfo.get(i).locatname);
     		item.setOnClickListener(this);
     		tmp.add(item);
     	}
@@ -684,7 +707,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     	allScene.freshSceneData();
     	for(int i=0;i<allScene.allscene.size();i++){
     		ResideSenseItem item = new ResideSenseItem(this);
-        	item.setView2(PublicDefine.getSceneResideLogo(allScene.allscene.get(i).sceneicon), allScene.allscene.get(i).sceneName);
+        	item.setView2(PublicResDefine.getSceneResideLogo(allScene.allscene.get(i).sceneicon), allScene.allscene.get(i).sceneName);
         	item.setOnClickListener(this);
         	tmp.add(item);
     	}
@@ -701,7 +724,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		
 		if(keyCode == KeyEvent.KEYCODE_BACK){
 			Log.d(TAG,"key back:"+event.getRepeatCount()+" isquit:"+isQuit);
-			if(isQuit){
+			if(isQuit || null == mContext){
 //				 UMeng_OnEvent(EVENT_ID_APP_QUIT);
 				finish();
 			}else{
@@ -721,4 +744,64 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		return super.onKeyDown(keyCode, event);
 	}
     
+	private RegisterDialog dlg;
+	private OnClickListener mOnBtnClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.tv_login:
+				String name = SaveDataPreferences.load(mContext, RegisterDialog.KEY_USER_NAME, "");
+				if(StringUtils.isEmpty(name)){
+					dlg = new RegisterDialog(mContext);
+					dlg.setOnDismissListener(new OnDismissListener(){
+						
+						@Override
+						public void onDismiss(DialogInterface dialog) {
+							if(!isFinishing()){
+								resideMenu.checkLogin();
+							}
+						}
+						
+					});
+				}else{
+					BackupDialog backupDialog = new BackupDialog(mContext);
+					backupDialog.setRecoverListener(new OnRecoverListener(){
+
+						@Override
+						public void onRecover(JSONObject json) {
+							try {
+								autoBinder.getAllInfo().recoverFromJSONData(json);
+								autoBinder.getAllInfo().findAllLocationInfo();
+								autoBinder.freshUdpCheckData();
+								Message msg = new Message();
+								msg.what = 3;
+								currentLocatViewId= 0;
+								handler.sendMessage(msg);
+							} catch (UnknownHostException e) {
+								e.printStackTrace();
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						
+					});
+					
+					try {
+						backupDialog.setLocationInfo(name, autoBinder.getAllInfo().getJSONData());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				break;
+				
+			case R.id.confirm_button:
+				break;
+				
+			default:
+				break;
+			}
+		}
+	};
 }

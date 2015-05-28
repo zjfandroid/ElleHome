@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class Rotate3dAnimation extends Animation {
     private int mPivotXType = ABSOLUTE;

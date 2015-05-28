@@ -1,6 +1,6 @@
 package elle.home.uipart;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.DevLocationInfo;
 import elle.home.publicfun.PublicDefine;
 import android.content.Context;
@@ -28,7 +28,7 @@ public class SceneItemTitle extends LinearLayout {
 		scene_title_iv = (ImageView)this.findViewById(R.id.scene_title_iv);
 		scene_title_tv = (TextView)this.findViewById(R.id.scene_title_tv);
 		
-		this.scene_title_iv.setImageResource(PublicDefine.getResideLocatIcon(locationinfo.locaticon));
+		this.scene_title_iv.setImageResource(PublicResDefine.getResideLocatIcon(locationinfo.locaticon));
 		if(locationinfo.locatname!=null)
 			this.scene_title_tv.setText(locationinfo.locatname);
 		else

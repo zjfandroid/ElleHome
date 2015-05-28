@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 
 public class ProgressMainActivity extends Activity {

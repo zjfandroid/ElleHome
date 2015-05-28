@@ -2,7 +2,6 @@ package elle.home.app;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.database.OneSceneData;
 import elle.home.database.SceneData;

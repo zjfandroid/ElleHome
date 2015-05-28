@@ -2,7 +2,7 @@ package elle.home.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.partactivity.AddSignalDevActivity;
 import elle.home.partactivity.BaseActivity;
@@ -39,7 +39,6 @@ public class InfraActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_infra);
 		this.listview = (ListView)this.findViewById(R.id.infralist);

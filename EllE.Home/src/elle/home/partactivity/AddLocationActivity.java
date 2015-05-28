@@ -21,9 +21,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.DevLocationInfo;
 import elle.home.publicfun.PublicDefine;
+import elle.home.uipart.PublicResDefine;
 
 public class AddLocationActivity extends BaseActivity {
 
@@ -177,7 +178,6 @@ public class AddLocationActivity extends BaseActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			// TODO Auto-generated method stub
 			iconChose = position;
 			
 			for(int i=0;i<parent.getChildCount();i++){
@@ -265,7 +265,7 @@ public class AddLocationActivity extends BaseActivity {
 			AbsListView.LayoutParams param = new AbsListView.LayoutParams(tmp,tmp);
 			convertView.setLayoutParams(param);
 			
-			holder.iv.setImageDrawable(context.getResources().getDrawable(PublicDefine.getResideLocatIcon((Integer) locatlist.get(position).get("logo"))));
+			holder.iv.setImageDrawable(context.getResources().getDrawable(PublicResDefine.getResideLocatIcon((Integer) locatlist.get(position).get("logo"))));
 			holder.tv.setText((CharSequence) locatlist.get(position).get("text"));
 			if(iconChose==position){
 				//Log.d(TAG,"iconChose == i ->set blue");

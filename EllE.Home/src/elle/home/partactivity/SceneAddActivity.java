@@ -21,9 +21,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.AllScene;
 import elle.home.publicfun.PublicDefine;
+import elle.home.uipart.PublicResDefine;
 
 public class SceneAddActivity extends BaseActivity {
 
@@ -263,7 +264,7 @@ public class SceneAddActivity extends BaseActivity {
 			AbsListView.LayoutParams param = new AbsListView.LayoutParams(tmp,tmp);
 			convertView.setLayoutParams(param);
 			
-			holder.iv.setImageDrawable(context.getResources().getDrawable(PublicDefine.getSceneResideLogo((Integer) scenelist.get(position).get("logo"))));
+			holder.iv.setImageDrawable(context.getResources().getDrawable(PublicResDefine.getSceneResideLogo((Integer) scenelist.get(position).get("logo"))));
 			holder.tv.setText((CharSequence) scenelist.get(position).get("text"));
 			if(iconChose==position){
 				//Log.d(TAG,"iconChose == i ->set blue");

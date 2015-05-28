@@ -31,7 +31,7 @@ import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.AllDevInfo;
 import elle.home.database.OneDev;
 import elle.home.partactivity.UMengConstant;

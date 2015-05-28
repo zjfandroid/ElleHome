@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private View mDialogView;

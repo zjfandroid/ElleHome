@@ -3,6 +3,7 @@
     
 	<string name="app_name">HomeGenius</string>
 	<string name="app_name_vstar">Eye4 Smart</string>
+	<string name="app_home">THE FUTURE HAS ARRIVED</string>
 	
     <string name="residemenu_manage_dev">DM</string>
     <string name="residemenu_about">About</string>
@@ -64,11 +65,11 @@
     
     <string name="tips_bename">have a name</string>
     <string name="tips_bename_first">have a name first,then add</string>
-    <string name="tips_add_succeed">succeeded</string>
+    <string name="tips_add_succeed">succeed</string>
     <string name="tips_benamed">have a another name</string>
     <string name="tips_input_ssid">input SSID</string>
     <string name="tips_input_password">input password</string>
-    <string name="tips_switch_wifi_succeed">switch WiFi succeeded</string>
+    <string name="tips_switch_wifi_succeed">switch WiFi succeed</string>
     <string name="tips_link_config_succeed">WiFi configuration successfully,\nplease wait a moment to add this device.</string>
     <string name="tips_link_config_error">config failed,restart your app now</string>
     <string name="tips_connected_to">linking to-></string>
@@ -130,6 +131,7 @@
     
     
     <string name="about">About</string>
+    <string name="log_off">Log off</string>
     <string name="more">More</string>
     <string name="shake_config">Config shake</string>
     <string name="shake_item">Shake</string>
@@ -149,10 +151,10 @@
     <string name="infra_add_tv">new TV control</string>
     
     <string name="infra_air_matching_cloud">Cloud Match</string>
-    <string name="infra_air_study_succeed">succeeded</string>
+    <string name="infra_air_study_succeed">succeed</string>
     <string name="infra_air_study_failure">failed</string>
     <string name="infra_air_study_quit">quit</string>
-    <string name="infra_air_match_succeed">Cloud match succeeded</string>
+    <string name="infra_air_match_succeed">Cloud match succeed</string>
     <string name="infra_air_match_error">Cloud match failed</string>
     
     <string name="device_manager">Device Management</string>
@@ -169,6 +171,9 @@
     <string name="new_location">New Location</string>
     <string name="new_scene">New Scene</string>
     <string name="sure_to_reset">Sure to reset?</string>
+     <string name="sure_to_backup">Sure to update backup？</string>
+     <string name="sure_to_logoff">Sure to log off？</string>
+     <string name="sure_to_recover">Sure to recover to last backup？</string>
     <string name="config_reset">Reset</string>
     <string name="config_link">Config</string>
     <string name="config_wifi_ok">Done</string>
@@ -249,5 +254,32 @@
     <string name="allow_in">Allow in</string>
     <string name="ban_in">Ban in</string>
     <string name="selected_all">All</string>
+    <string name="add_all">Add all</string>
     <string name="off_label">Time off</string>
+    
+    <string name="sleep">Sleep</string>
+    <string name="sleep_15">Sleep:15 min</string>
+    <string name="sleep_30">Sleep:30 min</string>
+    
+    <string name="enter_user_name">Please enter user name</string>
+    <string name="enter_user_pwd">Please enter user password</string>
+    <string name="enter_user_real_name">Real name(choice)</string>
+    <string name="enter_user_email">Email(choice)</string>
+    
+    <string name="login_succeed">Login succeed!</string>
+    <string name="login_wrong_pwd">Wrong password!</string>
+    <string name="login_nouser">User name not exist!</string>
+    <string name="login_userExist">User name exist!</string>
+    <string name="register_succeed">Register succeed!</string>
+    <string name="backup">Backup</string>
+    <string name="backup_succeed">Backup succeed</string>
+    <string name="backup_failed">Backup failed</string>
+    <string name="recover">Recover</string>
+    <string name="recover_succeed">Recover succeed</string>
+    <string name="recover_failed">Recover failed</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
+    
+    <string name="screenshot_successed">Screenshot succeed：</string>
+    <string name="screenshot_failed">Screenshot failed～</string>
 </resources>

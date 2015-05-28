@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 
 /**
  * Created by fyu on 11/3/14.

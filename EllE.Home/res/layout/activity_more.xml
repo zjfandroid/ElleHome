@@ -160,5 +160,32 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/arrow" />
     </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/item_exit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/more_item_btn"
+        android:onClick="onClick"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:text="@string/log_off"
+            android:textColor="@color/whitesmoke"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/arrow" />
+    </RelativeLayout>
 
 </LinearLayout>

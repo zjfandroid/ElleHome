@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.DevLocationInfo;
 import elle.home.publicfun.PublicDefine;
 
@@ -68,7 +68,7 @@ public class ManageDevTitle extends LinearLayout {
 		this.manageDevTitleLogo = (ImageView)this.findViewById(R.id.manage_dev_title_iv);
 		this.manageDevTitleName = (TextView)this.findViewById(R.id.manage_dev_title_tv);
 		
-		this.manageDevTitleLogo.setImageDrawable(getResources().getDrawable(PublicDefine.getResideLocatIcon(locatinfo.locaticon)));
+		this.manageDevTitleLogo.setImageDrawable(getResources().getDrawable(PublicResDefine.getResideLocatIcon(locatinfo.locaticon)));
 		this.manageDevTitleName.setText(locatinfo.locatname);
 		
 		this.manageDevDeleteBtn = (ImageButton)this.findViewById(R.id.manage_dev_delete_title_btn);

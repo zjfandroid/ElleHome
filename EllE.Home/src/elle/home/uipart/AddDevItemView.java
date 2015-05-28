@@ -1,6 +1,6 @@
 package elle.home.uipart;
 
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;

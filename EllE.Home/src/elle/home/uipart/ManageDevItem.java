@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-import elle.home.app.R;
+import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.publicfun.PublicDefine;
 
@@ -76,7 +76,7 @@ public class ManageDevItem extends LinearLayout {
 		this.manageDevItemLogo = (ImageView)this.findViewById(R.id.manage_dev_item_iv);
 		this.manageDevItemName = (TextView)this.findViewById(R.id.manage_dev_item_tv);
 		
-		this.manageDevItemLogo.setImageDrawable(getResources().getDrawable(PublicDefine.getManageDevIcon(dev.type)));
+		this.manageDevItemLogo.setImageDrawable(getResources().getDrawable(PublicResDefine.getManageDevIcon(dev.type)));
 		this.manageDevItemName.setText(dev.devname);
 		
 		this.manageDevConfigBtn = (Button)this.findViewById(R.id.manage_dev_config_btn);

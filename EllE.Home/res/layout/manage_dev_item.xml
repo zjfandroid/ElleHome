@@ -72,14 +72,16 @@
             android:layout_height="match_parent"
             android:background="@color/green"
             android:text="@string/config_link"
+            android:visibility="gone"
             android:textColor="@color/whitesmoke"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/manage_dev_delete_btn"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/manage_dev_config_btn"
+            android:layout_alignWithParentIfMissing="true"
             android:background="@color/red"
             android:text="@string/device_manager_delete"
             android:textColor="@color/whitesmoke"
