@@ -212,10 +212,7 @@
 	<string name="str_cancel">Cancel</string>
 	<string name="exit_alert">Sure to exit?</string>
 	<string name="exit">Exit</string>
-	<string name="p2p_view_time_out">View time out</string>
 	<string name="ptz_default_vedio_params">Reset</string>
-	<string name="p2p_relay_mode_time_out">Time left:</string>
-	<string name="str_second">second</string>
 	<string name="ptz_control">请按菜单键,进行云台控制</string>
 	<string name="exit_show">   Tips：</string>
 	<string name="exit_play_show">Sure to exit?</string>
@@ -282,4 +279,9 @@
     
     <string name="screenshot_successed">Screenshot succeed：</string>
     <string name="screenshot_failed">Screenshot failed～</string>
+    
+    <string name="right">right</string>
+    <string name="left">left</string>
+    <string name="up">up</string>
+    <string name="down">down</string>
 </resources>

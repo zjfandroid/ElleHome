@@ -39,10 +39,10 @@ import com.umeng.analytics.MobclickAgent;
 import elle.home.app.ControllersActivity;
 import elle.home.app.CurtainActivity;
 import elle.home.app.GatewayActivity;
-import elle.home.app.InfraActivity;
 import elle.home.app.LightRgbActivity;
 import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
+import elle.home.app.infra.InfraActivity;
 import elle.home.app.smart.R;
 import elle.home.app.view.SizeAdjustingTextView;
 import elle.home.database.DevLocationInfo;
@@ -375,7 +375,7 @@ public class LocationDevFragment extends Fragment {
 				}
 //			}else{
 //				Intent intentG = null;
-//				intentG = new Intent(mContext,CurtainActivity.class);
+//				intentG = new Intent(mContext,InfraJni.class);
 //				mContext.startActivity(intentG);
 			}
 			

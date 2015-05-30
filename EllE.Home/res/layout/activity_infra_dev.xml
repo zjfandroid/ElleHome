@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bk" >
+
+    <TextView
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/title_bk"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="添加遥控器"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:contentDescription="@string/app_name"
+        android:onClick="doExit"
+        android:src="@drawable/title_back_bk" />
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/numberbar"
+        style="@style/NumberProgressBar_Funny_Orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        custom:progress="0" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/numberbar"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_circle_red" />
+
+</RelativeLayout>

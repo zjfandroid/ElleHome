@@ -41,6 +41,24 @@ public class BridgeService extends Service {
 		super.onDestroy();
 	}
 
+	/**
+	 * 
+	 * PlayActivity feedback method
+	 * 
+	 * jni
+	 * 
+	 * @param videobuf
+	 * 
+	 * @param h264Data
+	 * 
+	 * @param len
+	 * 
+	 * @param width
+	 * 
+	 * @param height
+	 * 
+	 */
+
 	public void VideoData(String did, byte[] videobuf, int h264Data, int len,
 			int width, int height, int timestamp, short milistamp, int sessid,
 			int version, int originFrameLen) {
@@ -157,8 +175,8 @@ public class BridgeService extends Service {
 	 * @param result
 	 *            0:fail 1sucess
 	 */
-	public void CallBack_SetSystemParamsResult(String did, int paramType,
-			int result) {
+	public void CallBack_SetSystemParamsResult(String did, int paramType,int result)
+	{
 		switch (paramType) {
 		case ContentCommon.MSG_TYPE_SET_WIFI:
 			if (wifiInterface != null) {
@@ -209,9 +227,9 @@ public class BridgeService extends Service {
 		}
 	}
 
-	public void CallBack_CameraParams(String did, int resolution,
-			int brightness, int contrast, int hue, int saturation, int flip,
-			int fram, int mode) {
+	public void CallBack_CameraParams(String did, int resolution,int brightness, int contrast, int hue, int saturation, int flip,
+			int fram, int mode)
+	{
 		Log.d("ddd", "CallBack_CameraParams");
 		if (playInterface != null) {
 			playInterface.callBackCameraParamNotify(did, resolution,
@@ -223,7 +241,8 @@ public class BridgeService extends Service {
 			int channel, int mode, int authtype, int encryp, int keyformat,
 			int defkey, String key1, String key2, String key3, String key4,
 			int key1_bits, int key2_bits, int key3_bits, int key4_bits,
-			String wpa_psk) {
+			String wpa_psk)
+	{
 		Log.d("ddd", "CallBack_WifiParams");
 		if (wifiInterface != null) {
 			wifiInterface.callBackWifiParams(did, enable, ssid, channel, mode,
@@ -233,7 +252,8 @@ public class BridgeService extends Service {
 	}
 
 	public void CallBack_UserParams(String did, String user1, String pwd1,
-			String user2, String pwd2, String user3, String pwd3) {
+			String user2, String pwd2, String user3, String pwd3)
+	{
 		Log.d("ddd", "CallBack_UserParams");
 		if (userInterface != null) {
 			userInterface.callBackUserParams(did, user1, pwd1, user2, pwd2,
@@ -246,7 +266,8 @@ public class BridgeService extends Service {
 	}
 
 	public void CallBack_FtpParams(String did, String svr_ftp, String user,
-			String pwd, String dir, int port, int mode, int upload_interval) {
+			String pwd, String dir, int port, int mode, int upload_interval)
+	{
 		if (ftpInterface != null) {
 			ftpInterface.callBackFtpParams(did, svr_ftp, user, pwd, dir, port,
 					mode, upload_interval);
@@ -254,14 +275,15 @@ public class BridgeService extends Service {
 	}
 
 	public void CallBack_DDNSParams(String did, int service, String user,
-			String pwd, String host, String proxy_svr, int ddns_mode,
-			int proxy_port) {
+			String pwd, String host, String proxy_svr, int ddns_mode,int proxy_port)
+	{
 		Log.d("ddd", "CallBack_DDNSParams");
 	}
 
 	public void CallBack_MailParams(String did, String svr, int port,
 			String user, String pwd, int ssl, String sender, String receiver1,
-			String receiver2, String receiver3, String receiver4) {
+			String receiver2, String receiver3, String receiver4)
+	{
 		if (mailInterface != null) {
 			mailInterface.callBackMailParams(did, svr, port, user, pwd, ssl,
 					sender, receiver1, receiver2, receiver3, receiver4);
@@ -269,7 +291,8 @@ public class BridgeService extends Service {
 	}
 
 	public void CallBack_DatetimeParams(String did, int now, int tz,
-			int ntp_enable, String ntp_svr) {
+			int ntp_enable, String ntp_svr)
+	{
 		if (dateTimeInterface != null) {
 			dateTimeInterface.callBackDatetimeParams(did, now, tz, ntp_enable,
 					ntp_svr);
@@ -285,15 +308,15 @@ public class BridgeService extends Service {
 	 * @param bImage
 	 * @param len
 	 */
-	@SuppressWarnings("unused")
-	private void PPPPSnapshotNotify(String did, byte[] bImage, int len) {
+	public void PPPPSnapshotNotify(String did, byte[] bImage, int len) {
 		Log.d(TAG, "PPPPSnapshotNotify  did:" + did + " len:" + len);
 		if (ipcamClientInterface != null) {
 			ipcamClientInterface.BSSnapshotNotify(did, bImage, len);
 		}
 	}
 
-	public void CallBack_Snapshot(String did, byte[] data, int len) {
+	public void CallBack_Snapshot(String did, byte[] data, int len)
+	{
 		if (ipcamClientInterface != null) {
 			ipcamClientInterface.BSSnapshotNotify(did, data, len);
 		}
@@ -333,28 +356,20 @@ public class BridgeService extends Service {
 		}
 	}
 
-	public void CallBack_AlarmParams(String did, int alarm_audio,
-			int motion_armed, int motion_sensitivity, int input_armed,
-			int ioin_level, int iolinkage, int ioout_level, int alarmpresetsit,
-			int mail, int snapshot, int record, int upload_interval,
-			int schedule_enable, int schedule_sun_0, int schedule_sun_1,
-			int schedule_sun_2, int schedule_mon_0, int schedule_mon_1,
-			int schedule_mon_2, int schedule_tue_0, int schedule_tue_1,
-			int schedule_tue_2, int schedule_wed_0, int schedule_wed_1,
-			int schedule_wed_2, int schedule_thu_0, int schedule_thu_1,
-			int schedule_thu_2, int schedule_fri_0, int schedule_fri_1,
-			int schedule_fri_2, int schedule_sat_0, int schedule_sat_1,
-			int schedule_sat_2, int defense_plan1, int defense_plan2,
-			int defense_plan3, int defense_plan4, int defense_plan5,
-			int defense_plan6, int defense_plan7, int defense_plan8,
-			int defense_plan9, int defense_plan10, int defense_plan11,
-			int defense_plan12, int defense_plan13, int defense_plan14,
-			int defense_plan15, int defense_plan16, int defense_plan17,
-			int defense_plan18, int defense_plan19, int defense_plan20,
-			int defense_plan21) {
+	public void CallBack_AlarmParams(String did,int alarm_audio, int motion_armed,
+			int motion_sensitivity, int input_armed, int ioin_level,
+			int iolinkage, int ioout_level, int alarmpresetsit, int mail,
+			int snapshot, int record, int upload_interval, int schedule_enable,
+			int schedule_sun_0, int schedule_sun_1, int schedule_sun_2,
+			int schedule_mon_0, int schedule_mon_1, int schedule_mon_2,
+			int schedule_tue_0, int schedule_tue_1, int schedule_tue_2,
+			int schedule_wed_0, int schedule_wed_1, int schedule_wed_2,
+			int schedule_thu_0, int schedule_thu_1, int schedule_thu_2,
+			int schedule_fri_0, int schedule_fri_1, int schedule_fri_2,
+			int schedule_sat_0, int schedule_sat_1, int schedule_sat_2) {
 
-		if (alarmInterface != null) {
-			alarmInterface.callBackAlarmParams(did, motion_armed,
+		if (alarmInterface  != null) {
+			alarmInterface.callBackAlarmParams(did,alarm_audio ,motion_armed,
 					motion_sensitivity, input_armed, ioin_level, iolinkage,
 					ioout_level, alarmpresetsit, mail, snapshot, record,
 					upload_interval, schedule_enable, schedule_sun_0,
@@ -406,24 +421,27 @@ public class BridgeService extends Service {
 				+ " height:" + height);
 		if (playBackInterface != null) {
 			playBackInterface.callBackPlaybackVideoData(videobuf, h264Data,
-					len, width, height, streamid, FrameType);
+					len, width, height,time);
 		}
 	}
 
+	/*
+	 * 录像回放参数回调
+	 */
 	public void CallBack_RecordSchParams(String did, int record_cover_enable,
-			int record_timer, int record_size, int record_chnl,
-			int record_time_enable, int record_schedule_sun_0,
-			int record_schedule_sun_1, int record_schedule_sun_2,
-			int record_schedule_mon_0, int record_schedule_mon_1,
-			int record_schedule_mon_2, int record_schedule_tue_0,
-			int record_schedule_tue_1, int record_schedule_tue_2,
-			int record_schedule_wed_0, int record_schedule_wed_1,
-			int record_schedule_wed_2, int record_schedule_thu_0,
-			int record_schedule_thu_1, int record_schedule_thu_2,
-			int record_schedule_fri_0, int record_schedule_fri_1,
-			int record_schedule_fri_2, int record_schedule_sat_0,
-			int record_schedule_sat_1, int record_schedule_sat_2,
-			int record_sd_status, int sdtotal, int sdfree) {
+			int record_timer, int record_size, int record_time_enable,
+			int record_schedule_sun_0, int record_schedule_sun_1,
+			int record_schedule_sun_2, int record_schedule_mon_0,
+			int record_schedule_mon_1, int record_schedule_mon_2,
+			int record_schedule_tue_0, int record_schedule_tue_1,
+			int record_schedule_tue_2, int record_schedule_wed_0,
+			int record_schedule_wed_1, int record_schedule_wed_2,
+			int record_schedule_thu_0, int record_schedule_thu_1,
+			int record_schedule_thu_2, int record_schedule_fri_0,
+			int record_schedule_fri_1, int record_schedule_fri_2,
+			int record_schedule_sat_0, int record_schedule_sat_1,
+			int record_schedule_sat_2, int record_sd_status, int sdtotal,
+			int sdfree) {
 		if (sCardInterface != null) {
 			sCardInterface.callBackRecordSchParams(did, record_cover_enable,
 					record_timer, record_size, record_time_enable,
@@ -447,17 +465,17 @@ public class BridgeService extends Service {
 				+ ",record_schedule_mon_2=" + record_schedule_mon_2);
 	}
 
-	private Notification getNotification(String content, String did,
-			boolean isAlarm) {
+	//通知
+	private Notification getNotification(String content, String did,boolean isAlarm)
+	{
 		return mNotify2;
 	}
 
 	private static IpcamClientInterface ipcamClientInterface;
-
-	public static void setIpcamClientInterface(IpcamClientInterface ipcInterface) {
+	public static void setIpcamClientInterface(IpcamClientInterface ipcInterface)
+	{
 		ipcamClientInterface = ipcInterface;
 	}
-
 	public interface IpcamClientInterface {
 		void BSMsgNotifyData(String did, int type, int param);
 
@@ -469,8 +487,8 @@ public class BridgeService extends Service {
 		void CameraStatus(String did, int status);
 	}
 
+	
 	private static PictureInterface pictureInterface;
-
 	public static void setPictureInterface(PictureInterface pi) {
 		pictureInterface = pi;
 	}
@@ -544,7 +562,7 @@ public class BridgeService extends Service {
 				int schedule_wed_2, int schedule_thu_0, int schedule_thu_1,
 				int schedule_thu_2, int schedule_fri_0, int schedule_fri_1,
 				int schedule_fri_2, int schedule_sat_0, int schedule_sat_1,
-				int schedule_sat_2);
+				int schedule_sat_2, int schedule_sat_22);
 
 		void callBackSetSystemParamsResult(String did, int paramType, int result);
 	}
@@ -658,7 +676,7 @@ public class BridgeService extends Service {
 
 	public interface PlayBackInterface {
 		void callBackPlaybackVideoData(byte[] videobuf, int h264Data, int len,
-				int width, int height, int streamid, int frameType);
+				int width, int height,int time);
 	}
 
 	private static AddCameraInterface addCameraInterface;
@@ -691,27 +709,34 @@ public class BridgeService extends Service {
 				+ sensorid1 + ",id2=" + sensorid2 + ",id3=" + sensorid3
 				+ ",sensortype=" + sensortype + ",sensortatus=" + sensorstatus
 				+ ",presetid=" + presetid + ",index:" + index);
-		if (cmd == ContentCommon.CGI_GET_SENSOR_STATUS) {// 获取布撤防状态返回
+		if (cmd == ContentCommon.CGI_GET_SENSOR_STATUS)
+		{// 获取布撤防状态返回
 
 		}
-		if (cmd == ContentCommon.CGI_SET_SENSOR_NAME) {// 编辑传感器信息返回
+		if (cmd == ContentCommon.CGI_SET_SENSOR_NAME)
+		{// 编辑传感器信息返回
 
 		}
-		if (cmd == ContentCommon.CGI_DEL_SENSOR) {// 删除传感器返回
+		if (cmd == ContentCommon.CGI_DEL_SENSOR)
+		{// 删除传感器返回
 
 		}
-		if (cmd == ContentCommon.CGI_SET_SENSOR_PRESET) {// 设置传感器预制返回
+		if (cmd == ContentCommon.CGI_SET_SENSOR_PRESET)
+		{// 设置传感器预制返回
 
 		}
-		if (cmd == ContentCommon.CGI_SENSOR_GETPRESET) {// 获取联动摄像机绑定的看守位返回
+		if (cmd == ContentCommon.CGI_SENSOR_GETPRESET)
+		{// 获取联动摄像机绑定的看守位返回
 
 		}
-		if (cmd == ContentCommon.CGI_IEGET_STATUS) {// 获取摄像机相关参数返回
+		if (cmd == ContentCommon.CGI_IEGET_STATUS)
+		{// 获取摄像机相关参数返回
 			if (messageInterface != null) {
 				messageInterface.CallBackGetStatus(did, resultPbuf, cmd);
 			}
 		}
-		if (cmd == ContentCommon.CGI_GET_SENSOR_STATUS) {// 获取联动摄像机相关参数返回
+		if (cmd == ContentCommon.CGI_GET_SENSOR_STATUS)
+		{// 获取联动摄像机相关参数返回
 
 		}
 
@@ -751,29 +776,34 @@ public class BridgeService extends Service {
 				+ "  sensorid1:" + sensorid1 + "  sensorid2" + sensorid2
 				+ "  sensorid3:" + sensorid3);
 
-		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_GARRISON// 联动摄像机布防返回
-		) {
+		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_GARRISON)// 联动摄像机布防返回
+		{
 
 		}
-		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_CANCELGARRISON// 联动摄像机撤防返回
-		) {
+		// 联动摄像机撤防返回
+		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_CANCELGARRISON)
+		{
 
 		}
-		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_ALARM// 联动摄像机报警
-				|| sensoraction == ContentCommon.SENSOR_ALARM_ACTION_SOS) {
+		// 联动摄像机报警
+		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_ALARM|| sensoraction == ContentCommon.SENSOR_ALARM_ACTION_SOS)
+		{
 
 		}
-		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_LOWBATT// 联动摄像机低电
-		) {
+		// 联动摄像机低电
+		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_LOWBATT)
+		{
 
 		}
-		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_CANCELALARM// 联动摄像机取消报警
-		) {
+		// 联动摄像机取消报警
+		if (sensoraction == ContentCommon.SENSOR_ALARM_ACTION_CANCELALARM)
+		{
 
 		}
 
-		if (selfcmd == ContentCommon.SENSOR_ALARM_ACTION_ALARM
-				&& sensoraction == 8) {// 对码返回
+		if (selfcmd == ContentCommon.SENSOR_ALARM_ACTION_ALARM&& sensoraction == 8)
+		{// 对码返回
+			
 		}
 
 	}

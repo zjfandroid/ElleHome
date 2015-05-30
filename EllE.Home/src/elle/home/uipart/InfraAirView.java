@@ -3,7 +3,6 @@ package elle.home.uipart;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import elle.home.app.smart.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -11,14 +10,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import elle.home.app.smart.R;
 
 public class InfraAirView extends View {
 	

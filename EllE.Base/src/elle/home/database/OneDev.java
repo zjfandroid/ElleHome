@@ -27,7 +27,7 @@ public class OneDev implements Serializable{
 	public int sqliteid;
 	public int visable;
 	
-	//Camera
+	//Camera、空调也用这两个字段了，省得改数据库
 	private String mCameraDeviceID = "";
 	private String mCameraUserName = "";
 	private String mCameraPassWord = "";
@@ -191,29 +191,32 @@ public class OneDev implements Serializable{
 		String sql = "select * from devices where mac = ? and devname = ?";
 		Cursor cursor = db.rawQuery(sql, params);
 		while(cursor.moveToNext()){
-			try {
-				this.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
-				this.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
-				this.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
-				this.devname = cursor.getString(cursor.getColumnIndex("devname"));
-				this.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
-				this.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
-				this.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
-				this.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
-				this.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
-				this.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));	
-				this.mCameraDeviceID = cursor.getString(cursor.getColumnIndex("deviceid"));	
-				this.mCameraUserName = cursor.getString(cursor.getColumnIndex("username"));	
-				this.mCameraPassWord = cursor.getString(cursor.getColumnIndex("password"));	
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			
-			Log.d(TAG,"查询设备mac："+this.mac+" remoteIp:"+this.remoteip.toString()+" orgin ip:"+cursor.getString(cursor.getColumnIndex("remoteip")));
-			
+			getDevInfos(cursor);
 		}
 		
 		db.close();
+	}
+
+	private void getDevInfos(Cursor cursor) {
+		try {
+			this.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
+			this.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
+			this.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
+			this.devname = cursor.getString(cursor.getColumnIndex("devname"));
+			this.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
+			this.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
+			this.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
+			this.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
+			this.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
+			this.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));	
+			this.mCameraDeviceID = cursor.getString(cursor.getColumnIndex("deviceid"));	
+			this.mCameraUserName = cursor.getString(cursor.getColumnIndex("username"));	
+			this.mCameraPassWord = cursor.getString(cursor.getColumnIndex("password"));	
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		
+		Log.d(TAG,"查询设备mac："+this.mac+" remoteIp:"+this.remoteip.toString()+" orgin ip:"+cursor.getString(cursor.getColumnIndex("remoteip")));
 	}
 	
 	/*
@@ -229,26 +232,7 @@ public class OneDev implements Serializable{
 		String sql = "select * from devices where mac = ?";
 		Cursor cursor = db.rawQuery(sql, params);
 		while(cursor.moveToNext()){
-			try {
-				this.mac = Long.parseLong(cursor.getString(cursor.getColumnIndex("mac")));
-				this.remoteip = InetAddress.getByName(cursor.getString(cursor.getColumnIndex("remoteip")));
-				this.remoteport = Integer.parseInt(cursor.getString(cursor.getColumnIndex("remoteport")));
-				this.devname = cursor.getString(cursor.getColumnIndex("devname"));
-				this.type = Byte.parseByte(cursor.getString(cursor.getColumnIndex("type")));
-				this.shownum = Integer.parseInt(cursor.getString(cursor.getColumnIndex("shownum")));
-				this.sqliteid = cursor.getInt(cursor.getColumnIndex("id"));
-				this.visable = Integer.parseInt(cursor.getString(cursor.getColumnIndex("visable")));
-				this.locateId = Integer.parseInt(cursor.getString(cursor.getColumnIndex("locatid")));
-				this.locateNmae = cursor.getString(cursor.getColumnIndex("locatname"));			
-				this.mCameraDeviceID = cursor.getString(cursor.getColumnIndex("deviceid"));		
-				this.mCameraUserName = cursor.getString(cursor.getColumnIndex("username"));	
-				this.mCameraPassWord = cursor.getString(cursor.getColumnIndex("password"));	
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			
-			Log.d(TAG,"查询设备mac："+this.mac+" remoteIp:"+this.remoteip.toString()+" orgin ip:"+cursor.getString(cursor.getColumnIndex("remoteip")));
-			
+			getDevInfos(cursor);
 		}
 		
 		db.close();

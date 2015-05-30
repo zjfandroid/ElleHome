@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import vstc2.nativecaller.BridgeService.PlayInterface;
 import android.content.BroadcastReceiver;
@@ -18,13 +19,13 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -38,8 +39,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -51,6 +50,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -65,17 +65,13 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		OnGestureListener, OnClickListener, PlayInterface {
 
 	private static final String LOG_TAG = "PlayActivity";
-	private static final int FULLSCREEN = 0;
-	private static final int STANDARD = 1;
-	private static final int MAGNIFY = 2;
-	private int playmode = 1;
 	private static final int AUDIO_BUFFER_START_CODE = 0xff00ff;
-	private SurfaceView playSurface = null;
-	private SurfaceHolder playHolder = null;
+	//surfaceView控件
+	private GLSurfaceView playSurface = null;
+	
+	//视频数据
 	private byte[] videodata = null;
 	private int videoDataLen = 0;
-	private int nVideoWidth = 0;
-	private int nVideoHeight = 0;
 
 	public int nVideoWidths = 0;
 	// public byte[] videodatas = null;
@@ -83,54 +79,56 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	private View progressView = null;
 	private boolean bProgress = true;
 	private GestureDetector mGestureDetector = new GestureDetector(this);
-	@SuppressWarnings("unused")
-	private int nSurfaceHeight = 0;
 	private int nResolution = 0;
 	private int nBrightness = 0;
 	private int nContrast = 0;
-	@SuppressWarnings("unused")
-	private int nMode = 0;
-	@SuppressWarnings("unused")
-	private int nFlip = 0;
-	@SuppressWarnings("unused")
-	private int nFramerate = 0;
 	private boolean bInitCameraParam = false;
 	private boolean bManualExit = false;
 	private TextView textosd = null;
 	private String strName = null;;
 	private String strDID = null;;
-	private int streamType = ContentCommon.MJPEG_SUB_STREAM;
 	private PopupWindow popupWindow_about = null;
 	private View osdView = null;
 	private boolean bDisplayFinished = true;
-	private surfaceCallback videoCallback = new surfaceCallback();
 	private CustomBuffer AudioBuffer = null;
 	private AudioPlayer audioPlayer = null;
 	private boolean bAudioStart = false;
-	private int nStreamCodecType;
-	private int nP2PMode = ContentCommon.PPPP_MODE_P2P_NORMAL;
-	private TextView textTimeoutTextView = null;
-	private boolean bTimeoutStarted = false;
-	private int nTimeoutRemain = 180;
-	private boolean isTakeVideo = false;
-	private boolean isLeftRight = false;
-	private boolean isUpDown = false;
-	private PopupWindow mPopupWindowProgress;
 	private final int BRIGHT = 1;
 	private final int CONTRAST = 2;
-	private boolean isHorizontalMirror = false;
-	private boolean isVerticalMirror = false;
 	private boolean isUpDownPressed = false;
 	private boolean isShowtoping = false;
-	private ImageView vidoeView;
-	private ImageView videoViewStandard;
 	private ImageButton ptzAudio;
 	private ImageButton ptzTakePic;
+	
+	private PopupWindow controlWindow;//设备方向控制提示控件
+	private PopupWindow mPopupWindowProgress;//进度条控件
+	//上下左右提示文本
+	private TextView control_item;
+	//正在控制设备
+	private boolean isControlDevice = false;
+	
+	private String stqvga = "qvga";
+	private String stvga = "vga";
+	private String stqvga1 = "qvga1";
+	private String stvga1 = "vga1";
+	private String stp720 = "p720";
+	private String sthigh = "high";
+	private String stmiddle ="middle";
+	private String stmax = "max";
 	private Button ptzResolutoin;
+	//分辨率标识符
+	private boolean ismax = false;
+	private boolean ishigh = false;
+	private boolean isp720 = false;
+	private boolean ismiddle = false;
+	private boolean isqvga1 = false;
+	private boolean isvga1 = false;
+	private boolean isqvga = false;
+	private boolean isvga = false;
 	private Animation showAnim;
 	private boolean isTakepic = false;
 	private boolean isMcriophone = false;
-	private boolean isExit = false;
+	public boolean isH264 = false;//是否是H264格式标志
 	private PopupWindow resolutionPopWindow;
 	private Animation dismissAnim;
 	private View ptzOtherSetAnimView;
@@ -172,23 +170,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		}
 	};
 
-	private class surfaceCallback implements SurfaceHolder.Callback {
-		public void surfaceChanged(SurfaceHolder holder, int format, int width,
-				int height) {
-			if (holder == playHolder) {
-				streamType = 10;
-				NativeCaller.StartPPPPLivestream(strDID, streamType,1);
-			}
-		}
-
-		public void surfaceCreated(SurfaceHolder holder) {
-		}
-
-		public void surfaceDestroyed(SurfaceHolder holder) {
-			// finish();
-		}
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mPopupWindowProgress != null && mPopupWindowProgress.isShowing()) {
@@ -199,33 +180,10 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			resolutionPopWindow.dismiss();
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (!bProgress) {
-				Date date = new Date();
-				if (timeTag == 0) {
-					timeOne = date.getSeconds();
-					timeTag = 1;
-					Toast.makeText(PlayActivity.this, R.string.main_show_back,
-							0).show();
-				} else if (timeTag == 1) {
-					timeTwo = date.getSeconds();
-					if (timeTwo - timeOne <= 3) {
-						Intent intent = new Intent("finish");
-						sendBroadcast(intent);
-						PlayActivity.this.finish();
-						timeTag = 0;
-					} else {
-						timeTag = 1;
-						Toast.makeText(PlayActivity.this,
-								R.string.main_show_back, 0).show();
-					}
-				}
-			} else {
 				showSureDialog();
-			}
-
 			return true;
-
 		}
+		
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			if (!bProgress) {
 				showTop();
@@ -275,6 +233,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		}
 	}
 
+	//默认视频参数
 	private void defaultVideoParams() {
 		nBrightness = 1;
 		nContrast = 128;
@@ -285,188 +244,216 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 	private void showToast(int i) {
 		ShowToast.show(this, i);
-		
 	}
 
-	private void updateTimeout() {
-		textTimeoutTextView.setText(getString(R.string.p2p_relay_mode_time_out)
-				+ nTimeoutRemain + getString(R.string.str_second));
-	}
 
-	private Handler timeoutHandle = new Handler() {
-		public void handleMessage(Message msg) {
-
-			if (nTimeoutRemain > 0) {
-				nTimeoutRemain = nTimeoutRemain - 1;
-				updateTimeout();
-				Message msgMessage = new Message();
-				timeoutHandle.sendMessageDelayed(msgMessage, 1000);
-			} else {
-				if (!isExit) {
-					Toast.makeText(getApplicationContext(),
-							R.string.p2p_view_time_out, Toast.LENGTH_SHORT)
-							.show();
-				}
-				finish();
-			}
-		}
-	};
-
-	private void startTimeout() {
-		if (!bTimeoutStarted) {
-			Message msgMessage = new Message();
-			timeoutHandle.sendMessageDelayed(msgMessage, 1000);
-			bTimeoutStarted = true;
-		}
-	}
-
+	//设置视频可见
 	private void setViewVisible() {
-		if (bProgress) {
+		if (bProgress)
+		{
 			bProgress = false;
 			progressView.setVisibility(View.INVISIBLE);
 			osdView.setVisibility(View.VISIBLE);
-			if (nP2PMode == ContentCommon.PPPP_MODE_P2P_RELAY) {
-				updateTimeout();
-				textTimeoutTextView.setVisibility(View.VISIBLE);
-				startTimeout();
-			}
 			getCameraParams();
 		}
 	}
 
 	int disPlaywidth;
 	private Bitmap mBmp;
-	private Handler mHandler = new Handler() {
+	private Handler mHandler = new Handler()
+	{
 
-		public void handleMessage(Message msg) {
-			if (msg.what == 1 || msg.what == 2) {
-				setViewVisible();
-			}
-			if (!isPTZPrompt) {
-				isPTZPrompt = true;
-				showToast(R.string.ptz_control);
-			}
-
-			switch (msg.what) {
-			case 1: // h264
-			{
-				byte[] rgb = new byte[nVideoWidths * nVideoHeights * 2];
-				NativeCaller.YUV4202RGB565(videodata, rgb, nVideoWidths,
-						nVideoHeights);
-				ByteBuffer buffer = ByteBuffer.wrap(rgb);
-				rgb = null;
-				mBmp = Bitmap.createBitmap(nVideoWidths, nVideoHeights,
-						Bitmap.Config.RGB_565);
-				mBmp.copyPixelsFromBuffer(buffer);
+		public void handleMessage(Message msg)
+        {
+				if (msg.what == 1 || msg.what == 2) {
+					setViewVisible();
+				}
+				if (!isPTZPrompt)
+				{
+					isPTZPrompt = true;
+					showToast(R.string.ptz_control);
+				}
 				int width = getWindowManager().getDefaultDisplay().getWidth();
 				int height = getWindowManager().getDefaultDisplay().getHeight();
+				switch (msg.what) {
+				case 1: // h264
+				{
+					if (reslutionlist.size() == 0) {
+						if (nResolution == 0) {
+							ismax = true;
+							ismiddle = false;
+							ishigh = false;
+							isp720 = false;
+							isqvga1 = false;
+							isvga1 = false;
+							addReslution(stmax, ismax);
+						} else if (nResolution == 1) {
+							ismax = false;
+							ismiddle = false;
+							ishigh = true;
+							isp720 = false;
+							isqvga1 = false;
+							isvga1 = false;
+							addReslution(sthigh, ishigh);
+						} else if (nResolution == 2) {
+							ismax = false;
+							ismiddle = true;
+							ishigh = false;
+							isp720 = false;
+							isqvga1 = false;
+							isvga1 = false;
+							addReslution(stmiddle, ismiddle);
+						} else if (nResolution == 3) {
+							ismax = false;
+							ismiddle = false;
+							ishigh = false;
+							isp720 = true;
+							isqvga1 = false;
+							isvga1 = false;
+							addReslution(stp720, isp720);
+							nResolution = 3;
+						} else if (nResolution == 4) {
+							ismax = false;
+							ismiddle = false;
+							ishigh = false;
+							isp720 = false;
+							isqvga1 = false;
+							isvga1 = true;
+							addReslution(stvga1, isvga1);
+						} else if (nResolution == 5) {
+							ismax = false;
+							ismiddle = false;
+							ishigh = false;
+							isp720 = false;
+							isqvga1 = true;
+							isvga1 = false;
+							addReslution(stqvga1, isqvga1);
+						}
+					} else {
+						if (reslutionlist.containsKey(strDID))
+						{
+							getReslution();
+						} else {
+							if (nResolution == 0) {
+								ismax = true;
+								ismiddle = false;
+								ishigh = false;
+								isp720 = false;
+								isqvga1 = false;
+								isvga1 = false;
+								addReslution(stmax, ismax);
+							} else if (nResolution == 1) {
+								ismax = false;
+								ismiddle = false;
+								ishigh = true;
+								isp720 = false;
+								isqvga1 = false;
+								isvga1 = false;
+								addReslution(sthigh, ishigh);
+							} else if (nResolution == 2) {
+								ismax = false;
+								ismiddle = true;
+								ishigh = false;
+								isp720 = false;
+								isqvga1 = false;
+								isvga1 = false;
+								addReslution(stmiddle, ismiddle);
+							} else if (nResolution == 3) {
+								ismax = false;
+								ismiddle = false;
+								ishigh = false;
+								isp720 = true;
+								isqvga1 = false;
+								isvga1 = false;
+								addReslution(stp720, isp720);
+								nResolution = 3;
+							} else if (nResolution == 4) {
+								ismax = false;
+								ismiddle = false;
+								ishigh = false;
+								isp720 = false;
+								isqvga1 = false;
+								isvga1 = true;
+								addReslution(stvga1, isvga1);
+							} else if (nResolution == 5) {
+								ismax = false;
+								ismiddle = false;
+								ishigh = false;
+								isp720 = false;
+								isqvga1 = true;
+								isvga1 = false;
+								addReslution(stqvga1, isqvga1);
+							}
+						}
 
-				vidoeView.setVisibility(View.GONE);
-				Bitmap bitmap = null;
-				if (screenorientation == 0) {//竖屏
-					bitmap = Bitmap.createScaledBitmap(mBmp, nVideoWidths,
-							nVideoHeights, true);
-					int ow, oh;
-					ow = disPlaywidth;
-					oh = nVideoHeights * disPlaywidth / nVideoWidths;
-					FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-							ow * 4 / 3, oh);
-					lp.gravity = Gravity.CENTER;
-					
-					videoViewStandard.setLayoutParams(lp);
-					videoViewStandard.setVisibility(View.VISIBLE);
-					videoViewStandard.setImageBitmap(bitmap);
-					playSurface.setBackgroundColor(0xff000000);
+					}
 
-				} else if (screenorientation == 1) {//横屏
-					bitmap = Bitmap.createScaledBitmap(mBmp, width, height,
-							true);
-					playSurface.setVisibility(View.VISIBLE);
-					videoViewStandard.setVisibility(View.GONE);
-					Drawable drawable = new BitmapDrawable(bitmap);
-					playSurface.setBackgroundDrawable(drawable);
+					if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) 
+					{
+						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+								width, width * 3 / 4);
+						lp.gravity = Gravity.CENTER;
+						playSurface.setLayoutParams(lp);
+					}
+					else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+					{
+						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+								width, height);
+						lp.gravity = Gravity.CENTER;
+						playSurface.setLayoutParams(lp);
+					}
+					myRender.writeSample(videodata, nVideoWidths, nVideoHeights);
 				}
-
-			}
-				break;
-			case 2: // JPEG
-			{
-				// ptzTakeVideo.setVisibility(View.GONE);
-				mBmp = BitmapFactory
-						.decodeByteArray(videodata, 0, videoDataLen);
-				if (mBmp == null) {
-					Log.d(LOG_TAG, "bmp can't be decode...");
+					break;
+				case 2: // JPEG
+				{
+					if (reslutionlist.size() == 0) {
+						if (nResolution == 1) {
+							isvga = true;
+							isqvga = false;
+							addReslution(stvga, isvga);
+						} else if (nResolution == 0) {
+							isqvga = true;
+							isvga = false;
+							addReslution(stqvga, isqvga);
+						}
+					} else {
+						if (reslutionlist.containsKey(strDID)) {
+							getReslution();
+						} else {
+							if (nResolution == 1) {
+								isvga = true;
+								isqvga = false;
+								addReslution(stvga, isvga);
+							} else if (nResolution == 0) {
+								isqvga = true;
+								isvga = false;
+								addReslution(stqvga, isqvga);
+							}
+						}
+					}
+					mBmp = BitmapFactory.decodeByteArray(videodata, 0,
+							videoDataLen);
+					if (mBmp == null) {
+						ShowInfo.printLogW("_______decodeByteArray null_____");
+						bDisplayFinished = true;
+						return;
+					}else{
+						ShowInfo.printLogW("_______decodeByteArray videoDataLen_____" + videoDataLen);
+					}
+	
+				}
+					break;
+				default:
+					break;
+				}
+			   if (msg.what == 1 || msg.what == 2)
+			   {
 					bDisplayFinished = true;
-					return;
-				}
-
-				nVideoWidth = mBmp.getWidth();
-				nVideoHeight = mBmp.getHeight();
-
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-					videoViewStandard.setVisibility(View.GONE);
-					vidoeView.setVisibility(View.VISIBLE);
-					vidoeView.setImageBitmap(mBmp);
-
-				} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-					videoViewStandard.setImageBitmap(mBmp);
-					videoViewStandard.setVisibility(View.VISIBLE);
-					vidoeView.setVisibility(View.GONE);
-				}
-				if (isTakepic) {
-					isTakepic = false;
-					// takePicture(mBmp);
-				}
-
-			}
-				break;
-			case 3: //
-			{
-				displayResolution();
-			}
-				break;
-			}
-
-			
-			if (msg.what == 1 || msg.what == 2) {
-
-				bDisplayFinished = true;
-			}
-			
-		}
+			   }	
+		 }
 
 	};
-
-	protected void displayResolution() {
-		/*
-		 * 0->640x480 1->320x240 2->160x120; 3->1280x720 4->640x360 5->1280x960
-		 */
-
-		String strCurrResolution = null;
-
-		switch (nResolution) {
-		case 0:// vga
-			strCurrResolution = "640x480";
-			break;
-		case 1:// qvga
-			strCurrResolution = "320x240";
-			break;
-		case 2:
-			strCurrResolution = "160x120";
-			break;
-		case 3:// 720p
-			strCurrResolution = "1280x720";
-			break;
-		case 4:
-			strCurrResolution = "640x360";
-			break;
-		case 5:
-			strCurrResolution = "1280x960";
-			break;
-		default:
-			return;
-		}
-	}
 
 	public void initExitPopupWindow2() {
 		LayoutInflater li = LayoutInflater.from(this);
@@ -540,16 +527,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		}
 	};
 
-	private Handler msgStreamCodecHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (nStreamCodecType == ContentCommon.PPPP_STREAM_TYPE_JPEG) {
-				// textCodec.setText("JPEG");
-			} else {
-				// textCodec.setText("H.264");
-			}
-		}
-	};
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -564,6 +541,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		audioPlayer = new AudioPlayer(AudioBuffer);
 		// myvideoRecorder = new CustomVideoRecord(this, strDID);
 		BridgeService.setPlayInterface(this);
+		NativeCaller.StartPPPPLivestream(strDID, 10, 1);//确保不能重复start
 
 		getCameraParams();
 		dismissTopAnim = AnimationUtils.loadAnimation(this,
@@ -574,6 +552,9 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 				R.anim.ptz_otherset_anim_show);
 		dismissAnim = AnimationUtils.loadAnimation(this,
 				R.anim.ptz_otherset_anim_dismiss);
+		
+		myRender = new MyRender(playSurface);
+		playSurface.setRenderer(myRender);
 
 		// prompt user how to control ptz when first enter play
 		SharedPreferences sharePreferences = getSharedPreferences("ptzcontrol",
@@ -594,7 +575,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	private void InitParams() {
 		DisplayMetrics dm = new DisplayMetrics();
 		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
-		nSurfaceHeight = dm.heightPixels;
 		textosd.setText(strName);
 	}
 
@@ -616,19 +596,16 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 	protected void setResolution(int Resolution) {
 		Log.d("tag", "setResolution resolution:" + Resolution);
-		NativeCaller.PPPPCameraControl(strDID, 0, Resolution);
+		NativeCaller.PPPPCameraControl(strDID,16, Resolution);
 	}
 
 	private void findView() {
-		playSurface = (SurfaceView) findViewById(R.id.playSurface);
-		playSurface.setBackgroundColor(0xff000000);
-		
-		playHolder = playSurface.getHolder();
-		playHolder.setFormat(PixelFormat.RGB_565);
-		playHolder.addCallback(videoCallback);
-
+		//方向控制提示框
+		initControlDailog();
+		//视频渲染画面控件
+		playSurface = (GLSurfaceView) findViewById(R.id.mysurfaceview);
 		playSurface.setOnTouchListener(this);
-		playSurface.setLongClickable(true);
+		playSurface.setLongClickable(true);//确保手势识别正确工作
 		
 		button_back = (ImageButton) findViewById(R.id.login_top_back);
 		imgUp = (ImageView) findViewById(R.id.imgup);
@@ -640,11 +617,8 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		imgLeft.setOnClickListener(this);
 		imgRight.setOnClickListener(this);
 		button_back.setOnClickListener(this);
-		vidoeView = (ImageView) findViewById(R.id.vedioview);
-		videoViewStandard = (ImageView) findViewById(R.id.vedioview_standard);
 		progressView = (View) findViewById(R.id.progressLayout);
 		textosd = (TextView) findViewById(R.id.textosd);
-		textTimeoutTextView = (TextView) findViewById(R.id.textTimeout);
 		osdView = (View) findViewById(R.id.osdlayout);
 		ptzAudio = (ImageButton) findViewById(R.id.ptz_audio);
 		ptzResolutoin = (Button) findViewById(R.id.ptz_resoluti);
@@ -718,7 +692,8 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 			break;
 		case MotionEvent.ACTION_UP:
-			if (Math.abs((x1 - x2)) < 25 && Math.abs((y1 - y2)) < 25) {
+			if (Math.abs((x1 - x2)) < 25 && Math.abs((y1 - y2)) < 25)
+			{
 
 				if (resolutionPopWindow != null
 						&& resolutionPopWindow.isShowing()) {
@@ -736,7 +711,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 					}
 				}
 				isSecondDown = false;
-			} else {
 			}
 			x1 = 0;
 			x2 = 0;
@@ -747,7 +721,8 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		case MotionEvent.ACTION_POINTER_DOWN:
 			isSecondDown = true;
 			oldDist = spacing(event);
-			if (oldDist > 10f) {
+			if (oldDist > 10f) 
+			{
 				savedMatrix.set(matrix);
 				midPoint(mid, event);
 				mode = ZOOM;
@@ -794,20 +769,19 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	private Matrix mDisplayMatrix = new Matrix();
 	private final float[] mMatrixValues = new float[9];
 
-	protected void zoomTo(float scale, float centerX, float centerY) {
+	protected void zoomTo(float scale, float centerX, float centerY)
+	{
 		Log.d("zoomTo", "zoomTo scale:" + scale);
-		if (scale > mMaxZoom) {
-			scale = mMaxZoom;
-		} else if (scale < mMinZoom) {
-			scale = mMinZoom;
-		}
-
-		float oldScale = getScale();
-		float deltaScale = scale / oldScale;
-		Log.d("deltaScale", "deltaScale:" + deltaScale);
-		mSuppMatrix.postScale(deltaScale, deltaScale, centerX, centerY);
-		videoViewStandard.setScaleType(ImageView.ScaleType.MATRIX);
-		videoViewStandard.setImageMatrix(getImageViewMatrix());
+//		if (scale > mMaxZoom) {
+//			scale = mMaxZoom;
+//		} else if (scale < mMinZoom) {
+//			scale = mMinZoom;
+//		}
+//
+//		float oldScale = getScale();
+//		float deltaScale = scale / oldScale;
+//		Log.d("deltaScale", "deltaScale:" + deltaScale);
+//		mSuppMatrix.postScale(deltaScale, deltaScale, centerX, centerY);
 	}
 
 	protected Matrix getImageViewMatrix() {
@@ -867,23 +841,29 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		float xx = x1 > x2 ? x1 - x2 : x2 - x1;
 		float yy = y1 > y2 ? y1 - y2 : y2 - y1;
 
-		if (xx > yy) {
-			if ((x1 > x2) && (xx > MINLEN)) {// left
-				NativeCaller
-						.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_RIGHT);
-			} else if ((x1 < x2) && (xx > MINLEN)) {// right
-				NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_LEFT);
+		if (xx > yy)
+		{
+			if ((x1 > x2) && (xx > MINLEN))
+			{// right
+				if(!isControlDevice)
+					new ControlDeviceTask(ContentCommon.CMD_PTZ_RIGHT).execute();
+				
+			} else if ((x1 < x2) && (xx > MINLEN)) {// left
+				if(!isControlDevice)
+				new ControlDeviceTask(ContentCommon.CMD_PTZ_LEFT).execute();
 			}
 
 		} else {
-			if ((y1 > y2) && (yy > MINLEN)) {// down
-				NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_DOWN);
+			if ((y1 > y2) && (yy > MINLEN))
+			{// down
+				if(!isControlDevice)
+					new ControlDeviceTask(ContentCommon.CMD_PTZ_DOWN).execute();
 			} else if ((y1 < y2) && (yy > MINLEN)) {// up
-				NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_UP);
+				if(!isControlDevice)
+					new ControlDeviceTask(ContentCommon.CMD_PTZ_UP).execute();
 			}
 
 		}
-
 		return false;
 	}
 
@@ -925,20 +905,20 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 //			}
 			break;
 		case R.id.imgup:
-			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_UP);
-			Log.d("tag", "up");
+			if(!isControlDevice)
+				new ControlDeviceTask(ContentCommon.CMD_PTZ_UP).execute();
 			break;
 		case R.id.imgdown:
-			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_DOWN);
-			Log.d("tag", "down");
+			if(!isControlDevice)
+				new ControlDeviceTask(ContentCommon.CMD_PTZ_DOWN).execute();
 			break;
 		case R.id.imgleft:
-			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_LEFT);
-			Log.d("tag", "left");
+			if(!isControlDevice)
+				new ControlDeviceTask(ContentCommon.CMD_PTZ_LEFT).execute();
 			break;
 		case R.id.imgright:
-			NativeCaller.PPPPPTZControl(strDID, ContentCommon.CMD_PTZ_RIGHT);
-			Log.d("tag", "right");
+			if(!isControlDevice)
+				new ControlDeviceTask(ContentCommon.CMD_PTZ_RIGHT).execute();
 			break;
 //		case R.id.ptz_hori_mirror:
 //			if (isHorizontalMirror) {
@@ -1062,23 +1042,42 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		case R.id.ptz_resolution_h264_qvga:
 			dismissBrightAndContrastProgress();
 			resolutionPopWindow.dismiss();
-			nResolution = 1;
+			ismax = false;
+			ismiddle = false;
+			ishigh = false;
+			isp720 = false;
+			isqvga1 = true;
+			isvga1 = false;
+			addReslution(stqvga1, isqvga1);
+			nResolution = 5;
 			setResolution(nResolution);
-			Log.d("tag", "h264 resolution:" + nResolution + " qvga");
 			break;
 		case R.id.ptz_resolution_h264_vga:
 			dismissBrightAndContrastProgress();
 			resolutionPopWindow.dismiss();
-			nResolution = 0;
+			ismax = false;
+			ismiddle = false;
+			ishigh = false;
+			isp720 = false;
+			isqvga1 = false;
+			isvga1 = true;
+			addReslution(stvga1, isvga1);
+			nResolution = 4;
 			setResolution(nResolution);
-			Log.d("tag", "h264 resolution:" + nResolution + " vga");
+			
 			break;
 		case R.id.ptz_resolution_h264_720p:
 			dismissBrightAndContrastProgress();
 			resolutionPopWindow.dismiss();
+			ismax = false;
+			ismiddle = false;
+			ishigh = false;
+			isp720 = true;
+			isqvga1 = false;
+			isvga1 = false;
+			addReslution(stp720, isp720);
 			nResolution = 3;
 			setResolution(nResolution);
-			Log.d("tag", "h264 resolution:" + nResolution + " 720p");
 			break;
 //		case R.id.ptz_playmode:
 //			dismissBrightAndContrastProgress();
@@ -1116,40 +1115,44 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * 截图
 	 */
 	private void takePicpure() {
-		videoViewStandard.setDrawingCacheEnabled(true);
-		Bitmap bitmap = videoViewStandard.getDrawingCache();
-		if(null == bitmap){
-			ShowToast.show(this, getResources().getString(R.string.screenshot_failed));
-			return;
+//		videoViewStandard.setDrawingCacheEnabled(true);
+//		Bitmap bitmap = videoViewStandard.getDrawingCache();
+//		if(null == bitmap){
+//			ShowToast.show(this, getResources().getString(R.string.screenshot_failed));
+//			return;
+//		}
+		if(null == mBmp){
+			ShowInfo.printLogW("________null == mBmp_____");
+		}else{
+			File file = new File( Environment.getExternalStorageDirectory()+ "/Elle.Home/" + System.currentTimeMillis() + ".png");
+			ShowInfo.printLogW(file.getParentFile() + "_________getExternalStorageDirectory________" + Environment.getExternalStorageDirectory()+ "/Elle.Home/");
 		}
 		
-        File file = new File( Environment.getExternalStorageDirectory()+ "/Elle.Home/" + System.currentTimeMillis() + ".png");
-        ShowInfo.printLogW(file.getParentFile() + "_________getExternalStorageDirectory________" + Environment.getExternalStorageDirectory()+ "/Elle.Home/");
-        if(!file.getParentFile().exists()){
-        		file.getParentFile().mkdirs();
-        }
-        
-        try {
-        		FileOutputStream fos = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			fos.close();
-			ShowToast.show(this, getResources().getString(R.string.screenshot_successed) + file.getAbsolutePath());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
-        if(null != bitmap && !bitmap.isRecycled()){
-        		bitmap.recycle();
-        		bitmap = null;
-        }
-        
-        videoViewStandard.setDrawingCacheEnabled(false);
-        
-        /*更新媒体库,扫描抓图文件*/
-        Uri data = Uri.parse("file://" + file.getAbsolutePath());
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
+//        if(!file.getParentFile().exists()){
+//        		file.getParentFile().mkdirs();
+//        }
+//        
+//        try {
+//        		FileOutputStream fos = new FileOutputStream(file);
+//			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//			fos.close();
+//			ShowToast.show(this, getResources().getString(R.string.screenshot_successed) + file.getAbsolutePath());
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//        
+//        if(null != bitmap && !bitmap.isRecycled()){
+//        		bitmap.recycle();
+//        		bitmap = null;
+//        }
+//        
+//        videoViewStandard.setDrawingCacheEnabled(false);
+//        
+//        /*更新媒体库,扫描抓图文件*/
+//        Uri data = Uri.parse("file://" + file.getAbsolutePath());
+//        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
 	}
 
 	private void dismissBrightAndContrastProgress() {
@@ -1170,10 +1173,176 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			ptzOtherSetAnimView.setVisibility(View.VISIBLE);
 		}
 	}
+	
+	/*
+	 *异步控制方向
+	 */
+	private class ControlDeviceTask extends AsyncTask<Void, Void, Integer>
+	{
+        private int type;
+        public ControlDeviceTask(int type)
+        {
+        	this.type=type;
+        }
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			if(type ==ContentCommon.CMD_PTZ_RIGHT)
+			{
+				control_item.setText(R.string.right);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_LEFT)
+			{
+				control_item.setText(R.string.left);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_UP)
+			{
+				control_item.setText(R.string.up);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_DOWN)
+			{
+				control_item.setText(R.string.down);
+			}
+			if (controlWindow != null && controlWindow.isShowing())
+				controlWindow.dismiss();
+			
+			if (controlWindow != null && !controlWindow.isShowing())
+				controlWindow.showAtLocation(playSurface, Gravity.CENTER,0, 0);
+		}
 
-	private void setBrightOrContrast(final int type) {
-		Log.i(LOG_TAG, "type:" + type + "  bInitCameraParam:"
-				+ bInitCameraParam);
+		@Override
+		protected Integer doInBackground(Void... arg0) {
+			isControlDevice = true;
+			if(type == ContentCommon.CMD_PTZ_RIGHT)
+			{
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_RIGHT);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_RIGHT_STOP);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_LEFT)
+			{
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_LEFT);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_LEFT_STOP);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_UP)
+			{
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_UP);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_UP_STOP);
+			}
+			else if(type ==ContentCommon.CMD_PTZ_DOWN)
+			{
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_DOWN);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				NativeCaller.PPPPPTZControl(strDID,ContentCommon.CMD_PTZ_DOWN_STOP);
+			}
+			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			isControlDevice = false;
+			if (controlWindow != null && controlWindow.isShowing())
+				controlWindow.dismiss();
+		}
+		
+	}
+	/*
+	 * 上下左右提示框
+	 */
+	private void initControlDailog()
+	{
+		LayoutInflater inflater=LayoutInflater.from(this);
+		View view=inflater.inflate(R.layout.control_device_view, null);
+		control_item = (TextView) view.findViewById(R.id.textView1_play);
+		controlWindow=new PopupWindow(view,FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
+		controlWindow.setBackgroundDrawable(new ColorDrawable(0));
+		controlWindow.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				// TODO Auto-generated method stub
+				controlWindow.dismiss();
+			}
+		});
+		controlWindow.setTouchInterceptor(new OnTouchListener() 
+		{
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				if (arg1.getAction() == MotionEvent.ACTION_OUTSIDE) {
+					controlWindow.dismiss();
+				}
+				return false;
+			}
+		});
+	}
+	
+	/**
+	 * 获取reslution
+	 */
+	public static Map<String, Map<Object, Object>> reslutionlist = new HashMap<String, Map<Object, Object>>();
+	/**
+	 * 增加reslution
+	 */
+	private void addReslution(String mess, boolean isfast)
+	{
+		if (reslutionlist.size() != 0) {
+			if (reslutionlist.containsKey(strDID)) {
+				reslutionlist.remove(strDID);
+			}
+		}
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put(mess, isfast);
+		reslutionlist.put(strDID, map);
+	}
+	private void getReslution() {
+		if (reslutionlist.containsKey(strDID)) {
+			Map<Object, Object> map = reslutionlist.get(strDID);
+			if (map.containsKey("qvga")) {
+				isqvga = true;
+			} else if (map.containsKey("vga")) {
+				isvga = true;
+			} else if (map.containsKey("qvga1")) {
+				isqvga1 = true;
+			} else if (map.containsKey("vga1")) {
+				isvga1 = true;
+			} else if (map.containsKey("p720")) {
+				isp720 = true;
+			} else if (map.containsKey("high")) {
+				ishigh = true;
+			} else if (map.containsKey("middle")) {
+				ismiddle = true;
+			} else if (map.containsKey("max")) {
+				ismax = true;
+			}
+		}
+	}
+	/*
+	 * @param type
+	 * 亮度饱和对比度
+	 */
+	private void setBrightOrContrast(final int type)
+	{
+
 		if (!bInitCameraParam) {
 			return;
 		}
@@ -1222,7 +1391,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 			}
 		});
-
 		mPopupWindowProgress = new PopupWindow(layout, width / 2, 180);
 		mPopupWindowProgress.showAtLocation(findViewById(R.id.play),
 				Gravity.TOP, 0, 0);
@@ -1257,61 +1425,29 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	@Override
 	public void callBackCameraParamNotify(String did, int resolution,
 			int brightness, int contrast, int hue, int saturation, int flip) {
-		Log.d("info", "CameraParamNotify...did:" + did + " brightness: "
-				+ brightness + " resolution: " + resolution + " contrast: "
-				+ contrast + " hue: " + hue + " saturation: " + saturation
-				+ " flip: " + flip);
-		Log.d("tag", "contrast:" + contrast + " brightness:" + brightness);
+	
 		nBrightness = brightness;
 		nContrast = contrast;
 		nResolution = resolution;
-		Log.d("VGA", nResolution + "");
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				if (nResolution == 0) {
-					// vga
-					ptzResolutoin.setText("VGA");
-				} else if (nResolution == 3) {
-					// 720
-					ptzResolutoin.setText("720P");
-				} else if (nResolution == 1) {
-					// 720
-					ptzResolutoin.setText("QVGA");
-				}
-			}
-		});
-		Message msg = new Message();
-		msg.what = 3;
-		mHandler.sendMessage(msg);
-
 		bInitCameraParam = true;
 	}
 
 	/***
-	 * BridgeService callback
+	 * BridgeService callback 视频数据流回调
 	 * 
 	 * **/
 	@Override
-	public void callBaceVideoData(byte[] videobuf, int h264Data, int len,
-			int width, int height) {
-		Log.d("info", "Call VideoData...h264Data: " + h264Data + " len: " + len
-				+ " videobuf len: " + videobuf.length + "width==" + nVideoWidth
-				+ "height==" + nVideoHeight);
-		if (!bDisplayFinished) {
-			Log.d("info", "return bDisplayFinished");
+	public void callBaceVideoData(byte[] videobuf, int h264Data, int len,int width, int height) {
+		ShowInfo.printLogW("底层返回数据", "____videobuf:"+videobuf+"--"+"h264Data"+h264Data+"len"+len+"width"+width+"height"+height);
+		if (!bDisplayFinished)
 			return;
-		}
-		
 		bDisplayFinished = false;
 		videodata = videobuf;
 		videoDataLen = len;
-		nVideoWidths = width;
-		nVideoHeights = height;
 		Message msg = new Message();
 		if (h264Data == 1) { // H264
-			Log.i("info", "h264Data....");
+			nVideoWidths = width;
+			nVideoHeights = height;
 			if (isTakepic) {
 				isTakepic = false;
 				byte[] rgb = new byte[width * height * 2];
@@ -1320,14 +1456,14 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 				mBmp = Bitmap
 						.createBitmap(width, height, Bitmap.Config.RGB_565);
 				mBmp.copyPixelsFromBuffer(buffer);
+				ShowInfo.printLogW("_______createBitmap null_____");
 				// takePicture(mBmp);
 			}
+			isH264 = true;
 			msg.what = 1;
 		} else { // MJPEG
-			Log.i("info", "MJPEG....");
 			msg.what = 2;
 		}
-
 		mHandler.sendMessage(msg);
 	}
 
@@ -1337,15 +1473,10 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * **/
 	@Override
 	public void callBackMessageNotify(String did, int msgType, int param) {
-		Log.d("tag", "MessageNotify did: " + did + " msgType: " + msgType
-				+ " param: " + param);
 		if (bManualExit)
 			return;
 
 		if (msgType == ContentCommon.PPPP_MSG_TYPE_STREAM) {
-			nStreamCodecType = param;
-			Message msgMessage = new Message();
-			msgStreamCodecHandler.sendMessage(msgMessage);
 			return;
 		}
 
@@ -1359,7 +1490,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 		Message msg = new Message();
 		msg.what = 1;
-
 		msgHandler.sendMessage(msg);
 	}
 
@@ -1369,7 +1499,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * **/
 	@Override
 	public void callBackAudioData(byte[] pcm, int len) {
-		Log.d(LOG_TAG, "AudioData: len :+ " + len);
 		if (!audioPlayer.isAudioPlaying()) {
 			return;
 		}
@@ -1388,7 +1517,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * **/
 	@Override
 	public void callBackH264Data(byte[] h264, int type, int size) {
-		Log.d("tag", "CallBack_H264Data" + " type:" + type + " size:" + size);
 	}
 
 }

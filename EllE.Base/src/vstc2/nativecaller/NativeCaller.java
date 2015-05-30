@@ -1,6 +1,5 @@
 package vstc2.nativecaller;
 
-
 import android.content.Context;
 
 /**
@@ -40,6 +39,9 @@ public class NativeCaller {
 
 	public native static int PPPPPTZControl(String did, int command);
 
+	/*
+	 * @param 0 分辨率 1 亮度 2对比度
+	 */
 	public native static int PPPPCameraControl(String did, int param, int value);
 
 	public native static int PPPPGetCGI(String did, int cgi);
@@ -108,28 +110,20 @@ public class NativeCaller {
 			int ptz_patrol_left_rate, int ptz_patrol_right_rate,
 			int disable_preset);
 
-	public native static int PPPPAlarmSetting(String did, int alarm_audio,
-			int motion_armed, int motion_sensitivity, int input_armed,
-			int ioin_level, int iolinkage, int ioout_level, int alarmpresetsit,
-			int mail, int snapshot, int record, int upload_interval,
-			int schedule_enable, int schedule_sun_0, int schedule_sun_1,
-			int schedule_sun_2, int schedule_mon_0, int schedule_mon_1,
-			int schedule_mon_2, int schedule_tue_0, int schedule_tue_1,
-			int schedule_tue_2, int schedule_wed_0, int schedule_wed_1,
-			int schedule_wed_2, int schedule_thu_0, int schedule_thu_1,
-			int schedule_thu_2, int schedule_fri_0, int schedule_fri_1,
-			int schedule_fri_2, int schedule_sat_0, int schedule_sat_1,
-			int schedule_sat_2, int defense_plan1, int defense_plan2,
-			int defense_plan3, int defense_plan4, int defense_plan5,
-			int defense_plan6, int defense_plan7, int defense_plan8,
-			int defense_plan9, int defense_plan10, int defense_plan11,
-			int defense_plan12, int defense_plan13, int defense_plan14,
-			int defense_plan15, int defense_plan16, int defense_plan17,
-			int defense_plan18, int defense_plan19, int defense_plan20,
-			int defense_plan21);
+	public native static int PPPPAlarmSetting(String did, int alarm_audio,int motion_armed,
+			int motion_sensitivity, int input_armed, int ioin_level,
+			int iolinkage, int ioout_level, int alarmpresetsit, int mail,
+			int snapshot, int record, int upload_interval, int schedule_enable,
+			int schedule_sun_0, int schedule_sun_1, int schedule_sun_2,
+			int schedule_mon_0, int schedule_mon_1, int schedule_mon_2,
+			int schedule_tue_0, int schedule_tue_1, int schedule_tue_2,
+			int schedule_wed_0, int schedule_wed_1, int schedule_wed_2,
+			int schedule_thu_0, int schedule_thu_1, int schedule_thu_2,
+			int schedule_fri_0, int schedule_fri_1, int schedule_fri_2,
+			int schedule_sat_0, int schedule_sat_1, int schedule_sat_2);
 
 	public native static int PPPPSDRecordSetting(String did,
-			int record_cover_enable, int record_timer, int record_size,int record_chnl,
+			int record_cover_enable, int record_timer, int record_size,
 			int record_time_enable, int record_schedule_sun_0,
 			int record_schedule_sun_1, int record_schedule_sun_2,
 			int record_schedule_mon_0, int record_schedule_mon_1,

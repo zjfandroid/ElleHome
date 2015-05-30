@@ -5,31 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
-
-        <SurfaceView
-            android:id="@+id/playSurface"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/vedioview"
+    <android.opengl.GLSurfaceView
+        android:id="@+id/mysurfaceview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="#0000ffff"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/vedioview_standard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#000000" />
+        android:longClickable="true" />
 
     <LinearLayout
         android:id="@+id/progressLayout"
@@ -186,18 +167,6 @@
             android:layout_gravity="center"
             android:background="@drawable/title_bk"
             android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textTimeout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/background_osd"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="invisible" />
     </RelativeLayout>
 
     <LinearLayout

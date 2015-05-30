@@ -43,7 +43,7 @@ public class ProtocolDataList {
 	 * @param packet
 	 */
 	public synchronized void addOnePacketToSend(BasicPacket packet){
-		//Log.d(TAG,"添加了一个需要发送的包:"+DataExchange.byteArrayToHexString(packet.data));
+//		Log.d(TAG,"添加了一个需要发送的包:"+DataExchange.byteArrayToHexString(packet.data));
 		this.sendList.add(packet);
 	}
 	
@@ -93,7 +93,9 @@ public class ProtocolDataList {
 						//超时了
 						if(this.sendList.get(i).listener!=null)
 							this.sendList.get(i).listener.OnRecvData(null);
-						this.sendList.remove(i);
+						if(i<sendList.size()){
+							this.sendList.remove(i);
+						}
 						break;
 					}
 				}else{
@@ -105,7 +107,9 @@ public class ProtocolDataList {
 					}else if(ret>7){
 						if(this.sendList.get(i).listener!=null)
 							this.sendList.get(i).listener.OnRecvData(null);
-						this.sendList.remove(i);
+						if(i<sendList.size()){
+							this.sendList.remove(i);
+						}
 						break;
 					}
 				}
@@ -118,7 +122,7 @@ public class ProtocolDataList {
 	 * @param packet
 	 */
 	public synchronized void dealRecvPacket(PacketCheck packet){
-		//Log.d(TAG,"收到数据："+DataExchange.byteArrayToHexString(packet.data));
+//		Log.d(TAG,"收到数据："+DataExchange.byteArrayToHexString(packet.data));
 		if(packet.seq == 0){
 			//本地查询数据包回来，内部处理
 			//checktmplist.dealOnePacket(packet);

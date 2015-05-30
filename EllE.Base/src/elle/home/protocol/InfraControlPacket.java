@@ -13,7 +13,6 @@ public class InfraControlPacket extends BasicPacket {
 	
 	public InfraControlPacket(InetAddress ip, int port) {
 		super(ip, port);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**

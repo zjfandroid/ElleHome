@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name_vstar"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Black.NoTitleBar" >
         <activity
             android:name="elle.home.app.MainActivity"
             android:label="@string/app_name_vstar"
@@ -51,6 +51,14 @@
         </activity>
         <activity
             android:name="elle.home.app.GatewayActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="elle.home.app.infra.InfraBrandListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="elle.home.app.infra.InfraBrandDevActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -106,7 +114,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="elle.home.app.InfraActivity"
+            android:name="elle.home.app.infra.InfraActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
