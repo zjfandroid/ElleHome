@@ -157,7 +157,9 @@ public class InfraBrandDevActivity extends Activity {
 					
 					@Override
 					public void OnRecvData(PacketCheck packetcheck) {
-						ShowInfo.printLogW("_________packetcheck___________" + DataExchange.dbBytesToString(packetcheck.data));
+						if(null != packetcheck){
+							ShowInfo.printLogW("_________packetcheck___________" + DataExchange.dbBytesToString(packetcheck.data));
+						}
 					}
 				}, mLists.get(index));
 				

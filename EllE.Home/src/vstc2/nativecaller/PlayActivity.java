@@ -1,14 +1,11 @@
 package vstc2.nativecaller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
 import vstc2.nativecaller.BridgeService.PlayInterface;
+import vstc2.nativecaller.MyRender.OnScreenShot;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +24,6 @@ import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -391,14 +387,14 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 					if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) 
 					{
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-								width, width * 3 / 4);
+								(int)(width * mScale), (int)(mScale * width * 3 / 4));
 						lp.gravity = Gravity.CENTER;
 						playSurface.setLayoutParams(lp);
 					}
 					else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 					{
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-								width, height);
+								(int)(width * mScale), (int)(mScale * height));
 						lp.gravity = Gravity.CENTER;
 						playSurface.setLayoutParams(lp);
 					}
@@ -555,6 +551,21 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		
 		myRender = new MyRender(playSurface);
 		playSurface.setRenderer(myRender);
+		myRender.setOnScreenShotListener(new OnScreenShot() {
+			
+			@Override
+			public void onSucceed(String path) {
+		        /*更新媒体库,扫描抓图文件*/
+		        Uri data = Uri.parse("file://" + path);
+		        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));				
+		        showToast(getResources().getString(R.string.screenshot_successed) + path);
+			}
+			
+			@Override
+			public void onFailed(String info) {
+				showToast(getResources().getString(R.string.screenshot_failed));
+			}
+		});
 
 		// prompt user how to control ptz when first enter play
 		SharedPreferences sharePreferences = getSharedPreferences("ptzcontrol",
@@ -733,15 +744,16 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			x2 = event.getX();
 			y2 = event.getY();
 
-			int midx = getWindowManager().getDefaultDisplay().getWidth() / 2;
-			int midy = getWindowManager().getDefaultDisplay().getHeight() / 2;
+//			int midx = getWindowManager().getDefaultDisplay().getWidth() / 2;
+//			int midy = getWindowManager().getDefaultDisplay().getHeight() / 2;
 			if (mode == ZOOM) {
 				float newDist = spacing(event);
 				if (newDist > 0f) {
 					float scale = newDist / oldDist;
 					Log.d("scale", "scale:" + scale);
 					if (scale <= 2.0f && scale >= 0.2f) {
-						 zoomTo(originalScale * scale, midx, midy);
+						mScale = originalScale * scale;
+//						 zoomTo(originalScale * scale, midx, midy);
 					}
 				}
 			}
@@ -763,6 +775,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	float mMaxZoom = 2.0f;
 	float mMinZoom = 0.3125f;
 	float originalScale;
+	float mScale = 1f;
 	float baseValue;
 	protected Matrix mBaseMatrix = new Matrix();
 	protected Matrix mSuppMatrix = new Matrix();
@@ -772,6 +785,16 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	protected void zoomTo(float scale, float centerX, float centerY)
 	{
 		Log.d("zoomTo", "zoomTo scale:" + scale);
+//		playSurface.setScaleX(scale);
+//		playSurface.setScaleY(scale);
+		
+		int width = playSurface.getWidth();
+		ShowInfo.printLogW("_____getWidth____" + width);
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+				(int)(width * scale), (int)(scale * width * 3 / 4));
+		lp.gravity = Gravity.CENTER;
+		playSurface.setLayoutParams(lp);
+		
 //		if (scale > mMaxZoom) {
 //			scale = mMaxZoom;
 //		} else if (scale < mMinZoom) {
@@ -1115,46 +1138,19 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * 截图
 	 */
 	private void takePicpure() {
-//		videoViewStandard.setDrawingCacheEnabled(true);
-//		Bitmap bitmap = videoViewStandard.getDrawingCache();
-//		if(null == bitmap){
-//			ShowToast.show(this, getResources().getString(R.string.screenshot_failed));
-//			return;
-//		}
-		if(null == mBmp){
-			ShowInfo.printLogW("________null == mBmp_____");
-		}else{
-			File file = new File( Environment.getExternalStorageDirectory()+ "/Elle.Home/" + System.currentTimeMillis() + ".png");
-			ShowInfo.printLogW(file.getParentFile() + "_________getExternalStorageDirectory________" + Environment.getExternalStorageDirectory()+ "/Elle.Home/");
-		}
-		
-//        if(!file.getParentFile().exists()){
-//        		file.getParentFile().mkdirs();
-//        }
-//        
-//        try {
-//        		FileOutputStream fos = new FileOutputStream(file);
-//			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//			fos.close();
-//			ShowToast.show(this, getResources().getString(R.string.screenshot_successed) + file.getAbsolutePath());
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//        
-//        if(null != bitmap && !bitmap.isRecycled()){
-//        		bitmap.recycle();
-//        		bitmap = null;
-//        }
-//        
-//        videoViewStandard.setDrawingCacheEnabled(false);
-//        
-//        /*更新媒体库,扫描抓图文件*/
-//        Uri data = Uri.parse("file://" + file.getAbsolutePath());
-//        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
+		myRender.takePicture();
 	}
-
+	
+	private void showToast(final String info){
+		this.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				ShowToast.show(getApplicationContext(), info);
+			}
+		});
+	}
+	  
 	private void dismissBrightAndContrastProgress() {
 		if (mPopupWindowProgress != null && mPopupWindowProgress.isShowing()) {
 			mPopupWindowProgress.dismiss();
@@ -1258,7 +1254,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			isControlDevice = false;
 			if (controlWindow != null && controlWindow.isShowing())
@@ -1280,7 +1275,6 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 			
 			@Override
 			public void onDismiss() {
-				// TODO Auto-generated method stub
 				controlWindow.dismiss();
 			}
 		});
@@ -1438,7 +1432,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	 * **/
 	@Override
 	public void callBaceVideoData(byte[] videobuf, int h264Data, int len,int width, int height) {
-		ShowInfo.printLogW("底层返回数据", "____videobuf:"+videobuf+"--"+"h264Data"+h264Data+"len"+len+"width"+width+"height"+height);
+//		ShowInfo.printLogW("底层返回数据", "____videobuf:"+videobuf+"--"+"h264Data"+h264Data+"len"+len+"width"+width+"height"+height);
 		if (!bDisplayFinished)
 			return;
 		bDisplayFinished = false;

@@ -62,10 +62,10 @@ public class BridgeService extends Service {
 	public void VideoData(String did, byte[] videobuf, int h264Data, int len,
 			int width, int height, int timestamp, short milistamp, int sessid,
 			int version, int originFrameLen) {
-		Log.d(TAG, "BridgeService----Call VideoData 视频数据返回...h264Data: "
-				+ h264Data + " len: " + len + " videobuf len: " + len
-				+ "width: " + width + "height: " + height + ",did:" + did
-				+ ",sessid:" + sessid + ",version:" + version);
+//		Log.d(TAG, "BridgeService----Call VideoData 视频数据返回...h264Data: "
+//				+ h264Data + " len: " + len + " videobuf len: " + len
+//				+ "width: " + width + "height: " + height + ",did:" + did
+//				+ ",sessid:" + sessid + ",version:" + version);
 
 		if (playInterface != null) {
 			playInterface.callBaceVideoData(videobuf, h264Data, len, width,

@@ -1,16 +1,27 @@
 package vstc2.nativecaller;
 
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
-import android.util.Log;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.opengl.GLES20;
+import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
+import android.os.Environment;
+import android.util.Log;
 
 public class MyRender implements Renderer
 {
@@ -262,7 +273,6 @@ public class MyRender implements Renderer
 
   public void onDrawFrame(GL10 paramGL10)
   {
-	  //Log.d("yuvRender", "onDrawFrame");
 	  GLES20.glClear(16384);
 	  synchronized (this) {
 		 if ((this.mWidth == 0) || (this.mHeight == 0) || (this.mYByteBuffer == null) || (this.mUByteBuffer == null) || (this.mVByteBuffer == null))
@@ -272,7 +282,6 @@ public class MyRender implements Renderer
 			 try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		 }
@@ -282,11 +291,96 @@ public class MyRender implements Renderer
 		 draw(this.mYByteBuffer, this.mUByteBuffer, this.mVByteBuffer, this.mWidth, this.mHeight);
 	  }
     
+	  try {  
+		  
+		  if ( printOptionEnable )   
+		  {  
+			  printOptionEnable = false ;  
+			  
+			  int b[]=new int[(int) (width_surface*height_surface)];  
+			  int bt[]=new int[(int) (width_surface*height_surface)];  
+			  IntBuffer buffer=IntBuffer.wrap(b);  
+			  buffer.position(0);  
+			  GLES20.glReadPixels(0, 0, width_surface, height_surface,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE, buffer);  
+			  
+			  for(int i=0; i<height_surface; i++)  
+			  {  
+				  //remember, that OpenGL bitmap is incompatible with Android bitmap  
+				  //and so, some correction need.          
+				  for(int j=0; j<width_surface; j++)  
+				  {  
+					  int pix=b[i*width_surface+j];  
+					  int pb=(pix>>16)&0xff;  
+					  int pr=(pix<<16)&0x00ff0000;  
+					  int pix1=(pix&0xff00ff00) | pr | pb;  
+					  bt[(height_surface-i-1)*width_surface+j]=pix1;  
+				  }  
+			  }        
+			  
+			  Bitmap inBitmap = null ;  
+			  if (inBitmap == null || !inBitmap.isMutable()  
+					  || inBitmap.getWidth() != width_surface || inBitmap.getHeight() != height_surface) {  
+				  inBitmap = Bitmap.createBitmap(width_surface, height_surface, Bitmap.Config.ARGB_8888);  
+			  }  
+			  //Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);  
+			  inBitmap.copyPixelsFromBuffer(buffer);  
+			  //return inBitmap ;  
+			  // return Bitmap.createBitmap(bt, w, h, Bitmap.Config.ARGB_8888);  
+			  inBitmap = Bitmap.createBitmap(bt, width_surface, height_surface, Bitmap.Config.ARGB_8888);  
+			  
+			  ByteArrayOutputStream bos = new ByteArrayOutputStream();   
+			  inBitmap.compress(CompressFormat.JPEG, 90, bos);   
+			  byte[] bitmapdata = bos.toByteArray();  
+			  ByteArrayInputStream fis = new ByteArrayInputStream(bitmapdata);  
+			  
+			  File dir_image = new File( Environment.getExternalStorageDirectory()+ "/Elle.Home/" + System.currentTimeMillis() + ".png");
+			  if(!dir_image.getParentFile().exists()){
+				  dir_image.getParentFile().mkdirs();
+			  }
+			  
+			  try {  
+				  FileOutputStream fos = new FileOutputStream(dir_image);  
+				  
+				  byte[] buf = new byte[1024];  
+				  int len;  
+				  while ((len = fis.read(buf)) > 0) {  
+					  fos.write(buf, 0, len);  
+				  }  
+				  fis.close();  
+				  fos.close();  
+				  
+				  if(null != mOnScreenShot){
+					  mOnScreenShot.onSucceed(dir_image.getAbsolutePath());
+				  }
+				  
+			  } catch (FileNotFoundException e) {  
+				  mOnScreenShot.onFailed(e.toString());
+				  e.printStackTrace();  
+			  } catch (IOException e) {  
+				  mOnScreenShot.onFailed(e.toString());
+				  e.printStackTrace();  
+			  }  
+			  
+			  if(null != inBitmap && !inBitmap.isRecycled()){
+				  inBitmap.recycle();
+				  inBitmap = null;
+			  }
+		  }  
+	  }catch(Exception e) {  
+		  e.printStackTrace() ;  
+	  }  
   }
-
+  
+  private int width_surface;
+  private int height_surface;
+  private boolean printOptionEnable = false;
+  private OnScreenShot mOnScreenShot;
   public void onSurfaceChanged(GL10 paramGL10, int paramInt1, int paramInt2)
   {
     GLES20.glViewport(0, 0, paramInt1, paramInt2);
+    
+    width_surface =  paramInt1 ;  
+    height_surface = paramInt2 ;
   }
 
   public void onSurfaceCreated(GL10 paramGL10, EGLConfig paramEGLConfig)
@@ -350,4 +444,16 @@ public class MyRender implements Renderer
 	  }
 	}
 
+  public void takePicture(){
+	  printOptionEnable = true;
+  }
+  
+  public void setOnScreenShotListener(OnScreenShot onScreenShot){
+	  mOnScreenShot = onScreenShot;
+  }
+  
+  interface OnScreenShot{
+	  void onSucceed(String path);
+	  void onFailed(String info);
+  }
 }
