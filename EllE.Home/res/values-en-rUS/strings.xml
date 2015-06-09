@@ -284,4 +284,9 @@
     <string name="left">left</string>
     <string name="up">up</string>
     <string name="down">down</string>
+    
+    <string name="can_not_add_this_dev">Can not add this device!</string>
+    <string name="sure_to_exit">Device not added.Sure to exit？</string>
+    <string name="tips_press_btn">Press the button\nrelease after a sound \"di\"</string>
+	<string name="add_remote">Add remote</string>
 </resources>

@@ -145,9 +145,10 @@ public class CurtainActivity extends BaseActivity{
 				CurtainControlPacket packet = getPacket();
 				packet.curtainProgress(DataExchange.longToEightByte(dev.mac), progress, recvListener);
 				autoBinder.addPacketToSend(packet);
-				ShowInfo.printLogW(progress + "____packet curtainProgress_____" + DataExchange.dbBytesToString(packet.data));
+				ShowInfo.printLogW(progress + "____packet curtainProgress_____" + DataExchange.dbBytesToString(packet.data));								
 			}
 		});
+		
 	}
 
 	@Override
@@ -211,9 +212,9 @@ public class CurtainActivity extends BaseActivity{
 		case R.id.tips3:
 			packet.curtainStop(DataExchange.longToEightByte(dev.mac), recvListener);
 			break;
-		case R.id.btn_reboot:
-			packet.curtainReboot(DataExchange.longToEightByte(dev.mac), recvListener);
-			break;
+//		case R.id.btn_reboot:
+//			packet.curtainReboot(DataExchange.longToEightByte(dev.mac), recvListener);
+//			break;
 
 		default:
 			break;

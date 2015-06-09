@@ -184,11 +184,9 @@ public class ManageDevActivity extends BaseActivity {
 				//根据设备类型来删除数据，红外的删除比较特殊
 				switch(itemList.get(delTmp).dev.type){
 				case PublicDefine.TypeInfra:
-					itemList.get(delTmp).dev.delFromDatabase(mContext);
-					break;
 				case PublicDefine.TypeInfraAir:
 				case PublicDefine.TypeInfraTv:
-					itemList.get(delTmp).dev.delFromDatabaseWithName(mContext);
+					itemList.get(delTmp).dev.delFromDatabaseByName(mContext);
 					break;
 				default:
 					itemList.get(delTmp).dev.delFromDatabaseWithName(mContext);

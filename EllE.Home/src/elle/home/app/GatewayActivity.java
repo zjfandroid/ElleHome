@@ -287,7 +287,7 @@ public class GatewayActivity extends BaseActivity {
 						cvin.putExtra("connect", connectStatus);
 						startActivity(cvin);
 					}else{
-						ShowToast.show(getApplicationContext(), "无法添加此设备！");
+						ShowToast.show(getApplicationContext(), R.string.can_not_add_this_dev);
 					}
 				}else{
 					ShowToast.show(getApplicationContext(), "添加此设备！");
@@ -401,7 +401,7 @@ public class GatewayActivity extends BaseActivity {
 				
 				SaveDataPreferences.save(getApplicationContext(), oneDev.devname, Long.toString(dev.mac));
 				
-				if(0 == oneDev.addToDatabase(getApplicationContext())){
+				if(oneDev.addToDatabase(getApplicationContext())){
 					shownum++;
 					ShowToast.show(getApplicationContext(), R.string.tips_add_succeed);
 //				}else{

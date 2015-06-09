@@ -144,7 +144,14 @@ public class InfraActivity extends BaseActivity {
 						for(int i =0;i<listview.getChildCount();i++){
 							ViewHolder x = (ViewHolder)listview.getChildAt(i).getTag();
 							if(v == x.addbtn){
-								Intent intent = new Intent(context,InfraBrandListActivity.class);
+								Intent intent = null;
+								if(0 == i){
+									intent = new Intent(context,InfraBrandListActivity.class);
+								}else{
+									intent = new Intent(context,InfraTVControlActivity.class);
+									intent.putExtra("isTest", true);
+								}
+								
 								intent.putExtra("mac", dev.mac);
 								intent.putExtra("connect", dev.getConnectStatus());
 								intent.putExtra("devname", dev.devname);

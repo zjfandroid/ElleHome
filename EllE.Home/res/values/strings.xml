@@ -283,4 +283,9 @@
     <string name="left">向左</string>
     <string name="up">向上</string>
     <string name="down">向下</string>
+    
+    <string name="can_not_add_this_dev">无法添加此设备！</string>
+    <string name="sure_to_exit">设备尚未添加，确定退出？</string>
+    <string name="tips_press_btn">请按住按钮\n听到\"di\"一声后松开</string>
+	<string name="add_remote">添加遥控器</string>
 </resources>

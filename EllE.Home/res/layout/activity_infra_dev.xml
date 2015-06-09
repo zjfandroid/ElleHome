@@ -4,16 +4,15 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/common_bk" >
+    android:background="#ff20293c" >
 
     <TextView
         android:id="@+id/title_bar_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="添加遥控器"
+        android:text="@string/add_remote"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -26,6 +25,19 @@
         android:onClick="doExit"
         android:src="@drawable/title_back_bk" />
 
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/whitesmoke"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:text="@string/tips_press_btn"
+        android:textSize="22sp" />
+
     <com.daimajia.numberprogressbar.NumberProgressBar
         android:id="@+id/numberbar"
         style="@style/NumberProgressBar_Funny_Orange"
@@ -35,12 +47,15 @@
         android:layout_margin="20dp"
         custom:progress="0" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_add"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/numberbar"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/shape_circle_red" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_red_circle"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/fingerprint" />
 
 </RelativeLayout>

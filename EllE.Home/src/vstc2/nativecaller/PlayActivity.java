@@ -1401,6 +1401,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 	@Override
 	protected void onDestroy() {
 		NativeCaller.StopPPPPLivestream(strDID);
+		NativeCaller.StopPPPP(strDID);
 		StopAudio();
 		if (myRender != null) {
 			myRender.destroyShaders();
@@ -1408,7 +1409,7 @@ public class PlayActivity extends BaseActivity implements OnTouchListener,
 		if (brodCast != null) {
 			unregisterReceiver(brodCast);
 		}
-		Log.d("tag", "PlayActivity onDestroy");
+		Log.d("tag", "StopPPPP _________ PlayActivity onDestroy");
 		super.onDestroy();
 	}
 

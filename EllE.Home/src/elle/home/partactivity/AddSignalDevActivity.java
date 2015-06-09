@@ -104,7 +104,7 @@ public class AddSignalDevActivity extends BaseActivity {
 					
 					//不需要配置wifi的话，就直接加入到数据库中
 					onedev.devname = et.getText().toString();
-					if(onedev.addToDatabase(mcontext) == 0){
+					if(onedev.addToDatabase(mcontext)){
 						//Toast.makeText(mcontext, getResources().getString(R.string.tips_add_succeed), Toast.LENGTH_SHORT).show();
 						Message msg = new Message();
 						msg.what = 2;
@@ -313,7 +313,7 @@ public class AddSignalDevActivity extends BaseActivity {
 						{
 							//不需要配置wifi的话，就直接加入到数据库中
 							onedev.devname = et.getText().toString();
-							if(onedev.addToDatabase(mcontext) == 0){
+							if(onedev.addToDatabase(mcontext)){
 								Toast.makeText(mcontext, getResources().getString(R.string.tips_add_succeed), Toast.LENGTH_SHORT).show();
 								Log.d(TAG,"添加成功--->"+"mac:"+onedev.mac+" type:"+onedev.type+" ver:"+onedev.ver+" locatname:"+onedev.locateNmae+" shownum:"+onedev.shownum);
 								finish();

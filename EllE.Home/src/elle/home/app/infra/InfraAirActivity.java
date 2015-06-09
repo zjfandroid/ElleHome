@@ -1,8 +1,9 @@
-package elle.home.partactivity;
+package elle.home.app.infra;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +11,16 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import elle.home.app.AutoService;
 import elle.home.app.smart.R;
 import elle.home.database.OneDev;
+import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.InfraControlPacket;
 import elle.home.protocol.OnRecvListener;
@@ -26,6 +30,8 @@ import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.InfraAirView;
 import elle.home.uipart.InfraAirView.OnInfraAirChange;
 import elle.home.utils.ShowInfo;
+import elle.home.utils.ShowToast;
+import elle.home.utils.StringUtils;
 import elle.homegenius.infrajni.InfraNative;
 
 public class InfraAirActivity extends BaseActivity {
@@ -54,7 +60,7 @@ public class InfraAirActivity extends BaseActivity {
 	private Context mContext;
 	//返回按钮
 	private ImageButton backbtn;
-	private TextView title;
+	private EditText title;
 
 	private boolean isTestMode;
 	
@@ -73,10 +79,7 @@ public class InfraAirActivity extends BaseActivity {
 		dev = new OneDev();
 		
 		isTestMode = intent.getBooleanExtra("isTest", false);
-		dev.getFromDatabase(devmac,devname, this);
-		
-		idBrand = intent.getIntExtra("idBrand", 1);
-		id = intent.getIntExtra("id", 1);
+		dev.getFromDatabase(devmac, devname, this);
 		
 		mContext = this;
 		
@@ -92,8 +95,33 @@ public class InfraAirActivity extends BaseActivity {
 			}
 		}
 		
-		title = (TextView)this.findViewById(R.id.title_bar_text);
-		title.setText(dev.devname);
+		title = (EditText)this.findViewById(R.id.title_bar_text);
+		if(isTestMode){
+			idBrand = intent.getIntExtra("idBrand", 1);
+			id = intent.getIntExtra("id", 1);
+			
+			dev.setCameraUserName(Integer.toString(idBrand));
+			dev.setCameraDeviceID(Integer.toString(id));
+			
+			title.setText(dev.devname + idBrand + id);
+			View v = findViewById(R.id.btn_add);
+			v.setVisibility(View.VISIBLE);
+			v.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					doAddDev();
+					v.setVisibility(View.GONE);
+				}
+			});
+		}else{
+			title.setText(dev.devname);
+			title.setEnabled(false);
+			
+			idBrand = Integer.valueOf(dev.getCameraUserName());
+			id = Integer.valueOf(dev.getCameraDeviceID());
+		}
+		
 		backbtn = (ImageButton)this.findViewById(R.id.title_btn_left);
 		backbtn.setOnTouchListener(new View.OnTouchListener() {
 			
@@ -102,7 +130,7 @@ public class InfraAirActivity extends BaseActivity {
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					PublicDefine.vibratorNormal(mContext);
 				}else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL){
-					finish();
+					showExitDialog();
 				}
 				return true;
 			}
@@ -176,6 +204,53 @@ public class InfraAirActivity extends BaseActivity {
 		});
 	}
 	
+	protected void showExitDialog() {
+		if(isTestMode){
+			SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+			
+			dialog.setTitleText(getResources().getString(R.string.sure_to_exit))
+			.setCancelText(getResources().getString(R.string.exit))
+			.setConfirmText(getResources().getString(R.string.add_add_string))
+			.showCancelButton(true)
+			.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+				@Override
+				public void onClick(SweetAlertDialog sDialog) {
+					sDialog.dismiss();
+					finish();
+				}
+			})
+			.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+				@Override
+				public void onClick(SweetAlertDialog sDialog) {
+					doAddDev();
+					sDialog.dismiss();
+				}
+			})
+			.show();
+		}else{
+			finish();
+		}		
+	}
+
+	protected void doAddDev() {
+		String name = title.getText().toString();
+		if(StringUtils.isEmpty(name)){
+			ShowToast.show(mContext, R.string.tips_bename_first);
+		}else{
+			dev.devname = name;
+			dev.type = PublicDefine.TypeInfraAir;
+			if(dev.addToDatabase(mContext)){
+				title.setEnabled(false);
+				isTestMode = false;
+				ShowToast.show(mContext, R.string.tips_add_succeed);
+			}else{
+				ShowToast.show(mContext, R.string.tips_benamed);
+			}
+		}
+	}
+
 	protected InfraControlPacket getInfraPacket() {
 		InfraControlPacket infraControlPacket  = new InfraControlPacket(conip, conport);
 		infraControlPacket.setImportance(BasicPacket.ImportHigh);
@@ -245,5 +320,13 @@ public class InfraAirActivity extends BaseActivity {
 		super.onDestroy();
 		airview.recyleBit();
 		this.userUnbindService();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(KeyEvent.KEYCODE_BACK == keyCode){
+			showExitDialog();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

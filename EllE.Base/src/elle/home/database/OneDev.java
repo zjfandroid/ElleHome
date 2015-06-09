@@ -302,9 +302,41 @@ public class OneDev implements Serializable{
 	}
 	
 	/**
+	 * 将这个定义的设备从数据库中删除,由名字决定
+	 * */
+	public void delFromDatabaseByName(Context context){
+		
+		String[] params = new String[2];
+		params[0] = String.valueOf(this.mac);
+		params[1] = this.devname;
+		
+		DataBaseHelper dbhelper = new DataBaseHelper(context);
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+		
+		String sql = "DELETE FROM devices WHERE devname = ?";
+		db.execSQL(sql, params);
+		
+		switch(this.type){
+		
+		case PublicDefine.TypeInfraAir:
+		case PublicDefine.TypeInfraTv:
+			String xsql = "DELETE FROM infradatas WHERE devname = ?";
+			db.execSQL(xsql, params);
+			break;
+			
+		}
+		
+		String ssql = "DELETE FROM scenedatas WHERE devname = ?";
+		db.execSQL(ssql, params);
+		
+		db.close();
+		
+	}
+	
+	/**
 	 *将这个定义的设备加入到数据库中 
 	 * **/
-	public byte addToDatabase(Context context){
+	public boolean addToDatabase(Context context){
 		
 		locateId = 0;
 		visable = 1;
@@ -319,7 +351,7 @@ public class OneDev implements Serializable{
 		Cursor cursor = db.rawQuery(checkSql, checkParams);
 		while(cursor.moveToNext()){
 			db.close();
-			return 1;
+			return false;
 		}
 		
 		String[] params = new String[13];
@@ -341,7 +373,7 @@ public class OneDev implements Serializable{
 		String sql = "INSERT INTO devices (mac,remoteip,remoteport,devname,type,ver,shownum,visable,locatid,locatname,deviceid,username,password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		db.execSQL(sql, params);
 		db.close();
-		return 0;
+		return true;
 	}
 
 	public String getCameraDeviceID() {

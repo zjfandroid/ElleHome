@@ -116,7 +116,6 @@ public class InfraAirView extends View {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			timercount++;
 			if(timercount>1000)
 				timercount = 1000;
@@ -185,7 +184,6 @@ public class InfraAirView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.onDraw(canvas);
 		//canvas.drawBitmap(this.bgRes, 0, 0 ,null);
 		canvas.drawBitmap(this.modeBit, this.modeLeft, this.modeTop,null);
@@ -198,14 +196,12 @@ public class InfraAirView extends View {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// TODO Auto-generated method stub
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
-		// TODO Auto-generated method stub
 		super.onLayout(changed, left, top, right, bottom);
 		if(this.viewWidth !=(right-left)){
 			this.viewWidth = right-left;
@@ -252,7 +248,6 @@ public class InfraAirView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
 		
 		switch(event.getAction()){
 		case MotionEvent.ACTION_DOWN:

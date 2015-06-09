@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_0"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_1"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_2"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_3"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_4"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_5"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_6"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_7"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_8"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_9"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_10"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_11"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_12"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/anim_ctrl_connect_13"
+        android:duration="150">
+    </item>
+
+</animation-list>

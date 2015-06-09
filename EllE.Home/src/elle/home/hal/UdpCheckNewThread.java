@@ -168,12 +168,14 @@ public class UdpCheckNewThread {
 				return false;
 			}	
 		}
+		
 		for(int i=0;i<newdevs.size();i++){
 			if(newdevs.get(i).mac == packet.mac){
 				//Log.d(TAG,"暂存里表中已经存在");
 				return false;
 			}
 		}
+		
 		OneDev one = new OneDev();
 		one.mac = packet.mac;
 		one.ver = packet.devver;

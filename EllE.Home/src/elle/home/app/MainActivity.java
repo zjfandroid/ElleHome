@@ -547,7 +547,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         resideMenu.setMenuPartLine();
         titletext.setText(autoBinder.getAllInfo().allinfo.get(currentLocatViewId).locatname);
         LocationDevFragment  tmp = new LocationDevFragment(autoBinder.getAllInfo().allinfo.get(currentLocatViewId));
-        tmp.xcontext = this;
         changeFragment(tmp);
 	}
 	

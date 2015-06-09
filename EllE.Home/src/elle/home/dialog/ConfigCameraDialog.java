@@ -77,16 +77,16 @@ public class ConfigCameraDialog implements IpcamClientInterface{
 			editPass.setText(onedev.getCameraPassWord());
 			tvStatus.setText("自动登录中，请稍后～");
 			
-			if(1==SystemValue.status && onedev.getCameraDeviceID() == SystemValue.deviceId){
-				ShowInfo.printLogW("______已登录_______");
-				Intent intent2= new Intent(mContext,PlayActivity.class);
-				mContext.startActivity(intent2);
-				SystemValue.status = 0;
-				dlg.dismiss();
-			}else{
+//			if(1==SystemValue.status && onedev.getCameraDeviceID() == SystemValue.deviceId){
+//				ShowInfo.printLogW("______已登录_______");
+//				Intent intent2= new Intent(mContext,PlayActivity.class);
+//				mContext.startActivity(intent2);
+//				SystemValue.status = 0;
+//				dlg.dismiss();
+//			}else{
 				doConnectCamera(editUser.getText().toString(), editPass.getText().toString(), editName.getText().toString());
-			}
-		}else{
+//			}
+//		}else{
 		}
 		
 		ok.setOnClickListener(new View.OnClickListener() {

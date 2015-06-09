@@ -4,14 +4,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/common_bk" >
 
-    <TextView
+    <EditText
         android:id="@+id/title_bar_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="遥控器"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -23,6 +22,18 @@
         android:layout_marginLeft="0dp"
         android:background="#00000000"
         android:src="@drawable/title_back_bk" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:text="@string/add_add_string"
+        android:textColor="@color/whitesmoke"
+        android:visibility="gone"
+        android:textSize="18sp" />
 
     <elle.home.uipart.InfraAirView
         android:id="@+id/infraAirView1"

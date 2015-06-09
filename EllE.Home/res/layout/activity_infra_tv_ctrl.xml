@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff20293c" >
+
+    <EditText
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:src="@drawable/title_back_bk" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:background="@null"
+        android:text="@string/add_add_string"
+        android:textColor="@color/whitesmoke"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/btn_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar_text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selecter_off"
+        android:contentDescription="@string/app_name" />
+
+    <ImageButton
+        android:id="@+id/btn_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/btn_off"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/selecter_mode"
+        android:contentDescription="@string/app_name" />
+
+    <GridLayout
+        android:id="@+id/layout_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_off"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:rowCount="4" >
+
+        <Button
+            android:id="@+id/one"
+            style="@style/tv_ctrl_btn"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/two"
+            style="@style/tv_ctrl_btn"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/three"
+            style="@style/tv_ctrl_btn"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/four"
+            style="@style/tv_ctrl_btn"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/five"
+            style="@style/tv_ctrl_btn"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/six"
+            style="@style/tv_ctrl_btn"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/seven"
+            style="@style/tv_ctrl_btn"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/eight"
+            style="@style/tv_ctrl_btn"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/nine"
+            style="@style/tv_ctrl_btn"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/minus"
+            style="@style/tv_ctrl_btn"
+            android:text="静音" />
+
+        <Button
+            android:id="@+id/zero"
+            style="@style/tv_ctrl_btn"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/point"
+            style="@style/tv_ctrl_btn"
+            android:text="返回" />
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_grid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_panel"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selecter_btn_left"
+            android:contentDescription="@string/app_home" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:background="@drawable/selecter_ok"
+            android:contentDescription="@string/app_home"
+            android:text="OK"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
+        <ImageButton
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selecter_btn_right"
+            android:contentDescription="@string/app_home" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/layout_linear"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/selecter_btn_up"
+        android:contentDescription="@string/app_home" />
+
+    <ImageButton
+        android:id="@+id/btn_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/layout_linear"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="1dp"
+        android:background="@drawable/selecter_btn_down"
+        android:contentDescription="@string/app_home" />
+
+</RelativeLayout>

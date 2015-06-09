@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import elle.home.app.smart.R;
-import elle.home.utils.ShowInfo;
 
 public class AllLocationInfo {
 	
@@ -149,7 +148,6 @@ public class AllLocationInfo {
 				JSONObject dev = jsonArray.getJSONObject(j);
 				OneDev oneDev = new OneDev();
 				oneDev.devname = dev.getString("devname");
-				oneDev.function = dev.getString("function");
 				oneDev.locateNmae = dev.getString("locateNmae");
 				oneDev.localTimeCount = dev.getInt("localTimeCount");
 				oneDev.locateId = dev.getInt("locateId");
@@ -162,9 +160,16 @@ public class AllLocationInfo {
 				oneDev.type = (byte) dev.getInt("type");
 				oneDev.mac = dev.getLong("mac");
 				oneDev.remoteip = InetAddress.getByName(dev.getString("remoteip"));
-				oneDev.setCameraDeviceID(dev.getString("CameraDeviceID"));
-				oneDev.setCameraUserName(dev.getString("CameraUserName"));
-				oneDev.setCameraPassWord(dev.getString("CameraPassWord"));
+				
+				try {
+					oneDev.setCameraDeviceID(dev.getString("CameraDeviceID"));
+					oneDev.setCameraUserName(dev.getString("CameraUserName"));
+					oneDev.setCameraPassWord(dev.getString("CameraPassWord"));
+					oneDev.function = dev.getString("function");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
 				oneDev.delFromDatabaseWithName(mContext);
 				oneDev.addToDatabase(mContext);
 			}

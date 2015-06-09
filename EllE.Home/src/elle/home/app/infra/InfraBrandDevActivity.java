@@ -11,19 +11,19 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import elle.home.app.AutoService;
 import elle.home.app.smart.R;
 import elle.home.database.OneDev;
-import elle.home.partactivity.InfraAirActivity;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.InfraControlPacket;
 import elle.home.protocol.OnRecvListener;
@@ -45,11 +45,12 @@ public class InfraBrandDevActivity extends Activity {
 	private OneDev dev;
 	
 	private NumberProgressBar mProgressBar;
-	private Button mAddBtn;
+	private ImageButton mAddBtn;
 	
 	private AutoService.AutoBinder autoBinder;
 	
 	private Timer mTimer;
+	private AnimationDrawable animationDrawable;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,15 +105,20 @@ public class InfraBrandDevActivity extends Activity {
 		mProgressBar.setMax(mLists.size());
 		mProgressBar.setProgress(index);
 		
-		mAddBtn = (Button) findViewById(R.id.btn_add);
+		mAddBtn = (ImageButton) findViewById(R.id.btn_add);
 		mAddBtn.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				int action = event.getAction();
 				if(MotionEvent.ACTION_DOWN == action){
+					mAddBtn.setImageResource(R.anim.ctrl_connect);
+					animationDrawable = (AnimationDrawable) mAddBtn.getDrawable();
+					animationDrawable.start();
 					startSendPacket();
 				}else if(MotionEvent.ACTION_CANCEL == action || MotionEvent.ACTION_UP == action){
+					animationDrawable.stop();
+					mAddBtn.setImageResource(R.drawable.fingerprint);
 					stopSendPacket();
 				}
 				return false;

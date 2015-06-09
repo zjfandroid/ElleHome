@@ -8,7 +8,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,13 +42,14 @@ import elle.home.app.LightRgbActivity;
 import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
 import elle.home.app.infra.InfraActivity;
+import elle.home.app.infra.InfraAirActivity;
+import elle.home.app.infra.InfraTVControlActivity;
 import elle.home.app.smart.R;
 import elle.home.app.view.SizeAdjustingTextView;
 import elle.home.database.DevLocationInfo;
 import elle.home.database.OneDev;
 import elle.home.dialog.ConfigCameraDialog;
 import elle.home.partactivity.BaseActivity;
-import elle.home.partactivity.InfraAirActivity;
 import elle.home.partactivity.UMengConstant;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.LightControlPacket;
@@ -73,8 +73,6 @@ public class LocationDevFragment extends Fragment {
 	
 	private DevLocationInfo locatInfo;
 	private GridAdapter gridAdapter;
-	
-	public Activity xcontext;
 	
 	private Timer timer = new Timer();
 	private TimerTask task = new TimerTask(){
@@ -110,12 +108,6 @@ public class LocationDevFragment extends Fragment {
 	
 	public LocationDevFragment(DevLocationInfo tmp){
 		locatInfo = tmp;
-		//locatInfo.setAllDevToLocal();
-	}
-	
-	public LocationDevFragment(DevLocationInfo tmp,Activity x){
-		locatInfo = tmp;
-		this.xcontext = x;
 		//locatInfo.setAllDevToLocal();
 	}
 
@@ -339,6 +331,14 @@ public class LocationDevFragment extends Fragment {
 					map.put(UMengConstant.KEY_DEV_TYPE, mContext.getString(R.string.type_infra_string));
 					MobclickAgent.onEvent(mContext,UMengConstant.EVENT_ID_CLICK_DEV ,map);
 					break;
+				case PublicDefine.TypeInfraTv:
+					Intent intentTV = new Intent(mContext, InfraTVControlActivity.class);
+					Log.d(TAG,"start dev activity mac:"+onedev.mac);
+					intentTV.putExtra("mac", onedev.mac);
+					intentTV.putExtra("devname", onedev.devname);
+					intentTV.putExtra("connect", onedev.getConnectStatus());
+					mContext.startActivity(intentTV);
+					break;
 				case PublicDefine.TypeInfraCamera:
 					ConfigCameraDialog dialog = new ConfigCameraDialog(mContext, onedev, true);
 				    map = new HashMap<String, String>();
@@ -373,10 +373,13 @@ public class LocationDevFragment extends Fragment {
 					mContext.startActivity(curtain);
 					break;
 				}
-//			}else{
-//				Intent intentG = null;
-//				intentG = new Intent(mContext,InfraJni.class);
-//				mContext.startActivity(intentG);
+			}else{
+				Intent intentG = null;
+				intentG = new Intent(mContext, InfraActivity.class);
+				intentG.putExtra("mac", 123l);
+				intentG.putExtra("devname", "test");
+				intentG.putExtra("isTest", true);
+				mContext.startActivity(intentG);
 			}
 			
 		}
