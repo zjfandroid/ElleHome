@@ -1,4 +1,4 @@
-﻿#ifndef _AIR_COMMAND_
+#ifndef _AIR_COMMAND_
 #define _AIR_COMMAND_
 
 #define AIR_TEMP_19			0X13

@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="添加遥控器"
+        android:text="@string/add_remote"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -21,6 +21,7 @@
         android:layout_height="50dp"
         android:background="#00000000"
         android:contentDescription="@string/app_name"
+        android:onClick="doExit"
         android:src="@drawable/title_back_bk" />
 
     <ListView

@@ -10,9 +10,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:src="@drawable/icon_infra_normal" />
+        android:layout_marginLeft="8dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/icon_infra_air_normal" />
 
     <TextView
         android:id="@+id/infra_dev_introduce"

@@ -1,26 +1,21 @@
 package elle.home.app.infra;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import elle.home.app.smart.R;
-import elle.home.database.OneDev;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ViewHolder;
@@ -31,6 +26,8 @@ public class InfraBrandListActivity extends Activity {
 	private ListView mListView;
 	private List<Item> mLists = new ArrayList<InfraBrandListActivity.Item>();
 	
+	private byte type;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +37,25 @@ public class InfraBrandListActivity extends Activity {
 	}
 
 	private void initDatas() {
+		type = getIntent().getByteExtra("type", PublicDefine.TypeInfraAir);
+		if(PublicDefine.TypeInfraAir == type){
+			initAirDatas();
+		}else{
+			initTVDatas();
+		}
+	}
+
+	private void initTVDatas() {
+		int len = InfraNative.getTvAllBrandListLen();
+		for (int i = 0; i < len; i++) {
+			Item item = new Item();
+			item.brand = InfraNative.getTvOneBrandNameById(i+1, 1);
+			ShowInfo.printLogW("______initDatas__________" + item.brand);
+			mLists.add(item);
+		}		
+	}
+
+	private void initAirDatas() {
 		int len = InfraNative.getAirAllBrandListLen();
 		for (int i = 0; i < len; i++) {
 			Item item = new Item();
@@ -61,9 +77,14 @@ public class InfraBrandListActivity extends Activity {
 				intent.putExtra("id", position+1);
 				intent.putExtra("mac", getIntent().getLongExtra("mac", 0));
 				intent.putExtra("connect", PublicDefine.ConnectNull);
+				intent.putExtra("type", type);
 				startActivity(intent);
 			}
 		});
+	}
+	
+	public void doExit(View v){
+		finish();
 	}
 	
 	private BaseAdapter mBaseAdapter = new BaseAdapter() {
@@ -76,6 +97,13 @@ public class InfraBrandListActivity extends Activity {
 			
 			TextView brand = ViewHolder.get(convertView, R.id.infra_dev_introduce);
 			brand.setText(mLists.get(position).brand);
+			
+			ImageView img = ViewHolder.get(convertView, R.id.infra_dev_logo);
+			if(PublicDefine.TypeInfraAir == type){
+				img.setImageResource(R.drawable.icon_infra_air_normal);
+			}else{
+				img.setImageResource(R.drawable.icon_infra_tv_normal);
+			}
 			
 			return convertView;
 		}

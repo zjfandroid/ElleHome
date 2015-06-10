@@ -78,5 +78,46 @@ JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getAirBrandLenB
 JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getAirAllBrandListLen
   (JNIEnv *env, jobject obj);
 
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    exchangeStudyData
+ * Signature: ([B)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_elle_homegenius_infrajni_InfraNative_exchangeStudyData
+  (JNIEnv *evn, jobject obj, jbyteArray data);
+
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvOneBrandNameById
+ * Signature: (II)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvOneBrandNameById
+  (JNIEnv *env, jobject obj, jint id, jint language);
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvAllBrandListLen
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvAllBrandListLen
+  (JNIEnv *env, jobject obj);
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvBrandLenById
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvBrandLenById
+  (JNIEnv *env, jobject obj, jint id);
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvCommand
+ * Signature: (III)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvCommand
+  (JNIEnv *env, jobject obj, jint brand, jint id, jint fun);
+
 
 #endif

@@ -113,3 +113,75 @@ JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getAirAllBrandL
 	return getBrandLenByType(TYPE_AIR);
 }
 
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    exchangeStudyData
+ * Signature: ([B)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_elle_homegenius_infrajni_InfraNative_exchangeStudyData
+  (JNIEnv *evn, jobject obj, jbyteArray data)
+{
+	char *dataIn = (char *)((*evn)->GetByteArrayElements(evn,data, 0));
+	char dataOut[112];
+	exchangeLearnData(dataIn,dataOut);
+	jbyteArray result = (*evn)->NewByteArray(evn,112);
+	jbyte* buf = (*evn)->GetByteArrayElements(evn,result,0);
+	memcpy(buf,&data[0],112);
+	(*evn)->ReleaseByteArrayElements(evn,result,buf,0);
+	return result;
+}
+
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvOneBrandNameById
+ * Signature: (II)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvOneBrandNameById
+  (JNIEnv *env, jobject obj, jint id, jint language)
+{
+	char name[100];
+	int len = 0;
+	len = getBrandNameById(TYPE_TV,id,language,name);
+	return (*env)->NewStringUTF(env, name);
+}
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvAllBrandListLen
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvAllBrandListLen
+  (JNIEnv *env, jobject obj)
+{
+	return getBrandLenByType(TYPE_TV);
+}
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvBrandLenById
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvBrandLenById
+  (JNIEnv *env, jobject obj, jint id)
+{
+	return getBrandProductLenById(TYPE_TV,id);
+}
+
+/*
+ * Class:     elle_homegenius_infrajni_InfraNative
+ * Method:    getTvCommand
+ * Signature: (III)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_elle_homegenius_infrajni_InfraNative_getTvCommand
+  (JNIEnv *env, jobject obj, jint brand, jint id, jint fun)
+{
+	unsigned char data[200];
+	int len = 0;
+	len = getTvControlData(brand,id,fun);
+	jbyteArray result = (*env)->NewByteArray(env,len);
+	jbyte* buf = (*env)->GetByteArrayElements(env,result,0);
+	memcpy(buf,&data[0],len);
+	(*env)->ReleaseByteArrayElements(env,result,buf,0);
+	return result;
+}

@@ -36,6 +36,7 @@ import elle.homegenius.infrajni.InfraNative;
 public class InfraBrandDevActivity extends Activity {
 
 	private List<byte[]> mLists = new ArrayList<byte[]>();
+	private byte type = 0;
 	private int idBrand = 0;
 	private int index = 0;
 	private long devmac;
@@ -69,15 +70,13 @@ public class InfraBrandDevActivity extends Activity {
 
 	private void initDatas() {
 		Intent intent = this.getIntent();
+		type = intent.getByteExtra("type", PublicDefine.TypeInfraAir);
 		idBrand = intent.getIntExtra("id", 1);
-		int len = InfraNative.getAirBrandLenById(idBrand);
-		ShowInfo.printLogW(len + "______initDatas__id________" + idBrand);
 		
-		for (int i = 0; i < len; i++) {
-			byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, i+1, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
-				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
-				InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
-			mLists.add(bytes);
+		if(PublicDefine.TypeInfraAir == type){
+			initAirDatas();
+		}else{
+			initTVDatas();
 		}
 		
 		devmac = intent.getLongExtra("mac", 0);
@@ -98,6 +97,29 @@ public class InfraBrandDevActivity extends Activity {
 			}
 			
 		}
+	}
+
+	private void initTVDatas() {
+		ShowInfo.printLogW("__________getTvBrandLenById_______" + idBrand);
+		int len = InfraNative.getTvBrandLenById(idBrand);
+		ShowInfo.printLogW(len + "______initDatas__id________" + idBrand);
+		
+		for (int i = 0; i < len; i++) {
+			byte[] bytes = InfraNative.getTvCommand(idBrand, i+1, InfraNative.TvFunVolPlus);
+			mLists.add(bytes);
+		}			
+	}
+
+	private void initAirDatas() {
+		int len = InfraNative.getAirBrandLenById(idBrand);
+		ShowInfo.printLogW(len + "______initDatas__id________" + idBrand);
+		
+		for (int i = 0; i < len; i++) {
+			byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, i+1, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
+				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
+				InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
+			mLists.add(bytes);
+		}		
 	}
 
 	private void initViews() {
@@ -129,7 +151,13 @@ public class InfraBrandDevActivity extends Activity {
 	protected void stopSendPacket() {
 		stopTimer();
 		
-		Intent aintent = new Intent(this, InfraAirActivity.class);
+		Intent aintent = null;
+		if(PublicDefine.TypeInfraAir == type){
+			aintent = new Intent(this, InfraAirActivity.class);
+		}else{
+			aintent = new Intent(this, InfraTVControlActivity.class);
+		}
+		
 		aintent.putExtra("mac", dev.mac);
 		aintent.putExtra("devname", dev.devname);
 		aintent.putExtra("connect", connectStatus);
@@ -137,6 +165,7 @@ public class InfraBrandDevActivity extends Activity {
 		aintent.putExtra("id", index);
 		aintent.putExtra("isTest", true);
 		startActivity(aintent);
+		
 	}
 
 	private void stopTimer() {

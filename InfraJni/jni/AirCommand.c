@@ -1,4 +1,4 @@
-﻿#include "AirCommand.h"
+#include "AirCommand.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -1218,49 +1218,8 @@ unsigned short getAirCommandData(unsigned char *data,unsigned short id,unsigned 
 
 void testAirCommand(void)
 {
-	unsigned char data[300];
-	char result[600];
-	unsigned short tmp = 0;
-	unsigned char xtmp = 0;
-	tmp = getAirCommandData(data, 190, AIR_TEMP_19, AIR_FLOW_RATE_AUTO, AIR_FLOW_MANUAL_MID, AIR_FLOW_AUTO_OFF, AIR_ONOFF_OFF, AIR_KEY_ONOFF, AIR_MODEL_COLD
-		);
-	int i = 0;
-	for (i = 0; i < tmp; i++)
-	{
-		//sprintf(&result[i*2], "%x", (unsigned int)data[i]);
-		//itoa((data[i]>>4)&0x0f, &result[i * 3],16);
-		//itoa((data[i]) & 0x0f, &result[i * 3+1], 16);
-		result[i * 3 + 2] = ' ';
-	}
-	printf("得到数据结果:%s\r\n",result);
 }
 
 void testMediaCommand(void)
 {
-	unsigned char data[300] = { 0x55, 0xAA, 0x00, 0x25, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0xff, 0x97, 0x00, 0x00, 0x64, 0x01, 0x30, 0x00, 0x04, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x05, 0x06, 0x07, 0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00};
-	char result[600];
-	unsigned short stmp = 0;
-	unsigned char xtmp = 0;
-	int x = 0;
-	unsigned int tmp[70] = { 63, 6, 27, 663, 525, 521, 593, 158, 159, 228, 273, 279, 348, 27, 28, 209, /* 16 */
-		675, 669, 667, 665, 660, 659, 658, 657, 656, 652, 651, 650, 649, 95, 96, 97, 98, 99, 100, 101, 156, 177, 178, 189, 190, 241, 243, 274, 296, 301, 309, 510, 6, 9, 25, 21,
-		22, 27, 39, 39, 47, 70, 79, 83, 84, 94, 74, 75
-	};
-	
-	for ( x = 1; x < tmp[0]; x++)
-	{
-		stmp = getAirCommandData(&data[37], tmp[x], AIR_TEMP_19, AIR_FLOW_RATE_AUTO, AIR_FLOW_MANUAL_MID, AIR_FLOW_AUTO_OFF, AIR_ONOFF_ON, AIR_KEY_ONOFF, AIR_MODEL_COLD
-			);
-		data[3] = 37 + stmp;
-		data[34] = stmp;
-		int i = 0;
-		for (i = 0; i < stmp+37; i++)
-		{
-			//itoa((data[i] >> 4) & 0x0f, &result[i * 3], 16);
-			//itoa((data[i]) & 0x0f, &result[i * 3 + 1], 16);
-			result[i * 3 + 2] = ' ';
-		}
-		printf("%d-->%s\r\n", x,result);
-	}
-
 }
