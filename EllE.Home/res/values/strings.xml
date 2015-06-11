@@ -288,4 +288,12 @@
     <string name="sure_to_exit">设备尚未添加，确定退出？</string>
     <string name="tips_press_btn">请按住按钮\n听到\"di\"一声后松开</string>
 	<string name="add_remote">添加遥控器</string>
+	
+	<string name="mode_auto">自动</string>
+	<string name="mode_cold">制冷</string>
+	<string name="mode_hot">制暖</string>
+	<string name="mode_wind">强风</string>
+	<string name="mode_dry">除湿</string>
+	<string name="mode">模式</string>
+	<string name="off">关闭</string>
 </resources>

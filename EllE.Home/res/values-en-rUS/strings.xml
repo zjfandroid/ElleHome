@@ -289,4 +289,12 @@
     <string name="sure_to_exit">Device not added.Sure to exit？</string>
     <string name="tips_press_btn">Press the button\nrelease after a sound \"di\"</string>
 	<string name="add_remote">Add remote</string>
+	
+	<string name="mode_auto">Auto</string>
+	<string name="mode_cold">Cold</string>
+	<string name="mode_hot">Warm</string>
+	<string name="mode_wind">Wind</string>
+	<string name="mode_dry">Dry</string>
+	<string name="mode">Mode</string>
+	<string name="off">Off</string>
 </resources>

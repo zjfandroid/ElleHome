@@ -373,13 +373,13 @@ public class LocationDevFragment extends Fragment {
 					mContext.startActivity(curtain);
 					break;
 				}
-			}else{
-				Intent intentG = null;
-				intentG = new Intent(mContext, InfraActivity.class);
-				intentG.putExtra("mac", 123l);
-				intentG.putExtra("devname", "test");
-				intentG.putExtra("isTest", true);
-				mContext.startActivity(intentG);
+//			}else{
+//				Intent intentG = null;
+//				intentG = new Intent(mContext, InfraActivity.class);
+//				intentG.putExtra("mac", 123l);
+//				intentG.putExtra("devname", "test");
+//				intentG.putExtra("isTest", true);
+//				mContext.startActivity(intentG);
 			}
 			
 		}

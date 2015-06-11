@@ -2,12 +2,13 @@ package elle.home.app.infra;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,8 +18,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import elle.home.app.AutoService;
 import elle.home.app.smart.R;
+import elle.home.app.view.WheelView;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
 import elle.home.protocol.BasicPacket;
@@ -27,8 +31,6 @@ import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
-import elle.home.uipart.InfraAirView;
-import elle.home.uipart.InfraAirView.OnInfraAirChange;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 import elle.home.utils.StringUtils;
@@ -50,9 +52,6 @@ public class InfraAirActivity extends BaseActivity {
 	//设备需要通信的ip
 	public InetAddress conip;
 	public int conport;
-	
-	//红外空调的学习界面
-	InfraAirView airview;
 
 	//当前点击的功能码
 	private int funid;
@@ -61,13 +60,14 @@ public class InfraAirActivity extends BaseActivity {
 	//返回按钮
 	private ImageButton backbtn;
 	private EditText title;
+	private TextView mModeView;
 
 	private boolean isTestMode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.activity_infra_air);
+		this.setContentView(R.layout.activity_infra_air_ctrl);
 		this.userBindService();
 		
 		Intent intent = this.getIntent();
@@ -136,32 +136,22 @@ public class InfraAirActivity extends BaseActivity {
 			}
 		});
 		
-		airview = (InfraAirView)this.findViewById(R.id.infraAirView1);
-		airview.setAirListener(new OnInfraAirChange(){
-
-			@Override
-			public void onOffClick(boolean longclick) {
-				byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
-						InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
-						InfraNative.AIR_ONOFF_OFF, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
-				InfraControlPacket packet = getInfraPacket();
-				packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
-					
-					@Override
-					public void OnRecvData(PacketCheck packetcheck) {
-						if(null != packetcheck){
-							ShowInfo.printLogW("_________packetcheck_AIR_ONOFF_OFF__________" + DataExchange.dbBytesToString(packetcheck.data));
-						}
-					}
-				}, bytes);
-				autoBinder.addPacketToSend(packet);
-			}
-
-			@Override
-			public void onTempChange(int temp, boolean longclick) {
-				ShowInfo.printLogW("_________onTempChange________" + temp);
+		mModeView = (TextView) findViewById(R.id.tv_mode);
+		
+		ArrayList<String> nums = new ArrayList<String>(15);
+		for(int i = 0;i< 12; i++){
+			nums.add(Integer.toString(16+i));
+		}
+		
+		WheelView mWheelView = (WheelView) findViewById(R.id.wheel_view_wv);
+		mWheelView.setItems(nums);
+		mWheelView.setSeletion(6);
+		mWheelView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+            @Override
+            public void onSelected(int selectedIndex, String item) {
+				ShowInfo.printLogW("_________onTempChange________" + selectedIndex);
 				
-				byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19 + temp - 19, InfraNative.AIR_FLOW_RATE_AUTO, 
+				byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19 + selectedIndex, InfraNative.AIR_FLOW_RATE_AUTO, 
 						InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
 						InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
 				InfraControlPacket packet = getInfraPacket();
@@ -175,33 +165,60 @@ public class InfraAirActivity extends BaseActivity {
 					}
 				}, bytes);
 				autoBinder.addPacketToSend(packet);
-			}
-
+            }
+        });
+        
+	}
+	
+	public void doOffClick(View v){
+		byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
+				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
+				InfraNative.AIR_ONOFF_OFF, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
+		InfraControlPacket packet = getInfraPacket();
+		packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
+			
 			@Override
-			public void onModeChange(int mode, boolean longclick) {
-				ShowInfo.printLogW("_______onModeChange________" + mode);
-				
-				int modeTmp = InfraNative.AIR_MODEL_COLD;
-				if(1 == mode){
-					modeTmp = InfraNative.AIR_MODEL_HOT;
+			public void OnRecvData(PacketCheck packetcheck) {
+				if(null != packetcheck){
+					ShowInfo.printLogW("_________packetcheck_AIR_ONOFF_OFF__________" + DataExchange.dbBytesToString(packetcheck.data));
 				}
-				
-				byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
-						InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
-						InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, modeTmp);
-				InfraControlPacket packet = getInfraPacket();
-				packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
-					
-					@Override
-					public void OnRecvData(PacketCheck packetcheck) {
-						if(null != packetcheck){
-							ShowInfo.printLogW("_________packetcheck___________" + DataExchange.dbBytesToString(packetcheck.data));
-						}
-					}
-				}, bytes);
-				autoBinder.addPacketToSend(packet);
 			}
-		});
+		}, bytes);
+		autoBinder.addPacketToSend(packet);
+	}
+	
+	private int index = 0;
+	private int[] strings = {R.string.mode_auto, R.string.mode_cold, R.string.mode_hot, R.string.mode_wind, R.string.mode_dry};
+	private int[] icons = {R.drawable.auto, R.drawable.cold, R.drawable.hot, R.drawable.wind, R.drawable.dry};
+	private int[] modes = {InfraNative.AIR_MODEL_AUTO, InfraNative.AIR_MODEL_COLD, InfraNative.AIR_MODEL_HOT, InfraNative.AIR_MODEL_WIND, InfraNative.AIR_MODEL_DRY};
+	
+	public void doModeClick(View v){
+		index++;
+		if(index>=modes.length){
+			index = 0;
+		}
+		int modeTmp = modes[index];
+		
+		Drawable drawable = getResources().getDrawable(icons[index]);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+		
+		mModeView.setCompoundDrawables(null, drawable, null, null);
+		mModeView.setText(strings[index]);
+		
+		byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
+				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
+				InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, modeTmp);
+		InfraControlPacket packet = getInfraPacket();
+		packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
+			
+			@Override
+			public void OnRecvData(PacketCheck packetcheck) {
+				if(null != packetcheck){
+					ShowInfo.printLogW("_________packetcheck___________" + DataExchange.dbBytesToString(packetcheck.data));
+				}
+			}
+		}, bytes);
+		autoBinder.addPacketToSend(packet);
 	}
 	
 	protected void showExitDialog() {
@@ -318,7 +335,6 @@ public class InfraAirActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		airview.recyleBit();
 		this.userUnbindService();
 	}
 	

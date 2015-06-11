@@ -120,13 +120,11 @@ public class RgbLightControlView extends View {
 	
 	public RgbLightControlView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		init(context);
 	}
 	
 	public RgbLightControlView(Context context, AttributeSet attrs) {
 		super(context,attrs);
-		// TODO Auto-generated constructor stub
 		init(context);
 	}
 	

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff20293c" >
+
+    <EditText
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:src="@drawable/title_back_bk" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:background="@null"
+        android:text="@string/add_add_string"
+        android:textColor="@color/whitesmoke"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar_text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:drawableTop="@drawable/selecter_off"
+        android:onClick="doOffClick"
+        android:text="@string/off"
+        android:textColor="@color/whitesmoke" />
+
+    <Button
+        android:id="@+id/btn_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/btn_off"
+        android:layout_marginRight="20dp"
+        android:background="@null"
+        android:drawableTop="@drawable/selecter_mode"
+        android:onClick="doModeClick"
+        android:text="@string/mode"
+        android:textColor="@color/whitesmoke" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_off"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/big_red_circle"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <elle.home.app.view.WheelView
+            android:id="@+id/wheel_view_wv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/linearlayout"
+        android:layout_alignTop="@id/linearlayout"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/small_white_circle"
+        android:drawablePadding="-8dp"
+        android:drawableTop="@drawable/wind"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:text="@string/mode_auto" />
+
+</RelativeLayout>
