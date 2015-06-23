@@ -4,53 +4,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-	<LinearLayout 
-	    android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="@color/darkgray"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/homebk"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-	    >
+        android:layout_weight="1.8"
+        android:background="@drawable/main_home_bk_0" >
+    </FrameLayout>
 
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="1dp"
-		    android:layout_weight="0"
-		    android:background="@color/darkgray"
-		    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="@color/darkgray"
+        android:orientation="vertical" >
+    </LinearLayout>
 
-		</LinearLayout>
-	    
-	    <FrameLayout
-	        android:id="@+id/homebk"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="2.3"
-	        android:background="@drawable/main_home_bk_0" >
-
-    	</FrameLayout>
-    	
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="1dp"
-		    android:layout_weight="0"
-		    android:background="@color/darkgray"
-		    android:orientation="vertical" >
-
-		</LinearLayout>	    
-	    
-	    <GridView
-	        android:id="@+id/dev_grid_view"
-	        android:layout_width="fill_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0.9"
-	        android:background="@color/transparent"
-	        android:cacheColorHint="@android:color/transparent"
-	        android:divider="@null"
-	        android:gravity="center"
-	        android:listSelector="@drawable/grid_item_bk"
-	        android:numColumns="3" >
-</GridView>
-	    
-	</LinearLayout>
-	
+    <GridView
+        android:id="@+id/dev_grid_view"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:background="@color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:gravity="center"
+        android:scrollbars="none"
+        android:listSelector="@drawable/grid_item_bk"
+        android:numColumns="3" >
+    </GridView>
 
 </LinearLayout>

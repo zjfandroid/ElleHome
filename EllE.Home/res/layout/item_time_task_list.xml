@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/item_onoff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/off"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/item_onoff"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        android:typeface="serif" />
+
+    <!--
+         <Switch
+        android:id="@+id/item_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp" />
+    -->
+
+    <LinearLayout
+        android:id="@+id/layout_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_toRightOf="@id/item_text"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/box_mon"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/mon" />
+
+        <CheckBox
+            android:id="@+id/box_tus"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/tus" />
+
+        <CheckBox
+            android:id="@+id/box_wen"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/wen" />
+
+        <CheckBox
+            android:id="@+id/box_thr"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/thr" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_day_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_day"
+        android:layout_gravity="center_horizontal"
+        android:layout_toRightOf="@id/item_text"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/box_fri"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/fri" />
+
+        <CheckBox
+            android:id="@+id/box_sat"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/sat" />
+
+        <CheckBox
+            android:id="@+id/box_sun"
+            style="@style/checkbox_no_button_small"
+            android:text="@string/sun" />
+
+        <CheckBox
+            android:id="@+id/box_cir"
+            style="@style/checkbox_no_button_small"
+            android:layout_marginLeft="2dp"
+            android:button="@drawable/selecter_repeat" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -3,7 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_color" >
+    android:background="@color/dark_bg" >
+
+    <EditText
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:gravity="center_vertical|center_horizontal"
+        android:editable="false"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/title_btn_left"
@@ -12,17 +23,8 @@
         android:layout_gravity="left|center_vertical"
         android:layout_marginLeft="0dp"
         android:background="#00000000"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/title_back_bk" />
-
-    <TextView
-        android:id="@+id/title_bar_text"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/title_bk"
-        android:gravity="center_vertical|center_horizontal"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/title_btn_right"
@@ -32,6 +34,7 @@
         android:layout_gravity="right|center_vertical"
         android:layout_marginLeft="0dp"
         android:background="#00000000"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/title_right_menu" />
 
     <LinearLayout

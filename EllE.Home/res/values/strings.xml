@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<string name="app_name">HomeGenius</string>
+	<string name="app_name">小智家</string>
 	<string name="app_name_vstar">Eye4 Smart</string>
 	<string name="app_home">未来已到来</string>
 	
@@ -296,4 +296,5 @@
 	<string name="mode_dry">除湿</string>
 	<string name="mode">模式</string>
 	<string name="off">关闭</string>
+	<string name="on">打开</string>
 </resources>

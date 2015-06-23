@@ -1,193 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_color" >
+    android:background="@color/dark_bg" >
 
-    <LinearLayout
-        android:id="@+id/layout_top"
-        android:layout_width="fill_parent"
+    <EditText
+        android:id="@+id/title_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:editable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:contentDescription="@string/app_home"
+        android:src="@drawable/title_back_bk" />
+
+    <ImageButton
+        android:id="@+id/btn_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="0dp"
+        android:background="@color/transparent"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/title_add" />
+
+    <ImageButton
+        android:id="@+id/plugbutton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_below="@id/title_bar_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="#00000000"
+        android:contentDescription="@string/app_home"
+        android:scaleType="fitCenter"
+        android:src="@drawable/plug_off_logo" />
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/title_bk" >
-
-            <ImageButton
-                android:id="@+id/title_btn_left"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="0dp"
-                android:background="#00000000"
-                android:src="@drawable/title_back_bk" />
-
-            <TextView
-                android:id="@+id/title_bar_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="智能插座"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="181dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/plug_time_bk"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/plug_timer_up_layout"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:orientation="horizontal" >
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="90dp" >
-
-                <ImageButton
-                    android:id="@+id/plug_timer_upbk"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:background="@color/transparent"
-                    android:baselineAlignBottom="false"
-                    android:cropToPadding="false"
-                    android:scaleType="fitXY"
-                    android:src="@color/transparent" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp" >
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="20dp"
-                        android:text="@string/plug_status_on"
-                        android:gravity="bottom"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:id="@+id/openTimerTv"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="bottom|center_horizontal"
-                        android:text="--:--:--"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="30sp" />
-
-                    <elle.home.uipart.SilderButton
-                        android:id="@+id/openSilderButton"
-                        android:layout_width="61dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginLeft="10dp" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="270dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/darkgray"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/plug_timer_down_layout"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:orientation="horizontal" >
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <ImageButton
-                    android:id="@+id/plug_timer_downbk"
-                    style="@color/transparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@color/transparent" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp" >
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="bottom"
-                        android:text="@string/plug_status_off"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:id="@+id/closeTimerTv"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="bottom|center_horizontal"
-                        android:text="--:--:--"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="30sp" />
-
-                    <elle.home.uipart.SilderButton
-                        android:id="@+id/closeSilderBtn"
-                        android:layout_width="61dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginLeft="10dp" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="160dp"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical" >
+        android:layout_below="@id/plugbutton"
+        android:layout_marginTop="8dp"
+        android:cacheColorHint="#0000"
+        android:listSelector="@null" />
 
-        <ImageButton
-            android:id="@+id/plugbutton"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:background="#00000000"
-            android:scaleType="fitCenter" />
-
-        <TextView
-            android:id="@+id/plugtext"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/plug_status_on"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>

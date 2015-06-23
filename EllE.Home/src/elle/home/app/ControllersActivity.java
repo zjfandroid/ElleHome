@@ -309,7 +309,7 @@ public class ControllersActivity extends BaseActivity implements TimePickerDialo
 	}
 
 	@Override
-	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int tag) {
+	public void onTimeSet(RadialPickerLayout view, byte day, int hourOfDay, int minute, int tag) {
 		if(autoBinder != null){
 			int count = DataExchange.getOffset(hourOfDay, minute);
 			ControllersPacket packet = getPacket();

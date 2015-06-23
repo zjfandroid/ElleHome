@@ -419,6 +419,12 @@ public class LocationDevFragment extends Fragment {
 				convertView = this.inflater.inflate(R.layout.grid_dev_items, null);
 			}
 			
+			if(position%2==0){
+				convertView.setBackgroundResource(R.drawable.scene_item_iv);
+			}else{
+				convertView.setBackgroundResource(R.drawable.scene_item_bk);
+			}
+			
 			ImageView itemlogo = ViewHolder.get(convertView, R.id.itemlogo);
 			SizeAdjustingTextView itemtext = ViewHolder.get(convertView, R.id.itemtext);
 			ImageView connectLogo = ViewHolder.get(convertView, R.id.connectLogo);
