@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/scene_item_dev_bk_down" >
+
+    <TextView
+        android:id="@+id/tv_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mac address" />
+
+    <TextView
+        android:id="@+id/tv_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/tv_mac"
+        android:text="ip address" />
+    
+    <ImageView 
+        android:layout_toRightOf="@+id/tv_ip"
+        android:id="@+id/iv_online"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_mac"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rb_open"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:gravity="center"
+                android:text="打开"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb_close"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:gravity="center"
+                android:text="关闭"
+                android:textColor="@color/red" />
+    </RadioGroup>
+
+</RelativeLayout>

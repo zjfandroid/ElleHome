@@ -50,6 +50,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="elle.home.app.BlubTimerActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="elle.home.app.GatewayActivity"
             android:screenOrientation="portrait" >
         </activity>

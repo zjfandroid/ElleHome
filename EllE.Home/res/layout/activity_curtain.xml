@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:seekarc="http://schemas.android.com/apk/res/elle.home.app.smart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_street" >
@@ -24,7 +23,6 @@
         android:layout_gravity="center"
         android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
-        android:text="窗帘测试"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -46,31 +44,37 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <Button
+        <ImageButton
             android:id="@+id/tips1"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="32dp"
-            android:background="@drawable/selecter_open"
-            android:onClick="doClick" />
+            android:background="@null"
+            android:contentDescription="@string/app_name"
+            android:onClick="doClick"
+            android:src="@drawable/selecter_open" />
 
-        <Button
+        <ImageButton
             android:id="@+id/tips3"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="32dp"
-            android:background="@drawable/selecter_stop"
-            android:onClick="doClick" />
+            android:background="@null"
+            android:contentDescription="@string/app_name"
+            android:onClick="doClick"
+            android:src="@drawable/selecter_stop" />
 
-        <Button
+        <ImageButton
             android:id="@+id/tips2"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selecter_close"
-            android:onClick="doClick" />
+            android:background="@null"
+            android:contentDescription="@string/app_name"
+            android:onClick="doClick"
+            android:src="@drawable/selecter_close" />
     </LinearLayout>
 
     <RelativeLayout
@@ -102,10 +106,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/right"
-            android:layout_toRightOf="@id/left"
             android:layout_marginLeft="-16dp"
             android:layout_marginRight="-16dp"
+            android:layout_toLeftOf="@id/right"
+            android:layout_toRightOf="@id/left"
             android:max="15"
             android:progress="0"
             android:progressDrawable="@drawable/pro_seekbar" />

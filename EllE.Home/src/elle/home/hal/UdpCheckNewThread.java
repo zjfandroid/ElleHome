@@ -313,7 +313,7 @@ public class UdpCheckNewThread {
 					}
 				}
 				try {
-					this.sleep(1800);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

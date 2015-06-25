@@ -375,7 +375,7 @@ public class LocationDevFragment extends Fragment {
 				}
 //			}else{
 //				Intent intentG = null;
-//				intentG = new Intent(mContext, InfraActivity.class);
+//				intentG = new Intent(mContext, CurtainActivity.class);
 //				intentG.putExtra("mac", 123l);
 //				intentG.putExtra("devname", "test");
 //				intentG.putExtra("isTest", true);
@@ -436,6 +436,7 @@ public class LocationDevFragment extends Fragment {
 			
 			itemlogo.setImageDrawable(mContext.getResources().getDrawable(PublicResDefine.getFragmentIconByType((Byte) devlist.get(position).get("type"))));
 			itemtext.setText((String) devlist.get(position).get("devname"));
+			itemtext.resizeText();
 			
 			switch((Byte) devlist.get(position).get("type")){
 			case PublicDefine.TypeInfra:
@@ -443,6 +444,7 @@ public class LocationDevFragment extends Fragment {
 			case PublicDefine.TypeLight:
 			case PublicDefine.TypePlug:
 			case PublicDefine.TypeGateWay:
+			case PublicDefine.TypeCurtain:
 				OneDev oneDev = locatInfo.devLocationList.get(position);
 				int status = oneDev.getConnectStatus();
 				

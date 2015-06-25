@@ -181,6 +181,10 @@ public class OneDev implements Serializable{
 	 * 从数据库将单个信息取回来，用mac地址和设备名字
 	 * */
 	public void getFromDatabase(long mac,String devname,Context context){
+		if(null == devname || null == context){
+			return;
+		}
+		
 		String[] params = new String[2];
 		params[0] = String.valueOf(mac);
 		params[1] = devname;

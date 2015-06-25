@@ -257,6 +257,7 @@
     <string name="sleep">Sleep</string>
     <string name="sleep_15">Sleep:15 min</string>
     <string name="sleep_30">Sleep:30 min</string>
+    <string name="timer">Timer</string>
     
     <string name="enter_user_name">Please enter user name</string>
     <string name="enter_user_pwd">Please enter user password</string>

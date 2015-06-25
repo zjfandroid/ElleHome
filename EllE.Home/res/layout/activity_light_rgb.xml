@@ -11,8 +11,8 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:background="@null"
-        android:gravity="center_vertical|center_horizontal"
         android:editable="false"
+        android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -65,7 +65,7 @@
 
         <LinearLayout
             android:layout_width="150dp"
-            android:layout_height="152dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="@drawable/title_right_menu_bk"
             android:orientation="vertical" >
@@ -95,6 +95,25 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="@string/sleep_30"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/whitesmoke"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/title_menu_line" />
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="@string/timer"
+                android:onClick="doTimerClick"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/whitesmoke"
                 android:textSize="18sp" />

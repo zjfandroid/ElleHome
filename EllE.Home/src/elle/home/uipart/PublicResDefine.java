@@ -26,6 +26,8 @@ public class PublicResDefine {
 		case PublicDefine.TypeController:
 		case PublicDefine.TypeGateWay:
 			return R.drawable.icon_gateway_normal;
+		case PublicDefine.TypeCurtain:
+			return R.drawable.curtain;
 			
 		}
 		return R.drawable.icon_null_normal;

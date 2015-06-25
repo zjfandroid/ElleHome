@@ -256,6 +256,7 @@
     <string name="sleep">睡眠</string>
     <string name="sleep_15">睡眠:15分钟</string>
     <string name="sleep_30">睡眠:30分钟</string>
+    <string name="timer">自定义定时</string>
     
     <string name="enter_user_name">请输入用户名</string>
     <string name="enter_user_pwd">请输入密码</string>

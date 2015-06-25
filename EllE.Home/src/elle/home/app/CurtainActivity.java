@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import elle.home.app.smart.R;
 import elle.home.database.OneDev;
 import elle.home.partactivity.BaseActivity;
@@ -149,6 +150,8 @@ public class CurtainActivity extends BaseActivity{
 			}
 		});
 		
+		TextView mTextView = (TextView) findViewById(R.id.title_bar_text);
+		mTextView.setText(dev.devname);
 	}
 
 	@Override

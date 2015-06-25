@@ -10,7 +10,6 @@ import java.util.TimerTask;
 import android.util.Log;
 import elle.home.protocol.PacketCheck;
 import elle.home.protocol.ProtocolDataList;
-import elle.home.utils.ShowInfo;
 
 public class UdpThread {
 	
@@ -60,7 +59,6 @@ public class UdpThread {
 				recvThread.start();
 			}}, 1000);
 		
-		
 	}
 	
 	public void stopThread(){
@@ -106,7 +104,6 @@ public class UdpThread {
 				try {
 					dataSocket.receive(packet);
 					length = packet.getLength();
-					ShowInfo.printLogW("______dataSocket.receive(packet)______" + length);
 					if(length>0){
 						if(length>=37){
 							byte[] xdata = new byte[length];

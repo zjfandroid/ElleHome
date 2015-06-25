@@ -762,4 +762,11 @@ public class LightRgbActivity extends BaseActivity {
 		
 	}
 
+	public void doTimerClick(View v){
+		Intent intent = new Intent(mContext, BlubTimerActivity.class);
+		intent.putExtra("mac", dev.mac);
+		intent.putExtra("connect", connectStatus);
+		intent.putExtra("devname", dev.devname);
+		mContext.startActivity(intent);
+	}
 }
