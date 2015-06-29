@@ -25,9 +25,12 @@ import elle.home.protocol.BasicPacket;
 import elle.home.protocol.InfraControlPacket;
 import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
+import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 import elle.home.utils.StringUtils;
+import elle.homegenius.infrajni.InfraNative;
 
 public class InfraTVControlActivity extends BaseActivity {
 
@@ -35,6 +38,7 @@ public class InfraTVControlActivity extends BaseActivity {
 
 	private int idBrand = 0;
 	private int id = 1;
+	private byte[] source;
 	
 	//设备的mac地址
 	private long devmac;
@@ -65,6 +69,7 @@ public class InfraTVControlActivity extends BaseActivity {
 		Intent intent = this.getIntent();
 		devmac = intent.getLongExtra("mac", 0);
 		devname = intent.getStringExtra("devname");
+		source = intent.getByteArrayExtra("source");
 		Log.d(TAG,"infra air mac:"+devmac+" devname:"+devname);
 		this.connectStatus = intent.getIntExtra("connect", PublicDefine.ConnectNull);
 		Log.d(TAG,"传输状态:"+this.connectStatus);
@@ -91,9 +96,8 @@ public class InfraTVControlActivity extends BaseActivity {
 		if(isTestMode){
 			idBrand = intent.getIntExtra("idBrand", 1);
 			id = intent.getIntExtra("id", 1);
-			
-			dev.setCameraUserName(Integer.toString(idBrand));
-			dev.setCameraDeviceID(Integer.toString(id));
+
+			dev.function = DataExchange.dbBytesToString(source);
 			
 			title.setText(dev.devname + idBrand + id);
 			View v = findViewById(R.id.btn_add);
@@ -110,8 +114,7 @@ public class InfraTVControlActivity extends BaseActivity {
 			title.setText(dev.devname);
 			title.setEnabled(false);
 			
-			idBrand = Integer.valueOf(dev.getCameraUserName());
-			id = Integer.valueOf(dev.getCameraDeviceID());
+			source = DataExchange.dbStringToBytes(dev.function);
 		}
 		
 		backbtn = (ImageButton)this.findViewById(R.id.title_btn_left);
@@ -253,5 +256,83 @@ public class InfraTVControlActivity extends BaseActivity {
 			showExitDialog();
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void doOffClick(View v){
+		byte[] bytes = InfraNative.getTvCommand(source, InfraNative.TvFunPower);
+		sendCommand(bytes);
+	}
+	
+	private void sendCommand(byte[] bytes) {
+		InfraControlPacket packet = getInfraPacket();
+		packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
+			
+			@Override
+			public void OnRecvData(PacketCheck packetcheck) {
+				if(null != packetcheck){
+					ShowInfo.printLogW(source + "_________packetcheck_AIR_ONOFF_OFF__________" + DataExchange.dbBytesToString(packetcheck.data));
+				}
+			}
+		}, bytes);
+		autoBinder.addPacketToSend(packet);
+	}
+
+	public void doModeClick(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunTVAV));
+	}
+	
+	public void doClickOK(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunSure));
+	}
+	
+	public void doClickLeft(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunLeft));
+	}
+	
+	public void doClickRight(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunRight));
+	}
+	
+	public void doClickUp(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunUp));
+	}
+	public void doClickDown(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunDown));
+	}
+	public void doClickBack(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunBack));
+	}
+	public void doClickMinus(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFunMute));
+	}
+	public void doClickZero(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun0));
+	}
+	public void doClickOne(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun1));
+	}
+	public void doClickTwo(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun2));
+	}
+	public void doClickThree(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun3));
+	}
+	public void doClickFour(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun4));
+	}
+	public void doClickFive(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun5));
+	}
+	public void doClickSix(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun6));
+	}
+	public void doClickSeven(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun7));
+	}
+	public void doClickEight(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun8));
+	}
+	public void doClickNine(View v){
+		sendCommand(InfraNative.getTvCommand(source, InfraNative.TvFun9));
 	}
 }

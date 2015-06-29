@@ -2,6 +2,7 @@ package elle.home.app.infra;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,11 +16,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import elle.fun.infra.InfraThread;
+import elle.fun.infra.OnBrandListListener;
 import elle.home.app.smart.R;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ViewHolder;
-import elle.homegenius.infrajni.InfraNative;
 
 public class InfraBrandListActivity extends Activity {
 
@@ -39,30 +41,43 @@ public class InfraBrandListActivity extends Activity {
 	private void initDatas() {
 		type = getIntent().getByteExtra("type", PublicDefine.TypeInfraAir);
 		if(PublicDefine.TypeInfraAir == type){
-			initAirDatas();
+			initDatas(InfraThread.TypeAir);
 		}else{
-			initTVDatas();
+			initDatas(InfraThread.TypeTv);
 		}
 	}
 
-	private void initTVDatas() {
-		int len = InfraNative.getTvAllBrandListLen();
-		for (int i = 0; i < len; i++) {
-			Item item = new Item();
-			item.brand = InfraNative.getTvOneBrandNameById(i+1, 1);
-			ShowInfo.printLogW("______initDatas__________" + item.brand);
-			mLists.add(item);
-		}		
-	}
-
-	private void initAirDatas() {
-		int len = InfraNative.getAirAllBrandListLen();
-		for (int i = 0; i < len; i++) {
-			Item item = new Item();
-			item.brand = InfraNative.getAirOneBrandNameById(i+1, 1);
-			ShowInfo.printLogW("______initDatas__________" + item.brand);
-			mLists.add(item);
-		}
+	private void initDatas(String type) {
+		InfraThread thread = new InfraThread();
+		
+		Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.endsWith("zh")){
+        	language = InfraThread.LanguageChinese;
+        }else{
+        	language = InfraThread.LanguageChinese;
+        }
+        
+		thread.startGetBrandList(InfraThread.Company, type, language, new OnBrandListListener() {
+			
+			@Override
+			public void recvBrandList(boolean isok, int len, ArrayList<String> brandlist) {
+				for (int i = 0; i < len; i++) {
+					Item item = new Item();
+					item.brand = brandlist.get(i);
+					ShowInfo.printLogW("______initDatas__________" + item.brand);
+					mLists.add(item);
+				}	
+				
+				InfraBrandListActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						mBaseAdapter.notifyDataSetChanged();						
+					}
+				});
+			}
+		});
 	}
 
 	private void initViews() {
@@ -75,6 +90,7 @@ public class InfraBrandListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(getApplicationContext(), InfraBrandDevActivity.class);
 				intent.putExtra("id", position+1);
+				intent.putExtra("brand", mLists.get(position).brand);
 				intent.putExtra("mac", getIntent().getLongExtra("mac", 0));
 				intent.putExtra("connect", PublicDefine.ConnectNull);
 				intent.putExtra("type", type);

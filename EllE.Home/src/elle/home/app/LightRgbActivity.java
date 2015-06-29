@@ -35,6 +35,7 @@ import elle.home.publicfun.PublicDefine;
 import elle.home.uipart.RgbLightView;
 import elle.home.uipart.RgbLightView.OnRgbLightChange;
 import elle.home.uipart.SilderButton;
+import elle.home.utils.ABViewUtil;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
@@ -241,7 +242,7 @@ public class LightRgbActivity extends BaseActivity {
 		
 		this.statusOffDrawable = this.getResources().getDrawable(R.drawable.rgb_light_bk_black);
 		
-		this.linearbackground2.setBackground(statusOffDrawable);
+		ABViewUtil.setBackgroundDrawable(linearbackground2, statusOffDrawable);
 		this.linearbackground2.setAlpha(0);
 		
 		sleeplayout.setVisibility(View.INVISIBLE);

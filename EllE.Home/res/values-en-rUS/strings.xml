@@ -299,4 +299,6 @@
 	<string name="mode">Mode</string>
 	<string name="off">Off</string>
 	<string name="on">On</string>
+	<string name="back">back</string>
+	<string name="mute">mute</string>
 </resources>

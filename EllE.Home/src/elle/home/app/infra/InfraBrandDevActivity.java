@@ -1,5 +1,6 @@
 package elle.home.app.infra;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -21,6 +23,8 @@ import android.widget.ImageButton;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
+import elle.fun.infra.InfraThread;
+import elle.fun.infra.OnDevListListener;
 import elle.home.app.AutoService;
 import elle.home.app.smart.R;
 import elle.home.database.OneDev;
@@ -35,10 +39,12 @@ import elle.homegenius.infrajni.InfraNative;
 
 public class InfraBrandDevActivity extends Activity {
 
-	private List<byte[]> mLists = new ArrayList<byte[]>();
+	private List<Item> mLists = new ArrayList<Item>();
 	private byte type = 0;
+	private String brand;
 	private int idBrand = 0;
 	private int index = 0;
+	private byte[] mData;
 	private long devmac;
 	private int connectStatus;
 	private InetAddress conip;
@@ -71,12 +77,41 @@ public class InfraBrandDevActivity extends Activity {
 	private void initDatas() {
 		Intent intent = this.getIntent();
 		type = intent.getByteExtra("type", PublicDefine.TypeInfraAir);
+		brand = intent.getStringExtra("brand");
 		idBrand = intent.getIntExtra("id", 1);
 		
 		if(PublicDefine.TypeInfraAir == type){
-			initAirDatas();
+			initDatas(InfraThread.TypeAir, new OnDevListListener() {
+				
+				@Override
+				public void recvDevListListener(boolean isOk, int len, ArrayList<String> datalist) {
+					for(int i=0;i<datalist.size();i++){
+						Item item = new Item();
+						item.sourceData = DataExchange.dbStringToBytes(datalist.get(i));
+						byte[] bytes = InfraNative.getAirComand(item.sourceData, 
+								InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_HIGH, InfraNative.AIR_FLOW_MANUAL_MID, 
+								InfraNative.AIR_FLOW_AUTO_ON, InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_AUTO_FLOW, InfraNative.AIR_MODEL_COLD);
+						Log.d("xxxd","ss______"+i+":"+DataExchange.dbBytesToString(bytes));
+						item.command = bytes;
+						mLists.add(item);
+					}
+				}
+			});
 		}else{
-			initTVDatas();
+			initDatas(InfraThread.TypeTv, new OnDevListListener() {
+				
+				@Override
+				public void recvDevListListener(boolean isOk, int len, ArrayList<String> datalist) {
+					for(int i=0;i<datalist.size();i++){
+						Item item = new Item();
+						item.sourceData = DataExchange.dbStringToBytes(datalist.get(i));
+						byte[] bytes = InfraNative.getTvCommand(item.sourceData, InfraNative.TvFunVolPlus);
+						Log.d("xxxd","ss______"+i+":"+DataExchange.dbBytesToString(bytes));
+						item.command = bytes;
+						mLists.add(item);
+					}
+				}
+			});
 		}
 		
 		devmac = intent.getLongExtra("mac", 0);
@@ -99,27 +134,13 @@ public class InfraBrandDevActivity extends Activity {
 		}
 	}
 
-	private void initTVDatas() {
-		ShowInfo.printLogW("__________getTvBrandLenById_______" + idBrand);
-		int len = InfraNative.getTvBrandLenById(idBrand);
-		ShowInfo.printLogW(len + "______initDatas__id________" + idBrand);
-		
-		for (int i = 0; i < len; i++) {
-			byte[] bytes = InfraNative.getTvCommand(idBrand, i+1, InfraNative.TvFunVolPlus);
-			mLists.add(bytes);
-		}			
-	}
-
-	private void initAirDatas() {
-		int len = InfraNative.getAirBrandLenById(idBrand);
-		ShowInfo.printLogW(len + "______initDatas__id________" + idBrand);
-		
-		for (int i = 0; i < len; i++) {
-			byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, i+1, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
-				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
-				InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
-			mLists.add(bytes);
-		}		
+	private void initDatas( String type, OnDevListListener devListener) {
+		InfraThread thread = new InfraThread();
+		try {
+			thread.startGetDevList(InfraThread.Company, type, new String(brand.getBytes(), "utf-8"),devListener);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initViews() {
@@ -161,6 +182,7 @@ public class InfraBrandDevActivity extends Activity {
 		aintent.putExtra("mac", dev.mac);
 		aintent.putExtra("devname", dev.devname);
 		aintent.putExtra("connect", connectStatus);
+		aintent.putExtra("source", mData);
 		aintent.putExtra("idBrand", idBrand);
 		aintent.putExtra("id", index);
 		aintent.putExtra("isTest", true);
@@ -188,6 +210,9 @@ public class InfraBrandDevActivity extends Activity {
 				if(connectStatus == PublicDefine.ConnectRemote){
 					infraControlPacket.setPacketRemote(true);
 				}
+				
+				Item mItem = mLists.get(index);
+				mData = mItem.sourceData;
 				infraControlPacket.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
 					
 					@Override
@@ -196,7 +221,7 @@ public class InfraBrandDevActivity extends Activity {
 							ShowInfo.printLogW("_________packetcheck___________" + DataExchange.dbBytesToString(packetcheck.data));
 						}
 					}
-				}, mLists.get(index));
+				}, mItem.command);
 				
 				if(autoBinder!=null){
 					autoBinder.addPacketToSend(infraControlPacket);
@@ -245,5 +270,10 @@ public class InfraBrandDevActivity extends Activity {
 	
 	private void userUnbindService(){
 		unbindService(connection);
+	}
+	
+	class Item{
+		byte[] sourceData;
+		byte[] command;
 	}
 }

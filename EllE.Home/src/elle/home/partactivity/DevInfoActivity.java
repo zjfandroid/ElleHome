@@ -2,6 +2,7 @@ package elle.home.partactivity;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,6 +24,7 @@ import elle.home.protocol.OnRecvListener;
 import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
+import elle.home.utils.ABViewUtil;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
@@ -114,28 +116,28 @@ public class DevInfoActivity extends BaseActivity {
 		
 		switch(dev.type){
 		case PublicDefine.TypeLight:
-			addlogo.setBackground(this.getResources().getDrawable(R.drawable.add_logo_bulb));
+			ABViewUtil.setBackgroundDrawable(addlogo,this.getResources().getDrawable(R.drawable.add_logo_bulb));
 			info1.setText(getResources().getString(R.string.link_config_light_1));
 			info2.setText(getResources().getString(R.string.link_config_light_2));
 			info3.setText(getResources().getString(R.string.link_config_light_3));
 			info4.setText(getResources().getString(R.string.link_config_light_4));
 			break;
 		case PublicDefine.TypePlug:
-			addlogo.setBackground(this.getResources().getDrawable(R.drawable.add_logo_plug));
+			ABViewUtil.setBackgroundDrawable(addlogo,this.getResources().getDrawable(R.drawable.add_logo_plug));
 			info1.setText(getResources().getString(R.string.link_config_plug_1));
 			info2.setText(getResources().getString(R.string.link_config_plug_2));
 			info3.setText(getResources().getString(R.string.link_config_plug_3));
 			info4.setText(getResources().getString(R.string.link_config_plug_4));
 			break;
 		case PublicDefine.TypeInfra:
-			addlogo.setBackground(this.getResources().getDrawable(R.drawable.add_logo_infra));
+			ABViewUtil.setBackgroundDrawable(addlogo,this.getResources().getDrawable(R.drawable.add_logo_infra));
 			info1.setText(getResources().getString(R.string.link_config_infra_1));
 			info2.setText(getResources().getString(R.string.link_config_infra_2));
 			info3.setText(getResources().getString(R.string.link_config_infra_3));
 			info4.setText(getResources().getString(R.string.link_config_infra_4));
 			break;
 		case PublicDefine.TypeInfraAir:
-			addlogo.setBackground(this.getResources().getDrawable(R.drawable.add_logo_infra));
+			ABViewUtil.setBackgroundDrawable(addlogo,this.getResources().getDrawable(R.drawable.add_logo_infra));
 			info1.setText(getResources().getString(R.string.link_config_air_1));
 			info2.setText(getResources().getString(R.string.link_config_air_2));
 			info3.setText(getResources().getString(R.string.link_config_air_3));

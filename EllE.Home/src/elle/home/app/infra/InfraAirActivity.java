@@ -42,6 +42,7 @@ public class InfraAirActivity extends BaseActivity {
 
 	private int idBrand = 0;
 	private int id = 1;
+	private byte[] source;
 	
 	//设备的mac地址
 	private long devmac;
@@ -73,6 +74,7 @@ public class InfraAirActivity extends BaseActivity {
 		Intent intent = this.getIntent();
 		devmac = intent.getLongExtra("mac", 0);
 		devname = intent.getStringExtra("devname");
+		source = intent.getByteArrayExtra("source");
 		Log.d(TAG,"infra air mac:"+devmac+" devname:"+devname);
 		this.connectStatus = intent.getIntExtra("connect", PublicDefine.ConnectNull);
 		Log.d(TAG,"传输状态:"+this.connectStatus);
@@ -100,8 +102,7 @@ public class InfraAirActivity extends BaseActivity {
 			idBrand = intent.getIntExtra("idBrand", 1);
 			id = intent.getIntExtra("id", 1);
 			
-			dev.setCameraUserName(Integer.toString(idBrand));
-			dev.setCameraDeviceID(Integer.toString(id));
+			dev.function = DataExchange.dbBytesToString(source);
 			
 			title.setText(dev.devname + idBrand + id);
 			View v = findViewById(R.id.btn_add);
@@ -118,8 +119,7 @@ public class InfraAirActivity extends BaseActivity {
 			title.setText(dev.devname);
 			title.setEnabled(false);
 			
-			idBrand = Integer.valueOf(dev.getCameraUserName());
-			id = Integer.valueOf(dev.getCameraDeviceID());
+			source = DataExchange.dbStringToBytes(dev.function);
 		}
 		
 		backbtn = (ImageButton)this.findViewById(R.id.title_btn_left);
@@ -139,7 +139,7 @@ public class InfraAirActivity extends BaseActivity {
 		mModeView = (TextView) findViewById(R.id.tv_mode);
 		
 		ArrayList<String> nums = new ArrayList<String>(15);
-		for(int i = 0;i< 12; i++){
+		for(int i = 0;i< 15; i++){
 			nums.add(Integer.toString(16+i));
 		}
 		
@@ -149,11 +149,12 @@ public class InfraAirActivity extends BaseActivity {
 		mWheelView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
-				ShowInfo.printLogW("_________onTempChange________" + selectedIndex);
-				
-				byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19 + selectedIndex, InfraNative.AIR_FLOW_RATE_AUTO, 
+				byte[] bytes = InfraNative.getAirComand(source, InfraNative.AIR_TEMP_19 + selectedIndex - 4, InfraNative.AIR_FLOW_RATE_AUTO, 
 						InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
 						InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
+				
+				ShowInfo.printLogW(DataExchange.dbBytesToString(bytes) + "_________onTempChange________" + selectedIndex);
+				
 				InfraControlPacket packet = getInfraPacket();
 				packet.sendCommand(DataExchange.longToEightByte(dev.mac), new OnRecvListener() {
 					
@@ -171,7 +172,7 @@ public class InfraAirActivity extends BaseActivity {
 	}
 	
 	public void doOffClick(View v){
-		byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
+		byte[] bytes = InfraNative.getAirComand(source, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
 				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
 				InfraNative.AIR_ONOFF_OFF, InfraNative.AIR_KEY_ONOFF, InfraNative.AIR_MODEL_COLD);
 		InfraControlPacket packet = getInfraPacket();
@@ -180,7 +181,7 @@ public class InfraAirActivity extends BaseActivity {
 			@Override
 			public void OnRecvData(PacketCheck packetcheck) {
 				if(null != packetcheck){
-					ShowInfo.printLogW("_________packetcheck_AIR_ONOFF_OFF__________" + DataExchange.dbBytesToString(packetcheck.data));
+					ShowInfo.printLogW(source + "_________packetcheck_AIR_ONOFF_OFF__________" + DataExchange.dbBytesToString(packetcheck.data));
 				}
 			}
 		}, bytes);
@@ -205,7 +206,7 @@ public class InfraAirActivity extends BaseActivity {
 		mModeView.setCompoundDrawables(null, drawable, null, null);
 		mModeView.setText(strings[index]);
 		
-		byte[] bytes = InfraNative.getAirCommandByBrand(idBrand, id, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
+		byte[] bytes = InfraNative.getAirComand(source, InfraNative.AIR_TEMP_19, InfraNative.AIR_FLOW_RATE_AUTO, 
 				InfraNative.AIR_FLOW_MANUAL_UP, InfraNative.AIR_FLOW_AUTO_OFF, 
 				InfraNative.AIR_ONOFF_ON, InfraNative.AIR_KEY_ONOFF, modeTmp);
 		InfraControlPacket packet = getInfraPacket();

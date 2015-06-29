@@ -75,62 +75,74 @@
         <Button
             android:id="@+id/one"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickOne"
             android:text="1" />
 
         <Button
             android:id="@+id/two"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickTwo"
             android:text="2" />
 
         <Button
             android:id="@+id/three"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickThree"
             android:text="3" />
 
         <Button
             android:id="@+id/four"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickFour"
             android:text="4" />
 
         <Button
             android:id="@+id/five"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickFive"
             android:text="5" />
 
         <Button
             android:id="@+id/six"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickSix"
             android:text="6" />
 
         <Button
             android:id="@+id/seven"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickSeven"
             android:text="7" />
 
         <Button
             android:id="@+id/eight"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickEight"
             android:text="8" />
 
         <Button
             android:id="@+id/nine"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickNine"
             android:text="9" />
 
         <Button
-            android:id="@+id/minus"
+            android:id="@+id/mute"
             style="@style/tv_ctrl_btn"
-            android:text="静音" />
+            android:onClick="doClickMinus"
+            android:text="@string/mute" />
 
         <Button
             android:id="@+id/zero"
             style="@style/tv_ctrl_btn"
+            android:onClick="doClickZero"
             android:text="0" />
 
         <Button
-            android:id="@+id/point"
+            android:id="@+id/back"
             style="@style/tv_ctrl_btn"
-            android:text="返回" />
+            android:onClick="doClickBack"
+            android:text="@string/back" />
     </GridLayout>
 
     <LinearLayout
@@ -150,7 +162,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:background="@drawable/selecter_btn_left"
-            android:contentDescription="@string/app_home" />
+            android:contentDescription="@string/app_home"
+            android:onClick="doClickLeft" />
 
         <Button
             android:id="@+id/btn_ok"
@@ -159,6 +172,7 @@
             android:layout_margin="18dp"
             android:background="@drawable/selecter_ok"
             android:contentDescription="@string/app_home"
+            android:onClick="doClickOK"
             android:text="OK"
             android:textColor="@color/black"
             android:textSize="22sp" />
@@ -168,7 +182,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/selecter_btn_right"
-            android:contentDescription="@string/app_home" />
+            android:contentDescription="@string/app_home"
+            android:onClick="doClickRight" />
     </LinearLayout>
 
     <ImageButton
@@ -178,7 +193,8 @@
         android:layout_alignTop="@id/layout_linear"
         android:layout_centerHorizontal="true"
         android:background="@drawable/selecter_btn_up"
-        android:contentDescription="@string/app_home" />
+        android:contentDescription="@string/app_home"
+        android:onClick="doClickUp" />
 
     <ImageButton
         android:id="@+id/btn_down"
@@ -188,6 +204,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="1dp"
         android:background="@drawable/selecter_btn_down"
-        android:contentDescription="@string/app_home" />
+        android:contentDescription="@string/app_home"
+        android:onClick="doClickDown" />
 
 </RelativeLayout>
