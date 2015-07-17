@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<string name="app_name">HomeGenius</string>
-	<string name="app_name_vstar">Eye4 Smart</string>
+	<string name="app_name">Eye4 Smart</string>
 	<string name="app_home">THE FUTURE HAS ARRIVED</string>
 	
     <string name="residemenu_manage_dev">DM</string>
@@ -84,8 +83,10 @@
     <string name="type_carema">Carema</string>
     <string name="type_plug_string">Plug</string>
     <string name="type_infra_string">Remote Box</string>
-    <string name="type_air_string">Air Control</string>
-    <string name="type_tv_string">TV Control</string>
+    <string name="type_air_string">Air-conditioning</string>
+    <string name="type_tv_string">TV</string>
+    <string name="type_tvbox_string">TV Box</string>
+    <string name="type_fan_string">Electric Fan</string>
     <string name="type_gateway">Gateway</string>
 	<string name="type_control_ways">Controller</string>
     <string name="type_unknow_string">Unknown device</string>
@@ -301,4 +302,5 @@
 	<string name="on">On</string>
 	<string name="back">back</string>
 	<string name="mute">mute</string>
+	<string name="shake_tips">Shake function can only be used in the local</string>
 </resources>

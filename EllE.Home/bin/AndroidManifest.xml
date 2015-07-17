@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="elle.home.app.smart"
-    android:versionCode="9"
-    android:versionName="1.08" >
+    android:versionCode="10"
+    android:versionName="1.10" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -15,11 +15,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name_vstar"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.NoActionBar" >
         <activity
             android:name="elle.home.app.MainActivity"
-            android:label="@string/app_name_vstar"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +46,11 @@
         </activity>
         <activity
             android:name="elle.home.app.LightRgbActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="elle.home.app.LuminaireActivity"
             android:exported="true"
             android:screenOrientation="portrait" >
         </activity>
@@ -188,7 +193,7 @@
         <!-- UMeng update -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55139d72fd98c5b23200053d" >
+            android:value="5594a86c67e58e3e720009f9" >
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"

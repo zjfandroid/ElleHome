@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/common_bk" >
+    android:background="@color/dark_bg" >
 
     <TextView
         android:id="@+id/title_bar_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:background="@drawable/title_bk"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/add_remote"
         android:textColor="@color/white"
@@ -24,15 +23,76 @@
         android:onClick="doExit"
         android:src="@drawable/title_back_bk" />
 
-    <ListView
-        android:id="@+id/infralist"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/title_bar_text"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp" >
-    </ListView>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_air"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/air"
+            android:onClick="doClick"
+            android:text="@string/type_air_string"
+            android:textColor="@color/whitesmoke"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btn_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/tv"
+            android:onClick="doClick"
+            android:text="@string/type_tv_string"
+            android:textColor="@color/whitesmoke"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_botttom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_tvbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/tv_box"
+            android:onClick="doClick"
+            android:text="@string/type_tvbox_string"
+            android:textColor="@color/whitesmoke"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btn_fan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/fan"
+            android:onClick="doClick"
+            android:text="@string/type_fan_string"
+            android:textColor="@color/whitesmoke"
+            android:textSize="22sp" />
+    </LinearLayout>
 
 </RelativeLayout>

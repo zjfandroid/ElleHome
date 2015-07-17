@@ -11,8 +11,6 @@ public class PublicResDefine {
 	 * */
 	public static int getFragmentIconByType(byte type){
 		switch(type){
-		case PublicDefine.TypeLight:
-			return R.drawable.icon_light_normal;
 		case PublicDefine.TypePlug:
 			return R.drawable.icon_plug_normal;
 		case PublicDefine.TypeInfra:
@@ -27,17 +25,14 @@ public class PublicResDefine {
 		case PublicDefine.TypeGateWay:
 			return R.drawable.icon_gateway_normal;
 		case PublicDefine.TypeCurtain:
-			return R.drawable.curtain;
-			
+			return R.drawable.icon_curtain_normal;
 		}
-		return R.drawable.icon_null_normal;
+		return R.drawable.icon_light_normal;
 	}
 	
 	//小图标
 	public static int getLittleIconByType(byte type){
 		switch(type){
-		case PublicDefine.TypeLight:
-			return R.drawable.icon_little_light;
 		case PublicDefine.TypePlug:
 			return R.drawable.icon_little_plug;
 		case PublicDefine.TypeInfra:
@@ -49,6 +44,8 @@ public class PublicResDefine {
 		case PublicDefine.TypeGateWay:
 		case PublicDefine.TypeController:
 			return R.drawable.icon_gateway_normal;
+		case PublicDefine.TypeCurtain:
+			return R.drawable.icon_curtain_normal;
 		}
 		return R.drawable.icon_little_light;
 	}

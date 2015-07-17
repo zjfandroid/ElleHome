@@ -46,6 +46,9 @@ import android.widget.Toast;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+import com.umeng.update.UmengDialogButtonListener;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UpdateStatus;
 
 import elle.home.Fragment.LocationDevFragment;
 import elle.home.app.smart.R;
@@ -257,24 +260,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 		setUpMenu();
 		initCameraConfig();
 		//友盟自动更新
-//		UmengUpdateAgent.update(this);
-//		UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-//			
-//			@Override
-//			public void onClick(int arg0) {
-//		        switch (arg0) {
-//		        case UpdateStatus.Update:
-//		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_UPDATE);
-//		            break;
-//		        case UpdateStatus.Ignore:
-//		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_IGNORE);
-//		            break;
-//		        case UpdateStatus.NotNow:
-//		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_NOTNOW);
-//		            break;
-//		        }
-//		    }
-//		});
+		UmengUpdateAgent.update(this);
+		UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
+			
+			@Override
+			public void onClick(int arg0) {
+		        switch (arg0) {
+		        case UpdateStatus.Update:
+		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_UPDATE);
+		            break;
+		        case UpdateStatus.Ignore:
+		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_IGNORE);
+		            break;
+		        case UpdateStatus.NotNow:
+		        	UMeng_OnEvent(EVENT_ID_CLICK_UMENG_NOTNOW);
+		            break;
+		        }
+		    }
+		});
 	}
 
 	private void initCameraConfig() {

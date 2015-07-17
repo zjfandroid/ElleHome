@@ -357,7 +357,7 @@ public class LightRgbActivity extends BaseActivity {
 			@Override
 			public void onoff(boolean tmp) {
 				if (tmp && dev.getConnectStatus() != PublicDefine.ConnectLocal ) {
-					ShowToast.show(mContext, "摇一摇功能仅在本地有效哦（设备与手机连接的是同一个路由）");
+					ShowToast.show(mContext, R.string.shake_tips);
 				}
 				
 				dev.setCanShake(mContext, tmp);

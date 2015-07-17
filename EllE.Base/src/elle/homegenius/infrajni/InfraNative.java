@@ -73,29 +73,15 @@ public class InfraNative {
 	public final static int TvFunDown					= 0x19;
 
 	public native static void test();
-	public native static int testInt();
-	
-	public native static String getOneBrandName(int id);
-	public native static int getBrandLen();
 	
 	//处理学习数据
 	public native static byte[] exchangeStudyData(byte[] data);
 	
 	//空调
-	public native static String getAirOneBrandNameById(int id,int language);
-	public native static int getAirAllBrandListLen();
-	
-	public native static byte[] getAirCommandByBrand(int brand,int id,int temp,int airflowRate,int manualFlow,int autoFlow,int onoff,int key,int model);	
-	public native static byte[] getAirCommandById(int id,int temp,int airflowRate,int manualFlow,int autoFlow,int onoff,int key,int model);	
-	public native static int getAirBrandLenById(int id);
-	
+	public native static byte[] getAirComand(byte[] sourceData,int temp,int airflowRate,int manualFlow,int autoFlow,int onoff,int key,int model);
 	
 	//电视
-	public native static String getTvOneBrandNameById(int id,int language);
-	public native static int getTvAllBrandListLen();
-	
-	public native static int getTvBrandLenById(int id);
-	public native static byte[] getTvCommand(int brand,int id,int fun);
+	public native static byte[] getTvCommand(byte[] sourceData,int fun);
 	
 	static {
 		System.loadLibrary("InfraJni");

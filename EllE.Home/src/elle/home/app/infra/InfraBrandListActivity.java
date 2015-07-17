@@ -33,7 +33,7 @@ public class InfraBrandListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_infra);
+		setContentView(R.layout.activity_infra_brand_list);
 		initDatas();
 		initViews();
 	}

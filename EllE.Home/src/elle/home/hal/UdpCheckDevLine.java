@@ -60,7 +60,7 @@ public class UdpCheckDevLine extends UdpPublic {
 										
 										String ip = String.valueOf(ip1)+"."+String.valueOf(ip2)+"."+String.valueOf(ip3)+"."+String.valueOf(ip4);
 										int port = DataExchange.twoByteToInt(packetcheck.xdata[4], packetcheck.xdata[5]);
-										Log.d(TAG,"设备mac："+packetcheck.mac+" 得到控制ip为："+ip+" 端口为："+port);
+										Log.d(TAG,"设备mac："+packetcheck.mac+" 得到控制ip为："+ip+" 端口为："+port + "___name___" + allLocationInfo.allinfo.get(i).devLocationList.get(x).devname);
 										
 										try {
 											allLocationInfo.allinfo.get(i).devLocationList.get(x).updateDevRemoteIp(InetAddress.getByName(ip), port, mContext);

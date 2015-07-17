@@ -216,6 +216,7 @@ public class OneDev implements Serializable{
 			this.mCameraDeviceID = cursor.getString(cursor.getColumnIndex("deviceid"));	
 			this.mCameraUserName = cursor.getString(cursor.getColumnIndex("username"));	
 			this.mCameraPassWord = cursor.getString(cursor.getColumnIndex("password"));	
+			this.function = cursor.getString(cursor.getColumnIndex("function"));	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -310,9 +311,8 @@ public class OneDev implements Serializable{
 	 * */
 	public void delFromDatabaseByName(Context context){
 		
-		String[] params = new String[2];
-		params[0] = String.valueOf(this.mac);
-		params[1] = this.devname;
+		String[] params = new String[1];
+		params[0] = this.devname;
 		
 		DataBaseHelper dbhelper = new DataBaseHelper(context);
 		SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -358,7 +358,7 @@ public class OneDev implements Serializable{
 			return false;
 		}
 		
-		String[] params = new String[13];
+		String[] params = new String[14];
 		
 		params[0] = String.valueOf(this.mac);
 		params[1] = "255.255.255.255";
@@ -373,8 +373,9 @@ public class OneDev implements Serializable{
 		params[10] = mCameraDeviceID;
 		params[11] = mCameraUserName;
 		params[12] = mCameraPassWord;
+		params[13] = function;
 
-		String sql = "INSERT INTO devices (mac,remoteip,remoteport,devname,type,ver,shownum,visable,locatid,locatname,deviceid,username,password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO devices (mac,remoteip,remoteport,devname,type,ver,shownum,visable,locatid,locatname,deviceid,username,password,function) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		db.execSQL(sql, params);
 		db.close();
 		return true;

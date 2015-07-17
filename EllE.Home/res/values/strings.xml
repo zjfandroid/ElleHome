@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<string name="app_name">小智家</string>
-	<string name="app_name_vstar">Eye4 Smart</string>
+	<string name="app_name">Eye4 Smart</string>
 	<string name="app_home">未来已到来</string>
 	
     <string name="residemenu_manage_dev">设备管理</string>
@@ -81,11 +80,14 @@
     <string name="add_dev_title">添加设备</string>
     <string name="add_add_string">添加</string>
     <string name="type_light_string">球泡灯</string>
+    <string name="type_big_light_string">大灯</string>
     <string name="type_carema">摄像头</string>
     <string name="type_plug_string">插座</string>
     <string name="type_infra_string">遥控盒子</string>
-    <string name="type_air_string">空调遥控器</string>
-    <string name="type_tv_string">电视遥控器</string>
+    <string name="type_air_string">空调</string>
+    <string name="type_tv_string">电视</string>
+    <string name="type_tvbox_string">机顶盒</string>
+    <string name="type_fan_string">电风扇</string>
     <string name="type_gateway">智能网关</string>
     <string name="type_control_ways">多路控制器</string>
     <string name="type_unknow_string">未知设备</string>
@@ -300,4 +302,6 @@
 	<string name="on">打开</string>
 	<string name="back">返回</string>
 	<string name="mute">静音</string>
+	<string name="curtain">窗帘</string>
+	<string name="shake_tips">摇一摇功能仅在本地有效哦（设备与手机连接的是同一个路由）</string>
 </resources>

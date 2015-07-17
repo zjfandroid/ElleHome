@@ -39,6 +39,7 @@ import elle.home.app.ControllersActivity;
 import elle.home.app.CurtainActivity;
 import elle.home.app.GatewayActivity;
 import elle.home.app.LightRgbActivity;
+import elle.home.app.LuminaireActivity;
 import elle.home.app.MainActivity;
 import elle.home.app.PlugActivity;
 import elle.home.app.infra.InfraActivity;
@@ -53,6 +54,7 @@ import elle.home.partactivity.BaseActivity;
 import elle.home.partactivity.UMengConstant;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.LightControlPacket;
+import elle.home.protocol.LuminaireControlPacket;
 import elle.home.protocol.PlugControlPacket;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
@@ -172,6 +174,9 @@ public class LocationDevFragment extends Fragment {
 						case PublicDefine.TypeLight:
 							packetLight(onedev);
 							break;
+						case PublicDefine.TypeBigLight:
+							packetBigLight(onedev);
+							break;
 						case PublicDefine.TypePlug:
 							packetPlug(onedev);
 							break;
@@ -260,6 +265,40 @@ public class LocationDevFragment extends Fragment {
 		packet.setImportance(BasicPacket.ImportHigh);
 		((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packet);
 	}
+	
+	private void packetBigLight(OneDev onedev) {
+		int connectStatus = onedev.getConnectStatus();
+		InetAddress conip = null;
+		int conport = 0;
+		
+		if(connectStatus == PublicDefine.ConnectRemote){
+			conip = onedev.remoteip;
+			conport = onedev.remoteport;
+		}else{
+			try {
+				conip = InetAddress.getByName("255.255.255.255");
+				conport = PublicDefine.LocalUdpPort;
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		LuminaireControlPacket packet = new LuminaireControlPacket(conip,conport);
+		if(connectStatus == PublicDefine.ConnectRemote){
+			packet.setPacketRemote(true);
+		}
+		
+		if(onedev.isTurnOn()){
+			((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_CLOSE_LIGHT);
+			packet.lightClose(DataExchange.longToEightByte(onedev.mac), null);
+		}else{
+			((BaseActivity)getActivity()).UMeng_OnEvent(BaseActivity.EVENT_ID_CLICK_OPEN_LIGHT);
+			packet.lightOpen(DataExchange.longToEightByte(onedev.mac), null);
+		}
+		
+		packet.setImportance(BasicPacket.ImportHigh);
+		((MainActivity)getActivity()).getAutoBinder().addPacketToSend(packet);
+	}
 
 	class ItemClickListener implements OnItemClickListener{
 
@@ -286,6 +325,19 @@ public class LocationDevFragment extends Fragment {
 					map.put(UMengConstant.KEY_DEV_NAME, onedev.devname);
 					map.put(UMengConstant.KEY_DEV_STATE, onedev.getConnectStatus()+"");
 					map.put(UMengConstant.KEY_DEV_TYPE, mContext.getString(R.string.type_light_string));
+					MobclickAgent.onEvent(mContext,UMengConstant.EVENT_ID_CLICK_DEV ,map);
+					break;
+				case PublicDefine.TypeBigLight:
+					Intent bintent = new Intent(mContext,LuminaireActivity.class);
+					bintent.putExtra("mac", onedev.mac);
+					bintent.putExtra("devname", onedev.devname);
+					bintent.putExtra("connect", onedev.getConnectStatus());
+					mContext.startActivity(bintent);
+					map = new HashMap<String, String>();
+					map.put(UMengConstant.KEY_DEV_MAC, DataExchange.byteArrayToHexString(DataExchange.longToEightByte(onedev.mac)));
+					map.put(UMengConstant.KEY_DEV_NAME, onedev.devname);
+					map.put(UMengConstant.KEY_DEV_STATE, onedev.getConnectStatus()+"");
+					map.put(UMengConstant.KEY_DEV_TYPE, mContext.getString(R.string.type_big_light_string));
 					MobclickAgent.onEvent(mContext,UMengConstant.EVENT_ID_CLICK_DEV ,map);
 					break;
 				case PublicDefine.TypePlug:
@@ -374,13 +426,13 @@ public class LocationDevFragment extends Fragment {
 					mContext.startActivity(curtain);
 					break;
 				}
-			}else{
-				Intent intentG = null;
-				intentG = new Intent(mContext, InfraActivity.class);
-				intentG.putExtra("mac", 123l);
-				intentG.putExtra("devname", "test");
-				intentG.putExtra("isTest", true);
-				mContext.startActivity(intentG);
+//			}else{
+//				Intent intentG = null;
+//				intentG = new Intent(mContext, LuminaireActivity.class);
+//				intentG.putExtra("mac", 123l);
+//				intentG.putExtra("devname", "test");
+//				intentG.putExtra("isTest", true);
+//				mContext.startActivity(intentG);
 			}
 			
 		}
@@ -442,12 +494,15 @@ public class LocationDevFragment extends Fragment {
 			switch((Byte) devlist.get(position).get("type")){
 			case PublicDefine.TypeInfra:
 			case PublicDefine.TypeInfraAir:
+			case PublicDefine.TypeInfraTv:
+			case PublicDefine.TypeBigLight:
 			case PublicDefine.TypeLight:
 			case PublicDefine.TypePlug:
 			case PublicDefine.TypeGateWay:
 			case PublicDefine.TypeCurtain:
 				OneDev oneDev = locatInfo.devLocationList.get(position);
 				int status = oneDev.getConnectStatus();
+//				ShowInfo.printLogW(oneDev.devname + "________oneDev________" + status);
 				
 				connectLogo.setImageDrawable(mContext.getResources().getDrawable(PublicResDefine.getConnectFragmentLogo(status)));
 				

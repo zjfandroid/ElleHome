@@ -152,7 +152,7 @@ public class UdpThread {
 					}
 				}
 				try {
-					this.sleep(5);
+					Thread.sleep(5);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
