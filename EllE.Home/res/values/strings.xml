@@ -232,9 +232,9 @@
     
     <string name="connect_by_user">手动连接</string>
     <string name="connect_bulb_0">请打开灯泡\r\n灯泡随机改变颜色时会开始自动配置</string>
-    <string name="connect_plug_0">请将插座接上电源\r\n插座灯缓慢闪烁时会开始自动配置</string>
+    <string name="connect_plug_0">请将插座接上电源\r\n插座灯快速闪烁时会开始自动配置</string>
     <string name="connect_bulb_fail">若自动配置失败，灯泡变为蓝色\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
-    <string name="connect_plug_fail">若自动配置失败，插座灯会快速闪烁\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
+    <string name="connect_plug_fail">若自动配置失败，插座灯会缓慢闪烁\r\n连接名为EllE.xxxxx的热点\r\n密码:12345678\r\n连接完成返回当前界面即可完成配置</string>
     
     <string name="scene">场景</string>
     <string name="execute">执行</string>

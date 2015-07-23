@@ -81,16 +81,8 @@ public class UdpCheckNewThread {
 	}
 	
 	public UdpCheckNewThread(Context context,OnNewDevNow listener){
+		this(context);
 		this.listener = listener;
-		try {
-			dataSocket = new DatagramSocket();
-			Log.d(TAG,"检查新设备的udp端口号："+dataSocket.getLocalPort());
-			mContext = context;
-			allinfo = new AllDevInfo(mContext);
-			isneedcheck = true;
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void freshALlInfo(){

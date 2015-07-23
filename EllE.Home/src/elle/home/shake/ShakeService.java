@@ -37,6 +37,7 @@ import elle.home.database.OneDev;
 import elle.home.partactivity.UMengConstant;
 import elle.home.protocol.BasicPacket;
 import elle.home.protocol.LightControlPacket;
+import elle.home.protocol.LuminaireControlPacket;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.SaveDataPreferences;
@@ -229,27 +230,20 @@ public class ShakeService extends Service{
 				ShowInfo.printLogW("turn off " + isOn);
 				isNeedSound = true;
 				
-				LightControlPacket packet = new LightControlPacket(null,PublicDefine.LocalUdpPort);
-				packet.setImportance(BasicPacket.ImportHigh);
-				try {
-					packet.setIp(InetAddress.getByName("255.255.255.255"));
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}	
-				
-				if(isOn){
-					packet.lightClose(DataExchange.longToEightByte(dev.mac), null);
+				DatagramPacket mDatagramPacket = null;
+				if(PublicDefine.TypeLight == dev.type){
+					mDatagramPacket = getLightPacket(isOn, dev);
 				}else{
-					packet.lightOpen(DataExchange.longToEightByte(dev.mac), null);
+					mDatagramPacket = getLuminairePacket(isOn, dev);
 				}
 				
-				final DatagramPacket mDatagramPacket = packet.getUdpData();
+				final DatagramPacket tmp = mDatagramPacket;
 				new Thread(){
 					public void run() {
 						try {
-							dataSocket.send(mDatagramPacket);
-							dataSocket.send(mDatagramPacket);
-							dataSocket.send(mDatagramPacket);
+							dataSocket.send(tmp);
+							dataSocket.send(tmp);
+							dataSocket.send(tmp);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -265,6 +259,42 @@ public class ShakeService extends Service{
 			playSound(isOn);
 		}
 		SaveDataPreferences.saveBoolean(this, "LIGHT_ON", !isOn);
+	}
+
+	private DatagramPacket getLuminairePacket(boolean isOn, OneDev dev) {
+		LuminaireControlPacket packet = new LuminaireControlPacket(null,PublicDefine.LocalUdpPort);
+		packet.setImportance(BasicPacket.ImportHigh);
+		try {
+			packet.setIp(InetAddress.getByName("255.255.255.255"));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}	
+		
+		if(isOn){
+			packet.lightClose(DataExchange.longToEightByte(dev.mac), null);
+		}else{
+			packet.lightOpen(DataExchange.longToEightByte(dev.mac), null);
+		}
+		
+		return packet.getUdpData();
+	}
+
+	private DatagramPacket getLightPacket(boolean isOn, OneDev dev) {
+		LightControlPacket packet = new LightControlPacket(null,PublicDefine.LocalUdpPort);
+		packet.setImportance(BasicPacket.ImportHigh);
+		try {
+			packet.setIp(InetAddress.getByName("255.255.255.255"));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}	
+		
+		if(isOn){
+			packet.lightClose(DataExchange.longToEightByte(dev.mac), null);
+		}else{
+			packet.lightOpen(DataExchange.longToEightByte(dev.mac), null);
+		}
+		
+		return packet.getUdpData();
 	}
 	
 	private boolean checkFunction(String key , String function){
