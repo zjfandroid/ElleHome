@@ -698,6 +698,7 @@ public class LightRgbActivity extends BaseActivity {
 	public int ColorToLux(int a){
 		int tmp = 0;
 		tmp = (int)((float)a*(float)(rgblight.getBarMoveAngle())/(float)300);
+		ShowInfo.printLogW("_____rgblight.getBarMoveAngle()______" + rgblight.getBarMoveAngle());
 		return tmp;
 	}
 	
