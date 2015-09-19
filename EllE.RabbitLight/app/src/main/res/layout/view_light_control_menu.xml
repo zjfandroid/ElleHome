@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/DIMEN_50PX">
+
+        <LinearLayout
+            android:id="@+id/layout_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/DIMEN_30PX"
+                android:background="@null"
+                android:src="@drawable/selector_light" />
+
+            <ImageView
+                android:id="@+id/img_light_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_up"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/layout_light"
+            android:layout_marginLeft="@dimen/DIMEN_115PX"
+            android:layout_toRightOf="@id/layout_light"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_anion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/DIMEN_30PX"
+                android:background="@null"
+                android:src="@drawable/selector_anion" />
+
+            <ImageView
+                android:id="@+id/img_anion_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_up"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_light_fun"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/layout_bottom"
+        android:background="@color/black_34"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.elle.view.SlidingTabStrip
+            android:id="@+id/layout_light_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
+            app:pstsDividerColor="@color/white"
+            app:pstsIndicatorColor="@color/hui" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_anion_fun"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/layout_bottom"
+        android:background="@color/black_34"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/DIMEN_30PX"
+            android:text="OFF"
+            android:textColor="@drawable/selector_text_left" />
+
+        <TextView
+            android:id="@+id/tv_buty_face"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="保湿美颜"
+            android:textColor="@drawable/selector_text_left" />
+
+        <TextView
+            android:id="@+id/tv_kill_bad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/DIMEN_30PX"
+            android:text="强力净污"
+            android:textColor="@drawable/selector_text_left" />
+
+        <SeekBar
+            android:id="@+id/seekbar_anion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_off"
+            android:layout_marginLeft="@dimen/DIMEN_30PX"
+            android:layout_marginRight="@dimen/DIMEN_30PX"
+            android:max="2"
+            android:progressDrawable="@drawable/seekbar_background"
+            android:thumb="@drawable/thumb_round" />
+    </RelativeLayout>
+</RelativeLayout>

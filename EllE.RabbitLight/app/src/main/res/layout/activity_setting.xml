@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#080808">
+
+    <TextView
+        android:id="@+id/img_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_230PX"
+        android:text="设置"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <Button
+        android:id="@+id/btn_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_light"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_100PX"
+        android:background="@null"
+        android:drawableLeft="@drawable/icon_wifi"
+        android:drawablePadding="@dimen/DIMEN_20PX"
+        android:text="  无线网络设置"
+        android:textColor="@drawable/selector_text_left"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <Button
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/btn_connect"
+        android:layout_below="@id/btn_connect"
+        android:background="@null"
+        android:drawableLeft="@drawable/icon_reset"
+        android:drawablePadding="@dimen/DIMEN_20PX"
+        android:text="  恢复出厂默认值"
+        android:textColor="@drawable/selector_text_left"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <Button
+        android:id="@+id/btn_upgrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/btn_connect"
+        android:layout_below="@id/btn_setting"
+        android:background="@null"
+        android:drawableLeft="@drawable/icon_upgrate"
+        android:drawablePadding="@dimen/DIMEN_20PX"
+        android:text="  检查版本更新"
+        android:textColor="@drawable/selector_text_left"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_80PX"
+        android:background="@null"
+        android:src="@drawable/close" />
+</RelativeLayout>

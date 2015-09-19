@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_200PX"
+        android:drawableLeft="@drawable/icon_connect"
+        android:drawablePadding="@dimen/DIMEN_20PX"
+        android:text="连接小兔灯"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_60PX"
+        android:background="@null"
+        android:src="@drawable/close" />
+
+    <ImageButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_close"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_130PX"
+        android:background="@null"
+        android:onClick="doCheckNewDevClick"
+        android:src="@drawable/add" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_add"
+        android:layout_below="@id/title"
+        android:layout_marginTop="@dimen/DIMEN_60PX"
+        android:background="@null"
+        android:cacheColorHint="#0000"
+        android:divider="@null"></ListView>
+
+</RelativeLayout>

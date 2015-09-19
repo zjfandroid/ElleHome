@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/DIMEN_30PX"
+        android:layout_marginTop="@dimen/DIMEN_30PX"
+        android:background="@null"
+        android:src="@drawable/btn_x" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_60PX"
+        android:text="新增氛围灯"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <ImageView
+        android:id="@+id/img_light"
+        android:layout_width="@dimen/DIMEN_600PX"
+        android:layout_height="@dimen/DIMEN_600PX"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_80PX"
+        android:background="@drawable/shape_circle_yellow"
+        android:padding="@dimen/DIMEN_30PX"
+        android:src="@drawable/img_light_white" />
+
+
+    <TextView
+        android:id="@+id/tx_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_light"
+        android:layout_marginLeft="@dimen/DIMEN_40PX"
+        android:layout_marginTop="@dimen/DIMEN_80PX"
+        android:text="色相"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_48PX" />
+
+    <SeekBar
+        android:id="@+id/sb_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tx_color"
+        android:layout_marginRight="@dimen/DIMEN_20PX"
+        android:layout_toRightOf="@id/tx_color"
+        android:max="824"
+        android:progress="200"
+        android:progressDrawable="@drawable/layer_progress_color"
+        android:thumb="@drawable/progress_thumb" />
+
+    <TextView
+        android:id="@+id/tx_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sb_color"
+        android:layout_marginLeft="@dimen/DIMEN_40PX"
+        android:layout_marginTop="@dimen/DIMEN_50PX"
+        android:text="亮度"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_48PX" />
+
+    <SeekBar
+        android:id="@+id/sb_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tx_light"
+        android:layout_marginRight="@dimen/DIMEN_20PX"
+        android:layout_toRightOf="@id/tx_light"
+        android:max="300"
+        android:progress="150"
+        android:progressDrawable="@drawable/layer_progress_light"
+        android:thumb="@drawable/progress_thumb" />
+
+
+    <Button
+        android:id="@+id/btn_sure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_30PX"
+        android:layout_marginLeft="@dimen/DIMEN_50PX"
+        android:layout_marginRight="@dimen/DIMEN_50PX"
+        android:background="@drawable/btn_frame"
+        android:onClick="doSureClick"
+        android:text="确定"
+        android:textColor="@drawable/selector_text_blue"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/btn_sure"
+        android:layout_marginBottom="@dimen/DIMEN_80PX"
+        android:layout_marginLeft="@dimen/DIMEN_50PX"
+        android:layout_marginRight="@dimen/DIMEN_50PX"
+        android:background="@color/blue" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_30PX"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="命名氛围灯"
+        android:singleLine="true"
+        android:textColor="@android:color/holo_blue_light"
+        android:textColorHint="@android:color/holo_blue_light"
+        android:textSize="@dimen/DIMEN_80PX" />
+</RelativeLayout>

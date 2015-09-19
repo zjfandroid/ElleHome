@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">小稚兔</string>
+    <string name="content_hint">Content</string>
+    <string name="drawer_hint">Drawer</string>
+    <string name="rounded">See Rounded</string>
+    <string name="squared">See Squared</string>
+
+    <string name="link_config_ssid">WiFi名称:</string>
+    <string name="link_config_password">WiFi密码:</string>
+    <string name="config_link">配置</string>
+
+    <string name="sure_to_reset">确定要复位？</string>
+    <string name="config_reset">复位</string>
+    <string name="manage_dev_tips_del_dev_yes">确认</string>
+    <string name="manage_dev_tips_del_dev_no">取消</string>
+    <string name="reset_success">复位成功!</string>
+    <string name="reset_fail">复位失败，请确保手机与灯泡连接的是同一个路由器</string>
+    <string name="reset_fail_null">当前没有可复位设备哦~</string>
+
+    <string name="config_wifi_ok">确定</string>
+    <string name="device_info">设备信息</string>
+    <string name="title_wifi_config">Wifi配置</string>
+    <string name="device_info_place">地点:</string>
+    <string name="device_info_name">名字:</string>
+    <string name="device_info_mac">Mac:</string>
+    <string name="wifi_ssid">WiFi SSID:</string>
+    <string name="wifi_ssid_hint">请输入WiFi SSID</string>
+    <string name="wifi_password">WiFi 密码:</string>
+    <string name="wifi_password_hint">请输入WiFi密码</string>
+    <string name="enter_wifi_password">需要输入WiFi密码啦</string>
+    <string name="enter_wifi_name">需要输入WiFi名称啦</string>
+    <string name="link_config_succeed">配置成功</string>
+    <string name="link_config_failed">配置失败</string>
+
+    <string name="link_config_title">连接配置</string>
+    <string name="tips_input_ssid">这里输入WiFi名字</string>
+    <string name="tips_input_password">这里输入WiFi密码</string>
+    <string name="tips_switch_wifi_succeed">切换wifi成功</string>
+    <string name="tips_link_config_succeed">配置设备WiFi成功，稍等片刻就可以添加了</string>
+    <string name="tips_link_config_error">配置异常，请退出软件重新来过</string>
+    <string name="tips_connected_to">连接到-></string>
+    <string name="tips_init_configing">初始化配置</string>
+    <string name="tips_connected_to_dev_configing">连接到设备，配置中</string>
+    <string name="tips_config_link_succeed">配置完成</string>
+    <string name="tips_click_back_btn">再次点击返回键退出</string>
+
+    <string name="checking">正在检测...</string>
+    <string name="update_no">没有更新!</string>
+    <string name="update_with_wifi">没有wifi连接， 只在wifi下更新!</string>
+    <string name="pppp_status_connect_timeout">连接超时</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+</resources>

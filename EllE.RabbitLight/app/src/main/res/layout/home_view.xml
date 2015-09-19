@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.elle.view.RevealLayout
+        android:id="@+id/reveal_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0099cc"
+            android:gravity="center"
+            android:textSize="32sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f8f8f8"
+            android:gravity="center"
+            android:textSize="32sp" />
+
+    </com.elle.view.RevealLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/effect_paper">
+
+        <ImageView
+            android:id="@+id/img_light_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/DIMEN_260PX"
+            android:src="@drawable/light_blue" />
+
+        <ImageView
+            android:id="@+id/drawer_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/DIMEN_30PX"
+            android:layout_marginTop="@dimen/DIMEN_30PX"
+            android:background="@drawable/drawer_selector"
+            android:scaleType="centerInside" />
+
+        <Button
+            android:id="@+id/btn_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/drawer_indicator"
+            android:layout_marginRight="@dimen/DIMEN_30PX"
+            android:background="#0000"
+            android:drawablePadding="@dimen/DIMEN_20PX"
+            android:drawableRight="@drawable/arrow_down"
+            android:textSize="@dimen/DIMEN_60PX"
+            android:text="@string/app_name" />
+
+        <LinearLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btn_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/DIMEN_10PX"
+                android:background="@null"
+                android:src="@drawable/selector_light" />
+
+            <ImageButton
+                android:id="@+id/btn_anion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/DIMEN_10PX"
+                android:background="@null"
+                android:src="@drawable/selector_anion" />
+        </LinearLayout>
+
+        <com.elle.view.LightControlMenu
+            android:id="@+id/layout_bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"></com.elle.view.LightControlMenu>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/layout_bottom_menu"
+            android:background="@color/hui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/drawer_content"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/bg_left">
+
+        <ImageView
+            android:id="@+id/img_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/DIMEN_230PX"
+            android:src="@drawable/img_light" />
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_light"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/DIMEN_100PX"
+            android:background="@null"
+            android:drawableLeft="@drawable/icon_connect"
+            android:onClick="doAddLightClick"
+            android:text="  连接小兔灯"
+            android:textColor="@drawable/selector_text_left" />
+
+        <Button
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/btn_connect"
+            android:layout_below="@id/btn_connect"
+            android:background="@null"
+            android:drawableLeft="@drawable/icon_manage"
+            android:onClick="doSettingClick"
+            android:text=" 设置"
+            android:textColor="@drawable/selector_text_left" />
+
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/btn_connect"
+            android:layout_below="@id/btn_setting"
+            android:background="@null"
+            android:drawableLeft="@drawable/icon_we"
+            android:onClick="doClickAboutUs"
+            android:text="  关于我们"
+            android:textColor="@drawable/selector_text_left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/DIMEN_30PX"
+            android:text="V1.0.0"
+            android:textColor="@drawable/selector_text_left" />
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

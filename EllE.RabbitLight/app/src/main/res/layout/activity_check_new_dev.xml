@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/DIMEN_30PX"
+        android:layout_marginTop="@dimen/DIMEN_30PX"
+        android:background="@null"
+        android:src="@drawable/btn_x"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_180PX"
+        android:src="@drawable/light_blue" />
+
+    <com.elle.view.MetaballView
+        android:id="@+id/metaball"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_light"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tx_open_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/metaball"
+        android:layout_centerHorizontal="true"
+        android:text="请打开灯泡"
+        android:textSize="@dimen/DIMEN_72PX" />
+
+
+    <TextView
+        android:id="@+id/tx_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tx_open_light"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_30PX"
+        android:text="灯泡随机变化颜色时开始配对"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <Button
+        android:id="@+id/btn_sure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/DIMEN_30PX"
+        android:layout_marginLeft="@dimen/DIMEN_50PX"
+        android:layout_marginRight="@dimen/DIMEN_50PX"
+        android:background="@drawable/btn_frame"
+        android:text="切换网络"
+        android:textColor="@drawable/selector_text_blue"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+</RelativeLayout>
