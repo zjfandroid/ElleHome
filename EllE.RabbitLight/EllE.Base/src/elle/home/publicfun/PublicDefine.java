@@ -55,6 +55,7 @@ public class PublicDefine {
 	
 	public static final byte TypeLight = (byte)0x20;
 	public static final byte TypeBigLight = (byte)0x21;
+	public static final byte TypeLightRabbit = (byte)0x22;
 	public static final byte LightVerOrgin = (byte)0x00;
 	public static final byte FunLightOpen = (byte)0x01;
 	public static final byte FunLightClose = (byte)0x02;

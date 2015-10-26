@@ -16,7 +16,6 @@
 package chrisrenke.elle;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -26,7 +25,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,8 @@ import elle.home.utils.ShowInfo;
 import static android.view.Gravity.START;
 
 public class LightMainActivity extends Activity {
+
+    public static boolean isFirstLoad = true;
 
     private DrawerArrowDrawable drawerArrowDrawable;
     private LightControlMenu menu;
@@ -127,11 +131,15 @@ public class LightMainActivity extends Activity {
                 if(DataExchange.twoByteToInt(packetcheck.xdata[8], packetcheck.xdata[9])>0){
                     //灯泡状态为白色
                 }else{
+                    ShowInfo.printLogW("状态颜色 原始接收______：" + DataExchange.twoByteToInt(packetcheck.xdata[2], packetcheck.xdata[3])
+                            + " " + DataExchange.twoByteToInt(packetcheck.xdata[4], packetcheck.xdata[5])
+                            + " " + DataExchange.twoByteToInt(packetcheck.xdata[6], packetcheck.xdata[7]));
+
                     colorRed = LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[2], packetcheck.xdata[3]), lux);
                     colorGreen = (int)((float)LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[4], packetcheck.xdata[5]), lux)/GreenAdjust);
                     colorBlue = (int)((float)LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[6], packetcheck.xdata[7]), lux)/BlueAdjust);
 
-                    //Log.d(TAG,"状态颜色："+rgblight.colorRed+" "+rgblight.colorGreen+" "+rgblight.colorBlue);
+                    ShowInfo.printLogW("状态颜色 接收转后______：" + colorRed + " " + colorGreen + " " + colorBlue);
                 }
                 /***************睡眠时间**********/
                 sleepTime = DataExchange.twoByteToInt(packetcheck.xdata[14], packetcheck.xdata[15]);
@@ -183,6 +191,21 @@ public class LightMainActivity extends Activity {
         revealLayout = (RevealLayout) findViewById(R.id.reveal_layout);
         final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
         imageLightAnim = (ImageView) findViewById(R.id.img_light_anim);
+        imageLightAnim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null == oneDev){
+                    return;
+                }
+
+                if (onoff) {
+                    sendBulbClose();
+                } else {
+                    sendBulbOpen();
+                }
+            }
+        });
+
         final Resources resources = getResources();
 
         findViewById(R.id.drawer_content).setOnTouchListener(new View.OnTouchListener() {
@@ -352,12 +375,15 @@ public class LightMainActivity extends Activity {
             public void onAnionChange(int value) {
                 switch (value){
                     case 0:
+                        setAnionLevel(PublicDefine.AnionLevelOff);
                         imageLightAnim.setImageResource(R.drawable.light_blue);
                         break;
                     case 1:
+                        setAnionLevel(PublicDefine.AnionLevelMid);
                         imageLightAnim.setImageResource(R.drawable.light_blue_mid);
                         break;
                     case 2:
+                        setAnionLevel(PublicDefine.AnionLevelMax);
                         imageLightAnim.setImageResource(R.drawable.light_blue_max);
                         break;
                 }
@@ -425,8 +451,8 @@ public class LightMainActivity extends Activity {
 
     }
 
-    public void setCurrentLight(int index) {
-        if(index != indexLight){
+    public void setCurrentLight(int index, boolean isFresh) {
+        if(isFresh || index != indexLight){
             indexLight = index;
             setCurrentLight();
         }
@@ -441,7 +467,7 @@ public class LightMainActivity extends Activity {
         oneDev = mDevices.get(indexLight);
         mPopBtn.setText(oneDev.devname);
 
-        if(oneDev.type != PublicDefine.TypeLight){
+        if(oneDev.function == null){
             return;
         }
         ShowInfo.printLogW("_____mDevice_______" + oneDev.devname);
@@ -452,11 +478,14 @@ public class LightMainActivity extends Activity {
         }
     }
 
-    private void checkCurrentDev() {
+    public List<OneDev> checkCurrentDev() {
         mDevices = mAllDevInfo.getAllDev();
+
         if (mDevices.size() > indexLight) {
             getCurrentLight();
         }
+
+        return mDevices;
     }
 
     public void addLightColor(LightColor mcolor){
@@ -532,7 +561,8 @@ public class LightMainActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             autoBinder = (SmartHomeService.AutoBinder) service;
-            autoBinder.getUdpCheckLine().addOneDev(oneDev);
+//            autoBinder.getUdpCheckLine().addOneDev(oneDev);
+            autoBinder.setDeviceLists(mDevices);
             timerTask = new CheckTask();
             timer.schedule(timerTask, 100, 2000);    //2秒查询一下设备状态
         }
@@ -569,19 +599,20 @@ public class LightMainActivity extends Activity {
         }
 
         LightControlPacket packet = getLightPacket();
-        packet.lightColor(DataExchange.longToEightByte(oneDev.mac), cycleListener, red, green, blue, white, lux, time);
+        packet.lightColor(oneDev, cycleListener, red, green, blue, white, lux, time);
+        ShowInfo.printLogW("状态颜色 转后发出______：" + red + " " + green + " " + blue);
         autoBinder.addPacketToSend(packet);
     }
 
     public void sendBulbOpen() {
         LightControlPacket packet = getLightPacket();
-        packet.lightOpen(DataExchange.longToEightByte(oneDev.mac), cycleListener);
+        packet.lightOpen(oneDev, cycleListener);
         autoBinder.addPacketToSend(packet);
     }
 
     public void sendBulbClose() {
         LightControlPacket packet = getLightPacket();
-        packet.lightClose(DataExchange.longToEightByte(oneDev.mac), cycleListener);
+        packet.lightClose(oneDev, cycleListener);
         autoBinder.addPacketToSend(packet);
     }
 
@@ -598,7 +629,7 @@ public class LightMainActivity extends Activity {
      */
     public void sendBulbFree(boolean isRandom) {
         LightControlPacket packet = getLightPacket();
-        packet.lightFree(DataExchange.longToEightByte(oneDev.mac), cycleListener, isRandom);
+        packet.lightFree(oneDev, cycleListener, isRandom);
         autoBinder.addPacketToSend(packet);
     }
 
@@ -672,10 +703,15 @@ public class LightMainActivity extends Activity {
     }
 
     public void setColorLight(int r, int g, int b, int white,int lux, int time) {
+        ShowInfo.printLogW("状态颜色 原始发出______：" + r + " " + g + " " + b);
 
         colorRed = ColorToLux(r, lux);
         colorGreen = (int)((float)ColorToLux(g, lux)*GreenAdjust);
         colorBlue = (int)((float)ColorToLux(b, lux)*BlueAdjust);
+
+//        colorRed = r;
+//        colorGreen = g;
+//        colorBlue = b;
 
         sendBulbColor(colorRed, colorGreen, colorBlue, white, lux, time);
     }
@@ -711,5 +747,15 @@ public class LightMainActivity extends Activity {
          * @param isFree
          */
         void onBulbFree(boolean isFree);
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (drawer.isDrawerVisible(START)) {
+            drawer.closeDrawer(START);
+        } else {
+            drawer.openDrawer(START);
+        }
+        return super.onMenuOpened(featureId, menu);
     }
 }

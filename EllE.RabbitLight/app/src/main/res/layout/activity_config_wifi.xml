@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_black"
     android:orientation="vertical">
 
     <ImageButton
@@ -138,7 +137,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/btn_frame"
         android:onClick="onDoneClick"
-        android:text="@string/config_wifi_ok"
+        android:text="@string/dialog_ok"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

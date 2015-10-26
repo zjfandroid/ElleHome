@@ -60,8 +60,8 @@
             android:background="#0000"
             android:drawablePadding="@dimen/DIMEN_20PX"
             android:drawableRight="@drawable/arrow_down"
-            android:textSize="@dimen/DIMEN_60PX"
-            android:text="@string/app_name" />
+            android:text="@string/app_name"
+            android:textSize="@dimen/DIMEN_60PX" />
 
         <LinearLayout
             android:id="@+id/layout_bottom"
@@ -126,8 +126,9 @@
             android:layout_marginTop="@dimen/DIMEN_100PX"
             android:background="@null"
             android:drawableLeft="@drawable/icon_connect"
+            android:drawablePadding="@dimen/DIMEN_20PX"
             android:onClick="doAddLightClick"
-            android:text="  连接小兔灯"
+            android:text="@string/connect_light"
             android:textColor="@drawable/selector_text_left" />
 
         <Button
@@ -138,8 +139,9 @@
             android:layout_below="@id/btn_connect"
             android:background="@null"
             android:drawableLeft="@drawable/icon_manage"
+            android:drawablePadding="@dimen/DIMEN_20PX"
             android:onClick="doSettingClick"
-            android:text=" 设置"
+            android:text="@string/setting"
             android:textColor="@drawable/selector_text_left" />
 
         <Button
@@ -150,8 +152,9 @@
             android:layout_below="@id/btn_setting"
             android:background="@null"
             android:drawableLeft="@drawable/icon_we"
+            android:drawablePadding="@dimen/DIMEN_20PX"
             android:onClick="doClickAboutUs"
-            android:text="  关于我们"
+            android:text="@string/about_us"
             android:textColor="@drawable/selector_text_left" />
 
         <TextView

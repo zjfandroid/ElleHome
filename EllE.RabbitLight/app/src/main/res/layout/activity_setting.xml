@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/DIMEN_230PX"
-        android:text="设置"
+        android:text="@string/setting"
         android:textColor="@color/white"
         android:textSize="@dimen/DIMEN_60PX" />
 
@@ -25,7 +25,7 @@
         android:background="@null"
         android:drawableLeft="@drawable/icon_wifi"
         android:drawablePadding="@dimen/DIMEN_20PX"
-        android:text="  无线网络设置"
+        android:text="@string/set_wifi"
         android:textColor="@drawable/selector_text_left"
         android:textSize="@dimen/DIMEN_60PX" />
 
@@ -38,7 +38,7 @@
         android:background="@null"
         android:drawableLeft="@drawable/icon_reset"
         android:drawablePadding="@dimen/DIMEN_20PX"
-        android:text="  恢复出厂默认值"
+        android:text="@string/set_reset"
         android:textColor="@drawable/selector_text_left"
         android:textSize="@dimen/DIMEN_60PX" />
 
@@ -51,7 +51,7 @@
         android:background="@null"
         android:drawableLeft="@drawable/icon_upgrate"
         android:drawablePadding="@dimen/DIMEN_20PX"
-        android:text="  检查版本更新"
+        android:text="@string/check_update"
         android:textColor="@drawable/selector_text_left"
         android:textSize="@dimen/DIMEN_60PX" />
 

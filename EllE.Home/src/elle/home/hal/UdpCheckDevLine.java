@@ -14,6 +14,7 @@ import elle.home.protocol.PacketCheck;
 import elle.home.publicfun.DataExchange;
 import elle.home.publicfun.PublicDefine;
 import elle.home.utils.NetUtils;
+import elle.home.utils.ShowInfo;
 
 public class UdpCheckDevLine extends UdpPublic {
 
@@ -31,6 +32,7 @@ public class UdpCheckDevLine extends UdpPublic {
 		@Override
 		public void onRecv(DatagramPacket packet) {
 			int length = packet.getLength();
+			ShowInfo.printLogW("________onRecv onRecv_______"+ length);
 			if(length>0){
 				if(length>=37){
 					byte[] xdata = new byte[length];
@@ -147,9 +149,9 @@ public class UdpCheckDevLine extends UdpPublic {
 						
 						String ip = allLocationInfo.allinfo.get(i).devLocationList.get(x).remoteip.toString();
 						
-						//Log.d(TAG,"devname"+allLocationInfo.allinfo.get(i).devLocationList.get(x).devname+"需要去远端查询状态，控制服务器端口的ip为："+ip+" port:"+allLocationInfo.allinfo.get(i).devLocationList.get(x).remoteport);
+//						ShowInfo.printLogW("________onRecv onRecv___devname"+allLocationInfo.allinfo.get(i).devLocationList.get(x).devname+"需要去远端查询状态，控制服务器端口的ip为："+ip+" port:"+allLocationInfo.allinfo.get(i).devLocationList.get(x).remoteport);
 						if(ip.equals("/255.255.255.255")){
-							//Log.d(TAG,"设备的远端地址还没有配置，因此发送注册包到注册服务器，设备mac："+allLocationInfo.allinfo.get(i).devLocationList.get(x).mac);
+//							ShowInfo.printLogW("________onRecv onRecv___设备的远端地址还没有配置，因此发送注册包到注册服务器，设备mac："+allLocationInfo.allinfo.get(i).devLocationList.get(x).mac);
 							if(regServiceIp!=null){
 								BasicPacket packet = new BasicPacket(regServiceIp,PublicDefine.RemoteRegServicePort);
 								packet.setPacketRemote(true);
@@ -157,7 +159,7 @@ public class UdpCheckDevLine extends UdpPublic {
 								self.sendData(packet.getUdpData());
 							}
 						}else{
-							//Log.d(TAG,"设备已经有了远端地址，往远端发送查询包");
+//							ShowInfo.printLogW("________onRecv onRecv___设备已经有了远端地址，往远端发送查询包");
 							BasicPacket packet = new BasicPacket(allLocationInfo.allinfo.get(i).devLocationList.get(x).remoteip,allLocationInfo.allinfo.get(i).devLocationList.get(x).remoteport);
 							packet.setPacketRemote(true);
 							packet.packCheckPacket(allLocationInfo.allinfo.get(i).devLocationList.get(x),PublicDefine.getSeq());

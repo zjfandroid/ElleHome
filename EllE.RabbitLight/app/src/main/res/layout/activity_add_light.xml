@@ -11,7 +11,7 @@
         android:layout_marginTop="@dimen/DIMEN_200PX"
         android:drawableLeft="@drawable/icon_connect"
         android:drawablePadding="@dimen/DIMEN_20PX"
-        android:text="连接小兔灯"
+        android:text="@string/connect_light"
         android:textColor="@color/white"
         android:textSize="@dimen/DIMEN_60PX" />
 
@@ -25,16 +25,20 @@
         android:background="@null"
         android:src="@drawable/close" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/btn_close"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/DIMEN_130PX"
-        android:background="@null"
+        android:layout_marginLeft="@dimen/DIMEN_50PX"
+        android:layout_marginRight="@dimen/DIMEN_50PX"
+        android:background="@drawable/add"
+        android:gravity="center"
         android:onClick="doCheckNewDevClick"
-        android:src="@drawable/add" />
+        android:text="@string/btn_add"
+        android:textColor="#c9c9c9"
+        android:textSize="@dimen/DIMEN_48PX" />
 
     <ListView
         android:id="@+id/list_view"
@@ -47,4 +51,10 @@
         android:cacheColorHint="#0000"
         android:divider="@null"></ListView>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package elle.home.hal;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -7,7 +9,6 @@ import java.net.SocketException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.util.Log;
 import elle.home.protocol.PacketCheck;
 import elle.home.protocol.ProtocolDataList;
 

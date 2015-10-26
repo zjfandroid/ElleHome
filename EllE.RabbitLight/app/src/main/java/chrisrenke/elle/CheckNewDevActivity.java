@@ -124,14 +124,20 @@ public class CheckNewDevActivity extends Activity {
             @Override
             public void onOneDeviceFound(final OneDev newdev) {
 
-                if (newdev.type == PublicDefine.TypeLight) {
-                    newdev.devname = "小兔灯"+ (count+1) +"号";
+                int newTyoe = newdev.type;
+                if (newTyoe == PublicDefine.TypeLight || newTyoe == PublicDefine.TypeLightRabbit) {
+
+                    if(newTyoe == PublicDefine.TypeLightRabbit){
+                        newdev.devname = getResources().getString(R.string.name_bulb_rabbit)+ (count+1);
+                    }else{
+                        newdev.devname = "球泡灯"+ (count+1);
+                    }
                     count++;
 
                     ArrayList<LightColor> mColors = new ArrayList<LightColor>(6);
-                    mColors.add(new LightColor("暖白灯", Color.parseColor("#fffefe"), 200));
-                    mColors.add(new LightColor("魅蓝灯", Color.parseColor("#332288"), 180));
-                    mColors.add(new LightColor("小夜灯", Color.parseColor("#ff9933"), 150));
+                    mColors.add(new LightColor(getResources().getString(R.string.color_white), Color.parseColor("#fffefe"), 200));
+                    mColors.add(new LightColor(getResources().getString(R.string.color_blue), Color.parseColor("#332288"), 180));
+                    mColors.add(new LightColor(getResources().getString(R.string.color_yellow), Color.parseColor("#ff9933"), 150));
                     newdev.function = JsonUtil.objectToJson(mColors);
 
                     if(newdev.addToDatabase(mContext)){
@@ -142,11 +148,11 @@ public class CheckNewDevActivity extends Activity {
                             @Override
                             public void run() {
                                 connectSuccess();
-                                ShowToast.show(mContext, "成功添加一个设备:" + newdev.devname);
+                                ShowToast.show(mContext, getResources().getString(R.string.success_add_dev) + newdev.devname);
                             }
                         });
                     }
-                } else if (newdev.type == PublicDefine.TypePlug) {
+                } else if (newTyoe == PublicDefine.TypePlug) {
                     newdev.devname = "智能插座" + count;
                 } else{
                     newdev.devname = "未知设备-" + newdev.type;
@@ -252,7 +258,7 @@ public class CheckNewDevActivity extends Activity {
 
     private void connectSuccess() {
         state = STATE_CONNECT_SUCCESS;
-        buttonBottom.setText("配对成功");
+        buttonBottom.setText(R.string.tips_connect_success);
     }
 
     private void stopAirkiss() {

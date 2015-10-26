@@ -23,6 +23,7 @@ public class GetTimeZone {
 		}else{
 			tmp = (byte)(125+offsetHours);
 		}
+		
 		return tmp;
 	}
 	

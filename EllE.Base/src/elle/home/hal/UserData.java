@@ -45,7 +45,6 @@ public class UserData {
 		try {
 			m = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(m!=null){
@@ -55,7 +54,6 @@ public class UserData {
 				tmp[i] = p_md5Data[i];
 			}
 		}
-		Log.d(TAG,"得到mac地址:"+tmp[0]+" "+tmp[1]+" "+tmp[2]+" "+tmp[3]);
 		
 		return tmp;
 	}

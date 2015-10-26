@@ -55,13 +55,20 @@ public class PublicDefine {
 	
 	public static final byte TypeLight = (byte)0x20;
 	public static final byte TypeBigLight = (byte)0x21;
+	public static final byte TypeLightRabbit = (byte)0x22;
 	public static final byte LightVerOrgin = (byte)0x00;
 	public static final byte FunLightOpen = (byte)0x01;
 	public static final byte FunLightClose = (byte)0x02;
 	public static final byte FunLightColor = (byte)0x03;
 	public static final byte FunLightRandom = (byte)0x04;
 	public static final byte FunLightSleep = (byte)0x05;
-	
+	public static final byte FunSetAnionLevel = (byte)0x06;
+
+	public static final byte AnionLevelOff = (byte)0x00;
+	public static final byte AnionLevelMin = (byte)0x01;
+	public static final byte AnionLevelMid = (byte)0x02;
+	public static final byte AnionLevelMax = (byte)0x03;
+
 	public static final byte TypePlug = (byte)0x10;
 	public static final byte PlugVerOgrin = (byte)0x00;
 	public static final byte FunPlugOn = (byte)0x01;

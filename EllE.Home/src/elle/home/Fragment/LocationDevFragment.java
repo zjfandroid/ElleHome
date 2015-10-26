@@ -62,6 +62,7 @@ import elle.home.uipart.PublicResDefine;
 import elle.home.utils.ABViewUtil;
 import elle.home.utils.SaveDataPreferences;
 import elle.home.utils.ShowInfo;
+import elle.home.utils.ShowToast;
 import elle.home.utils.ViewHolder;
 
 public class LocationDevFragment extends Fragment {
@@ -310,7 +311,7 @@ public class LocationDevFragment extends Fragment {
 			int size = locatInfo.devLocationList.size();
 			if(position < size){
 				OneDev onedev = locatInfo.devLocationList.get(position);
-				
+				ShowToast.show(mContext, "点击了 id = " + onedev.type);
 				switch(onedev.type){
 				case PublicDefine.TypeNull:
 					break;

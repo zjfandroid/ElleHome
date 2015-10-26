@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/title_btn_left"
+        android:layout_width="@dimen/DIMEN_116PX"
+        android:layout_height="@dimen/DIMEN_120PX"
+        android:layout_marginLeft="@dimen/DIMEN_30PX"
+        android:layout_marginTop="@dimen/DIMEN_80PX"
+        android:background="#00000000"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/btn_x" />
+
+
+    <TextView
+        android:id="@+id/tv_rename_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_btn_left"
+        android:layout_marginLeft="@dimen/DIMEN_50PX"
+        android:layout_marginRight="@dimen/DIMEN_50PX"
+        android:layout_marginTop="18dp"
+        android:text="@string/dialog_rename_title"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/edt_rename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_rename_title"
+        android:layout_alignRight="@id/tv_rename_title"
+        android:layout_below="@id/tv_rename_title"
+        android:layout_marginTop="6dp"
+        android:hint="@string/dialog_rename_hint"
+        android:maxLength="12"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_frame"
+        android:onClick="onDoneClick"
+        android:text="@string/dialog_ok"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>

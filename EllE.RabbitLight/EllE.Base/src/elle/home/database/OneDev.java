@@ -145,6 +145,19 @@ public class OneDev implements Serializable{
 		db.close();
 	}
 
+	public void updateDeviceName(Context context, String mName){
+		String[] params = new String[2];
+		params[0] = mName;
+		params[1] = String.valueOf(this.mac);
+
+		DataBaseHelper dbhelper = new DataBaseHelper(context);
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+		String sql = "UPDATE devices SET devname = ? where mac = ?";
+		db.execSQL(sql,params);
+		db.close();
+	}
+
 	/**
 	 * 设置是否可摇一摇
 	 * @param tmp
@@ -364,8 +377,8 @@ public class OneDev implements Serializable{
 		
 		//检查是否存在了同名设备
 		String[] checkParams = new String[1];
-		checkParams[0] = this.devname;
-		String checkSql = "select * from devices where devname = ?";
+		checkParams[0] = String.valueOf(this.mac);
+		String checkSql = "select * from devices where mac = ?";
 		Cursor cursor = db.rawQuery(checkSql, checkParams);
 		while(cursor.moveToNext()){
 			db.close();

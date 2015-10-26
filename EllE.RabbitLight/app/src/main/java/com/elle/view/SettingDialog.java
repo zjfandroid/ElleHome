@@ -53,7 +53,7 @@ public class SettingDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if(null == mDevice){
-                    ShowToast.show(mContext, "当前无可配置设备哦~");
+                    ShowToast.show(mContext, R.string.tips_no_dev);
                     return;
                 }
 
@@ -76,7 +76,7 @@ public class SettingDialog extends Dialog {
                 dialog.setCanceledOnTouchOutside(true);
 
                 dialog.setTitleText(mContext.getResources().getString(R.string.sure_to_reset))
-                        .setCancelText(mContext.getResources().getString(R.string.manage_dev_tips_del_dev_no))
+                        .setCancelText(mContext.getResources().getString(R.string.dialog_cancel))
                         .setConfirmText(mContext.getResources().getString(R.string.config_reset))
                         .showCancelButton(true)
                         .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

@@ -24,7 +24,7 @@ public class AllDevInfo {
 		dbhelper = new DataBaseHelper(context);
 	}
 	
-	public void getAllDev(){
+	public List<OneDev> getAllDev(){
 		SQLiteDatabase db = null;
 		db = dbhelper.getReadableDatabase();
 		String sql = "select * from devices";
@@ -52,6 +52,10 @@ public class AllDevInfo {
 			alldevinfo.add(oneDev);
 		}
 		Log.d(TAG,"得到所有设备的数量为："+alldevinfo.size());
+		
+		db.close();
+		
+		return alldevinfo;
 	}
 	
 }

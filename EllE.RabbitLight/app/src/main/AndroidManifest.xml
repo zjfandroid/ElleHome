@@ -38,10 +38,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddLightActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Transparent"></activity>
-        <activity
             android:name=".CheckNewDevActivity"
             android:screenOrientation="portrait"></activity>
         <activity

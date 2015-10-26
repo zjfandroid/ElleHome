@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chrisrenke.elle.R;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import elle.home.utils.ShowInfo;
 
 /**
@@ -26,10 +27,14 @@ import elle.home.utils.ShowInfo;
  */
 public class LightControlMenu extends FrameLayout {
 
+    private static final int COLOR_BLUE = 0xff58b7f3;
     private Context mContext;
     private View mLayoutLight;
     private View mLayoutAnion;
     private View mArrowLight;
+    private TextView textView0;
+    private TextView textView1;
+    private TextView textView2;
     private View mArrowAnion;
     private OnBulbControlListener mOnBulbControlListener;
 
@@ -76,9 +81,9 @@ public class LightControlMenu extends FrameLayout {
             }
         });
 
-        final TextView textView0 = (TextView) findViewById(R.id.tv_off);
-        final TextView textView1 = (TextView) findViewById(R.id.tv_buty_face);
-        final TextView textView2 = (TextView) findViewById(R.id.tv_kill_bad);
+        textView0 = (TextView) findViewById(R.id.tv_off);
+        textView1 = (TextView) findViewById(R.id.tv_buty_face);
+        textView2 = (TextView) findViewById(R.id.tv_kill_bad);
         final SeekBar mSeekBar = (SeekBar) findViewById(R.id.seekbar_anion);
 
         textView0.setTextColor(0xff58b7f3);
@@ -106,22 +111,31 @@ public class LightControlMenu extends FrameLayout {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 ShowInfo.printLogW("_______onProgressChanged_________" + progress);
-                Resources resources = getResources();
-                textView0.setTextColor(resources.getColor(R.color.white));
-                textView1.setTextColor(resources.getColor(R.color.white));
-                textView2.setTextColor(resources.getColor(R.color.white));
-                int blue = 0xff58b7f3;
-                mOnBulbControlListener.onAnionChange(progress);
                 switch (progress) {
                     case 0:
-                        ShowInfo.printLogW("_______onProgressChanged000_________" + progress);
-                        textView0.setTextColor(blue);
-                        break;
+                        setAnionChange(0);
+                        textView0.setTextColor(COLOR_BLUE);
                     case 1:
-                        textView1.setTextColor(blue);
-                        break;
                     case 2:
-                        textView2.setTextColor(blue);
+                        mSeekBar.setProgress(0);
+                        break;
+
+                    case 4:
+                        setAnionChange(1);
+                        textView1.setTextColor(COLOR_BLUE);
+                        break;
+                    case 3:
+                    case 5:
+                        mSeekBar.setProgress(4);
+                        break;
+
+                    case 8:
+                        setAnionChange(2);
+                        textView2.setTextColor(COLOR_BLUE);
+                        break;
+                    case 6:
+                    case 7:
+                        mSeekBar.setProgress(8);
                         break;
                     default:
                         break;
@@ -167,23 +181,55 @@ public class LightControlMenu extends FrameLayout {
                     }
 
                     @Override
-                    public void onTabLongClick(int pos, int id) {
-                        adapter.deleteDrawableItem(pos);
-                        tabs.notifyDataSetChanged();
-                        mOnBulbControlListener.deleteLightColor(pos - 2);
+                    public void onTabLongClick(final int pos, int id) {
+                        SweetAlertDialog dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
+                        dialog.setCancelable(true);
+                        dialog.setCanceledOnTouchOutside(true);
+
+                        dialog.setTitleText(mContext.getResources().getString(R.string.sure_to_del_color))
+                                .setCancelText(mContext.getResources().getString(R.string.dialog_cancel))
+                                .setConfirmText(mContext.getResources().getString(R.string.dialog_ok))
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismiss();
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        adapter.deleteDrawableItem(pos);
+                                        tabs.notifyDataSetChanged();
+                                        mOnBulbControlListener.deleteLightColor(pos - 2);
+                                        sDialog.dismiss();
+                                    }
+                                })
+                                .show();
                     }
                 });
             }
         }, 600);
     }
 
+    private void setAnionChange(int level){
+        Resources resources = getResources();
+        textView0.setTextColor(resources.getColor(R.color.white));
+        textView1.setTextColor(resources.getColor(R.color.white));
+        textView2.setTextColor(resources.getColor(R.color.white));
+        mOnBulbControlListener.onAnionChange(level);
+    }
+
     public void setLightOn(boolean isOn){
         TabItem item = adapter.mDrawable.get(0);
-        if(isOn && !"关灯".equals(item.name)){
-            item.name = "关灯";
+        String txtOff = getResources().getString(R.string.lamp_off);
+        String txtOn = getResources().getString(R.string.lamp_on);
+
+        if(isOn && !txtOff.equals(item.name)){
+            item.name = txtOff;
             notifyDataSetChanged();
-        }else if(!isOn && !"开灯".equals(item.name)){
-            item.name = "开灯";
+        }else if(!isOn && !txtOn.equals(item.name)){
+            item.name = txtOn;
             notifyDataSetChanged();
         }
     }
@@ -208,9 +254,9 @@ public class LightControlMenu extends FrameLayout {
         public void initMenuBtn() {
             mDrawable = new ArrayList<TabItem>(8);
             Resources mRes = getResources();
-            mDrawable.add(new TabItem(Constants.ID_CLOSE, mRes.getDrawable(R.drawable.btn_light_off), "关灯"));
-            mDrawable.add(new TabItem(Constants.ID_RANDOM, mRes.getDrawable(R.drawable.btn_light_random),"流光"));
-            mDrawable.add(new TabItem(Constants.ID_ADD, mRes.getDrawable(R.drawable.btn_add),"新增"));
+            mDrawable.add(new TabItem(Constants.ID_CLOSE, mRes.getDrawable(R.drawable.btn_light_off), mRes.getString(R.string.lamp_off)));
+            mDrawable.add(new TabItem(Constants.ID_RANDOM, mRes.getDrawable(R.drawable.btn_light_random), mRes.getString(R.string.lamp_random)));
+            mDrawable.add(new TabItem(Constants.ID_ADD, mRes.getDrawable(R.drawable.btn_add), mRes.getString(R.string.lamp_add)));
         }
 
         public void addDrawableItem(TabItem drawable){
@@ -226,7 +272,7 @@ public class LightControlMenu extends FrameLayout {
             int size = mDrawable.size();
             ShowInfo.printLogW(pos + "_______deleteDrawableItem______" + size);
             if(mDrawable.get(size-1).id != Constants.ID_ADD){
-                mDrawable.add(new TabItem(Constants.ID_ADD, getResources().getDrawable(R.drawable.btn_add),"新增"));
+                mDrawable.add(new TabItem(Constants.ID_ADD, getResources().getDrawable(R.drawable.btn_add), getResources().getString(R.string.lamp_add)));
             }
             mDrawable.remove(pos);
         }

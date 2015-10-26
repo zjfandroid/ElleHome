@@ -1,13 +1,14 @@
 package elle.home.database;
 
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import elle.home.publicfun.PublicDefine;
 
 public class OneDev implements Serializable{
@@ -127,6 +128,32 @@ public class OneDev implements Serializable{
 		SQLiteDatabase db = dbhelper.getWritableDatabase();
 		
 		String sql = "UPDATE devices SET remoteip = ? ,remoteport = ? where mac = ?";
+		db.execSQL(sql,params);
+		db.close();
+	}
+
+	public void updateFunctions(Context context){
+		String[] params = new String[2];
+		params[0] = this.function;
+		params[1] = String.valueOf(this.mac);
+
+		DataBaseHelper dbhelper = new DataBaseHelper(context);
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+		String sql = "UPDATE devices SET function = ? where mac = ?";
+		db.execSQL(sql,params);
+		db.close();
+	}
+
+	public void updateDeviceName(Context context, String mName){
+		String[] params = new String[2];
+		params[0] = mName;
+		params[1] = String.valueOf(this.mac);
+
+		DataBaseHelper dbhelper = new DataBaseHelper(context);
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+		String sql = "UPDATE devices SET devname = ? where mac = ?";
 		db.execSQL(sql,params);
 		db.close();
 	}
@@ -350,8 +377,8 @@ public class OneDev implements Serializable{
 		
 		//检查是否存在了同名设备
 		String[] checkParams = new String[1];
-		checkParams[0] = this.devname;
-		String checkSql = "select * from devices where devname = ?";
+		checkParams[0] = String.valueOf(this.mac);
+		String checkSql = "select * from devices where mac = ?";
 		Cursor cursor = db.rawQuery(checkSql, checkParams);
 		while(cursor.moveToNext()){
 			db.close();
@@ -435,4 +462,27 @@ public class OneDev implements Serializable{
 		this.isAdded = isAdded;
 	}
 
+	public InetAddress getIp(){
+		InetAddress ip = null;
+		 
+		if(isRemote){
+			ip = this.remoteip;
+		}else{
+			try {
+				ip = InetAddress.getByName("255.255.255.255");
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ip;
+	}
+	
+	public int getPort(){
+		if(isRemote){
+			return remoteport;
+		}else{
+			return 5880;
+		}
+	}
 }

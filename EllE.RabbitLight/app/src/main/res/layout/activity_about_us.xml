@@ -5,6 +5,34 @@
     android:layout_height="match_parent"
     android:background="@drawable/img_about_us">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/DIMEN_200PX"
+        android:text="@string/about_us"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_60PX" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/DIMEN_80PX"
+        android:layout_marginRight="@dimen/DIMEN_80PX"
+        android:layout_marginTop="@dimen/DIMEN_180PX"
+        android:text="我们相信，选择可以很简单：与你一样热爱美丽的小美们，能为特别的你推荐最合适的美妆产品。  我们相信，信任可以很简单：坚持30天\n"
+        android:textColor="@color/white"
+        android:textSize="@dimen/DIMEN_48PX" />
+
+    <!--<WebView-->
+    <!--android:id="@+id/webView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
     <ImageButton
         android:id="@+id/btn_close"
         android:layout_width="wrap_content"

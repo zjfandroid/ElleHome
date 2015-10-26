@@ -1,56 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">小稚兔</string>
-    <string name="content_hint">Content</string>
-    <string name="drawer_hint">Drawer</string>
-    <string name="rounded">See Rounded</string>
-    <string name="squared">See Squared</string>
+    <string name="app_name">Rabbit Lamp</string>
+    <string name="name_bulb_rabbit">Rabbit Lamp</string>
+    <string name="connect_light">Connect to Rabbit Lamp</string>
+    <string name="open_bulb">Please turn on the lamp</string>
+    <string name="connect_tips">Start pair with the lamp while random lighting</string>
+    <string name="change_network">Switch to other network</string>
+    <string name="add_new_bulb">Add new scenario</string>
+    <string name="bulb_color">Color</string>
+    <string name="bulb_light">Brightness</string>
+    <string name="setting">Setting</string>
+    <string name="set_wifi">WiFi Setting</string>
+    <string name="set_reset">Reset to default setting</string>
+    <string name="check_update">Check updates</string>
+    <string name="about_us">About Us</string>
+    <string name="fun_buty">ion SPA</string>
+    <string name="fun_max">Anti-Virus</string>
+    <string name="success_add_dev">Successfully add a new lamp:</string>
+    <string name="color_white">Warm Reading Light</string>
+    <string name="color_blue">Romantic Blue</string>
+    <string name="color_yellow">Night Lamp</string>
+    <string name="tips_connect_success">Pair successfully</string>
+    <string name="tips_name_first">Name your Rabbit Lamp first:</string>
+    <string name="tips_no_dev">Can\'t find any Rabbit Lamp to pair with</string>
 
-    <string name="link_config_ssid">WiFi名称:</string>
-    <string name="link_config_password">WiFi密码:</string>
-    <string name="config_link">配置</string>
+    <string name="link_config_ssid">WiFi SSID:</string>
+    <string name="link_config_password">WiFi Password:</string>
+    <string name="config_link">Configuration</string>
 
-    <string name="sure_to_reset">确定要复位？</string>
-    <string name="config_reset">复位</string>
-    <string name="manage_dev_tips_del_dev_yes">确认</string>
-    <string name="manage_dev_tips_del_dev_no">取消</string>
-    <string name="reset_success">复位成功!</string>
-    <string name="reset_fail">复位失败，请确保手机与灯泡连接的是同一个路由器</string>
-    <string name="reset_fail_null">当前没有可复位设备哦~</string>
-
-    <string name="config_wifi_ok">确定</string>
-    <string name="device_info">设备信息</string>
-    <string name="title_wifi_config">Wifi配置</string>
-    <string name="device_info_place">地点:</string>
-    <string name="device_info_name">名字:</string>
-    <string name="device_info_mac">Mac:</string>
-    <string name="wifi_ssid">WiFi SSID:</string>
-    <string name="wifi_ssid_hint">请输入WiFi SSID</string>
-    <string name="wifi_password">WiFi 密码:</string>
-    <string name="wifi_password_hint">请输入WiFi密码</string>
-    <string name="enter_wifi_password">需要输入WiFi密码啦</string>
-    <string name="enter_wifi_name">需要输入WiFi名称啦</string>
-    <string name="link_config_succeed">配置成功</string>
-    <string name="link_config_failed">配置失败</string>
-
-    <string name="link_config_title">连接配置</string>
-    <string name="tips_input_ssid">这里输入WiFi名字</string>
-    <string name="tips_input_password">这里输入WiFi密码</string>
-    <string name="tips_switch_wifi_succeed">切换wifi成功</string>
-    <string name="tips_link_config_succeed">配置设备WiFi成功，稍等片刻就可以添加了</string>
-    <string name="tips_link_config_error">配置异常，请退出软件重新来过</string>
-    <string name="tips_connected_to">连接到-></string>
-    <string name="tips_init_configing">初始化配置</string>
-    <string name="tips_connected_to_dev_configing">连接到设备，配置中</string>
-    <string name="tips_config_link_succeed">配置完成</string>
-    <string name="tips_click_back_btn">再次点击返回键退出</string>
-
-    <string name="checking">正在检测...</string>
-    <string name="update_no">没有更新!</string>
-    <string name="update_with_wifi">没有wifi连接， 只在wifi下更新!</string>
-    <string name="pppp_status_connect_timeout">连接超时</string>
-
+    <string name="sure_to_del_color">Confirm to delete this configuration?</string>
+    <string name="sure_to_del_dev">Confirm to delete this Rabbit Lamp?</string>
+    <string name="sure_to_reset">Confirm to reset?</string>
+    <string name="config_reset">Reset</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="reset_success">Reset successfully</string>
+    <string name="reset_fail">Failed to reset, please make sure your phone connecting to the same WiFi which Rabbit Lamp connect to</string>
+    <string name="reset_fail_null">There is no Rabbit Lamp to reset</string>
+
+    <string name="device_info">Rabbit Lamp Information</string>
+    <string name="title_wifi_config">WiFi Configuration</string>
+    <string name="device_info_place">Place:</string>
+    <string name="device_info_name">Name:</string>
+    <string name="device_info_mac">Mac:</string>
+    <string name="wifi_ssid">WiFi SSID:</string>
+    <string name="wifi_ssid_hint">Please input WiFi SSID</string>
+    <string name="wifi_password">WiFi Password:</string>
+    <string name="wifi_password_hint">Please input WiFi Password</string>
+    <string name="enter_wifi_password">Rabbit really needs your inputting WiFi password!</string>
+    <string name="enter_wifi_name">Rabbit really needs your inputting WiFi SSID</string>
+    <string name="link_config_succeed">Configured Successfully</string>
+    <string name="link_config_failed">Failed to configure</string>
+
+    <string name="link_config_title">Configuration of connection</string>
+    <string name="tips_input_ssid">Please input WiFi SSID</string>
+    <string name="tips_input_password">Please input WiFi Password</string>
+    <string name="tips_switch_wifi_succeed">Success in switching WiFi</string>
+    <string name="tips_link_config_succeed">Success in configuring WiFi</string>
+    <string name="tips_link_config_error">Configuration Error, please quit App and try again</string>
+    <string name="tips_connected_to">Connect to ></string>
+    <string name="tips_init_configing">Initialize Configuration</string>
+    <string name="tips_connected_to_dev_configing">Connected to WiFi and start to configure</string>
+    <string name="tips_config_link_succeed">Success in configuration</string>
+    <string name="tips_click_back_btn">One more click the back button to quit App</string>
+
+    <string name="checking">Checking updates...</string>
+    <string name="update_no">You are using the latest Rabbit Lamp App</string>
+    <string name="update_with_wifi">There\'s no WiFi connection, only update while connecting to WiFi</string>
+    <string name="pppp_status_connect_timeout">Connection Timeout</string>
+
+    <string name="dialog_rename_title">Name your Rabbit Lamp</string>
+    <string name="dialog_rename_hint">Please input the name to Rabbit Lamp</string>
+
+    <string name="lamp_off">Off</string>
+    <string name="lamp_on">On</string>
+    <string name="lamp_random">Random</string>
+    <string name="lamp_add">Add</string>
+    <string name="lamp_name_hint">Input a name</string>
+    <string name="btn_add">Add Rabbit Lamp</string>
+
 </resources>

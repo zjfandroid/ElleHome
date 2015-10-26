@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">小稚兔</string>
+    <string name="name_bulb_rabbit">小兔灯</string>
+    <string name="connect_light">连接小兔灯</string>
+    <string name="open_bulb">请打开灯泡</string>
+    <string name="connect_tips">灯泡随机变化颜色时开始配对</string>
+    <string name="change_network">切换网络</string>
+    <string name="add_new_bulb">新增氛围灯</string>
+    <string name="bulb_color">色相</string>
+    <string name="bulb_light">亮度</string>
+    <string name="setting">设置</string>
+    <string name="set_wifi">无线网络设置</string>
+    <string name="set_reset">恢复出厂默认值</string>
+    <string name="check_update">检查版本更新</string>
+    <string name="about_us">关于我们</string>
+    <string name="fun_buty">保湿美颜</string>
+    <string name="fun_max">强力净污</string>
+    <string name="success_add_dev">成功添加一个设备:</string>
+    <string name="color_white">暖白灯</string>
+    <string name="color_blue">魅蓝灯</string>
+    <string name="color_yellow">小夜灯</string>
+    <string name="tips_connect_success">配对成功</string>
+    <string name="tips_name_first">先起个名字吧~</string>
+    <string name="tips_no_dev">当前无可配置设备哦~</string>
+
+    <string name="link_config_ssid">WiFi名称:</string>
+    <string name="link_config_password">WiFi密码:</string>
+    <string name="config_link">配置</string>
+
+    <string name="sure_to_del_color">确定要删除这个配置？</string>
+    <string name="sure_to_del_dev">确定要删除这个设备？</string>
+    <string name="sure_to_reset">确定要复位？</string>
+    <string name="config_reset">复位</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="reset_success">复位成功!</string>
+    <string name="reset_fail">复位失败，请确保手机与灯泡连接的是同一个路由器</string>
+    <string name="reset_fail_null">当前没有可复位设备哦~</string>
+
+    <string name="device_info">设备信息</string>
+    <string name="title_wifi_config">Wifi配置</string>
+    <string name="device_info_place">地点:</string>
+    <string name="device_info_name">名字:</string>
+    <string name="device_info_mac">Mac:</string>
+    <string name="wifi_ssid">WiFi SSID:</string>
+    <string name="wifi_ssid_hint">请输入WiFi SSID</string>
+    <string name="wifi_password">WiFi 密码:</string>
+    <string name="wifi_password_hint">请输入WiFi密码</string>
+    <string name="enter_wifi_password">需要输入WiFi密码啦</string>
+    <string name="enter_wifi_name">需要输入WiFi名称啦</string>
+    <string name="link_config_succeed">配置成功</string>
+    <string name="link_config_failed">配置失败</string>
+
+    <string name="link_config_title">连接配置</string>
+    <string name="tips_input_ssid">这里输入WiFi名字</string>
+    <string name="tips_input_password">这里输入WiFi密码</string>
+    <string name="tips_switch_wifi_succeed">切换wifi成功</string>
+    <string name="tips_link_config_succeed">配置设备WiFi成功，稍等片刻就可以添加了</string>
+    <string name="tips_link_config_error">配置异常，请退出软件重新来过</string>
+    <string name="tips_connected_to">连接到-></string>
+    <string name="tips_init_configing">初始化配置</string>
+    <string name="tips_connected_to_dev_configing">连接到设备，配置中</string>
+    <string name="tips_config_link_succeed">配置完成</string>
+    <string name="tips_click_back_btn">再次点击返回键退出</string>
+
+    <string name="checking">正在检测...</string>
+    <string name="update_no">没有更新!</string>
+    <string name="update_with_wifi">没有wifi连接， 只在wifi下更新!</string>
+    <string name="pppp_status_connect_timeout">连接超时</string>
+
+    <string name="dialog_rename_title">给小兔灯取个新名字吧</string>
+    <string name="dialog_rename_hint">请输入名字</string>
+
+    <string name="lamp_off">关灯</string>
+    <string name="lamp_on">开灯</string>
+    <string name="lamp_random">流光</string>
+    <string name="lamp_add">新增</string>
+    <string name="lamp_name_hint">命名氛围灯</string>
+    <string name="btn_add">新增小兔灯</string>
+
+</resources>

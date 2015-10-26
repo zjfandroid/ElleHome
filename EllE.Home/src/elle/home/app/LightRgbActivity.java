@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +53,7 @@ public class LightRgbActivity extends BaseActivity {
 	public final float BlueAdjust = 0.75f;
 	public final float GreenAdjust = 0.8f;
 	
+	private View layout_root;
 	//两张背景
 	private Drawable statusOffDrawable;
 	private ImageButton ibtn;
@@ -160,12 +162,28 @@ public class LightRgbActivity extends BaseActivity {
 				if(DataExchange.twoByteToInt(packetcheck.xdata[8], packetcheck.xdata[9])>0){
 					//灯泡状态为白色
 					rgbWhiteStatus = statusWhite;
+
+//					layout_root.post(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+//							layout_root.setBackgroundResource(R.color.dark_bg);
+//						}
+//					});
 				}else{
 					rgbWhiteStatus = statusColor;
 					if(couldFreshLux){
 						colorRed = LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[2], packetcheck.xdata[3]));
 						colorGreen = (int)((float)LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[4], packetcheck.xdata[5]))/GreenAdjust);
 						colorBlue = (int)((float)LuxToColor(DataExchange.twoByteToInt(packetcheck.xdata[6], packetcheck.xdata[7]))/BlueAdjust);
+						
+//						layout_root.post(new Runnable() {
+//							
+//							@Override
+//							public void run() {
+//								layout_root.setBackgroundColor(Color.rgb(colorRed, colorGreen, colorBlue));
+//							}
+//						});
 					}
 					
 					//Log.d(TAG,"状态颜色："+rgblight.colorRed+" "+rgblight.colorGreen+" "+rgblight.colorBlue);
@@ -226,6 +244,7 @@ public class LightRgbActivity extends BaseActivity {
 		sleeplayout = (LinearLayout)this.findViewById(R.id.sleepshow);
 		sleeptimeshow = (TextView)this.findViewById(R.id.sleeptimeshow);
 		sleeptimecancel = (TextView)this.findViewById(R.id.sleepcancel);
+		layout_root = findViewById(R.id.layout_root);
 		init();
 		
 		this.userBindService();

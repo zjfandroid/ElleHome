@@ -5,7 +5,6 @@ import android.view.View;
 
 /**
  * 所有 Adapter 都用此 ViewHolder
- * com.eebbk.videoclassjunior.adapter.ViewHolder
  * @author 张建峰 <br/>
  * create at 2014-2-25 上午9:34:34
  */

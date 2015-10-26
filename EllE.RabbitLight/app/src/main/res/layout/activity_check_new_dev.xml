@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/metaball"
         android:layout_centerHorizontal="true"
-        android:text="请打开灯泡"
+        android:text="@string/open_bulb"
         android:textSize="@dimen/DIMEN_72PX" />
 
 
@@ -47,7 +47,9 @@
         android:layout_below="@id/tx_open_light"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/DIMEN_30PX"
-        android:text="灯泡随机变化颜色时开始配对"
+        android:layout_marginLeft="@dimen/DIMEN_30PX"
+        android:layout_marginRight="@dimen/DIMEN_30PX"
+        android:text="@string/connect_tips"
         android:textSize="@dimen/DIMEN_60PX" />
 
     <Button
@@ -60,7 +62,7 @@
         android:layout_marginLeft="@dimen/DIMEN_50PX"
         android:layout_marginRight="@dimen/DIMEN_50PX"
         android:background="@drawable/btn_frame"
-        android:text="切换网络"
+        android:text="@string/change_network"
         android:textColor="@drawable/selector_text_blue"
         android:textSize="@dimen/DIMEN_60PX" />
 

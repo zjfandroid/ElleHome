@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="保湿美颜"
+            android:text="@string/fun_buty"
             android:textColor="@drawable/selector_text_left" />
 
         <TextView
@@ -112,7 +112,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/DIMEN_30PX"
-            android:text="强力净污"
+            android:text="@string/fun_max"
             android:textColor="@drawable/selector_text_left" />
 
         <SeekBar
@@ -120,9 +120,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_off"
-            android:layout_marginLeft="@dimen/DIMEN_30PX"
-            android:layout_marginRight="@dimen/DIMEN_30PX"
-            android:max="2"
+            android:paddingLeft="@dimen/DIMEN_80PX"
+            android:paddingRight="@dimen/DIMEN_80PX"
+            android:paddingBottom="@dimen/DIMEN_30PX"
+            android:max="8"
             android:progressDrawable="@drawable/seekbar_background"
             android:thumb="@drawable/thumb_round" />
     </RelativeLayout>

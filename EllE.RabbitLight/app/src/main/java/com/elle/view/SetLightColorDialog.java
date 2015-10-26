@@ -34,6 +34,8 @@ public class SetLightColorDialog extends Dialog {
 
     private Bitmap srcColor;
 
+    private long lastChangeTime;
+
     public SetLightColorDialog(Context context) {
         this(context, R.style.Dialog_Fullscreen);
     }
@@ -59,13 +61,17 @@ public class SetLightColorDialog extends Dialog {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int pixelColor = getPixelColor(progress);
+                long time = System.currentTimeMillis();
 
-                if(pixelColor == Color.WHITE){
-                    ((LightMainActivity)mContext).sendBulbColor(0, 0, 0,
-                            WhiteToLux(mSeekLight.getProgress()), mSeekLight.getProgress(), 500);
-                }else{
-                    ((LightMainActivity)mContext).setColorLight(Color.red(pixelColor), Color.green(pixelColor),Color.blue(pixelColor),
-                            0, mSeekLight.getProgress(), 800);
+                if(time - lastChangeTime > 300){
+                    lastChangeTime = time;
+                    if(pixelColor == Color.WHITE){
+                        ((LightMainActivity)mContext).sendBulbColor(0, 0, 0,
+                                WhiteToLux(mSeekLight.getProgress()), mSeekLight.getProgress(), 200);
+                    }else{
+                        ((LightMainActivity)mContext).setColorLight(Color.red(pixelColor), Color.green(pixelColor),Color.blue(pixelColor),
+                                0, mSeekLight.getProgress(), 200);
+                    }
                 }
 
                 setLightBgColor(pixelColor);
@@ -73,12 +79,11 @@ public class SetLightColorDialog extends Dialog {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                lastChangeTime = 0;
             }
         });
 
@@ -86,11 +91,15 @@ public class SetLightColorDialog extends Dialog {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int pixelColor = getPixelColor(progress);
+                long time = System.currentTimeMillis();
 
-                if(pixelColor == Color.WHITE){
-                    ((LightMainActivity)mContext).setColorLight(WhiteToLux(progress), progress, 500);
-                }else{
-                    ((LightMainActivity)mContext).setColorLight(0, progress, 500);
+                if(time - lastChangeTime > 300) {
+                    lastChangeTime = time;
+                    if (pixelColor == Color.WHITE) {
+                        ((LightMainActivity) mContext).setColorLight(WhiteToLux(progress), progress, 200);
+                    } else {
+                        ((LightMainActivity) mContext).setColorLight(0, progress, 200);
+                    }
                 }
             }
 
@@ -101,7 +110,7 @@ public class SetLightColorDialog extends Dialog {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                lastChangeTime = 0;
             }
         });
 
@@ -109,14 +118,11 @@ public class SetLightColorDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (null == mEditName || mEditName.getText().toString().isEmpty()) {
-                    ShowToast.show(mContext, "先起个名字吧~");
+                    ShowToast.show(mContext, R.string.tips_name_first);
                     return;
                 }
 
-                Bitmap src = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.progress_color);
-                int height = src.getHeight();
-
-                int pixelColor = src.getPixel(mSeekColor.getProgress(), height / 2);
+                int pixelColor = getPixelColor(mSeekColor.getProgress());
 
                 LightColor mLightColor = new LightColor(mEditName.getText().toString(), pixelColor, mSeekLight.getProgress());
                 Intent mIntent = new Intent();
@@ -153,16 +159,16 @@ public class SetLightColorDialog extends Dialog {
         int w = srcColor.getWidth();
         int x = progress;
 
-        if(x < 10){
+        if(x < 20){
             pixelColor = Color.RED;
-        }else if(x>w-10){
+        }else if(x>w-20){
             pixelColor = Color.WHITE;
         }else{
             pixelColor = srcColor.getPixel(x, height / 2);
         }
 
         if(pixelColor>=Color.YELLOW && pixelColor<=Color.WHITE){
-            imageViewLight.setImageResource(R.drawable.light_blue);
+            imageViewLight.setImageResource(R.drawable.light_blue_full);
         }else{
             imageViewLight.setImageResource(R.drawable.img_light_white);
         }
