@@ -157,7 +157,6 @@ public class AddLightDialog extends Dialog implements OnDismissCallback{
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                ShowInfo.printLogW("_____dialog____onStart__notifyDataSetChanged_");
                 mListView.post(new Runnable() {
                     @Override
                     public void run() {

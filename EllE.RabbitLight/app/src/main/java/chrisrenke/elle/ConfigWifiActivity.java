@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -249,4 +251,16 @@ public class ConfigWifiActivity extends Activity {
 		}
 
 	};
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
 }

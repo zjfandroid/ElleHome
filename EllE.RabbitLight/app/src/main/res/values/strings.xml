@@ -7,6 +7,7 @@
     <string name="open_bulb">Please turn on the lamp</string>
     <string name="connect_tips">Start pair with the lamp while random lighting</string>
     <string name="change_network">Switch to other network</string>
+    <string name="wifi_config">WiFi config</string>
     <string name="add_new_bulb">Add new scenario</string>
     <string name="bulb_color">Color</string>
     <string name="bulb_light">Brightness</string>
@@ -18,10 +19,11 @@
     <string name="fun_buty">ion SPA</string>
     <string name="fun_max">Anti-Virus</string>
     <string name="success_add_dev">Successfully add a new lamp:</string>
-    <string name="color_white">Warm Reading Light</string>
-    <string name="color_blue">Romantic Blue</string>
+    <string name="color_white">Reading</string>
+    <string name="color_blue">Romantic</string>
     <string name="color_yellow">Night Lamp</string>
     <string name="tips_connect_success">Pair successfully</string>
+    <string name="tips_connect_nothing">Device not found</string>
     <string name="tips_name_first">Name your Rabbit Lamp first:</string>
     <string name="tips_no_dev">Can\'t find any Rabbit Lamp to pair with</string>
 

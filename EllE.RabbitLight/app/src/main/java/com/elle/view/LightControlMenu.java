@@ -20,6 +20,7 @@ import java.util.List;
 
 import chrisrenke.elle.R;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import elle.home.publicfun.PublicDefine;
 import elle.home.utils.ShowInfo;
 
 /**
@@ -40,6 +41,9 @@ public class LightControlMenu extends FrameLayout {
 
     private SlidingTabStrip tabs;
     private TabAdapter adapter;
+
+    private boolean isAnionEnable;
+    private SeekBar mSeekBar;
 
     public LightControlMenu(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -84,7 +88,7 @@ public class LightControlMenu extends FrameLayout {
         textView0 = (TextView) findViewById(R.id.tv_off);
         textView1 = (TextView) findViewById(R.id.tv_buty_face);
         textView2 = (TextView) findViewById(R.id.tv_kill_bad);
-        final SeekBar mSeekBar = (SeekBar) findViewById(R.id.seekbar_anion);
+        mSeekBar = (SeekBar) findViewById(R.id.seekbar_anion);
 
         textView0.setTextColor(0xff58b7f3);
         textView0.setOnClickListener(new OnClickListener() {
@@ -243,6 +247,21 @@ public class LightControlMenu extends FrameLayout {
         });
     }
 
+    public void setAnionLevel(byte level) {
+        switch (level){
+            case PublicDefine.AnionLevelOff:
+                mSeekBar.setProgress(0);
+                break;
+            case PublicDefine.AnionLevelMin:
+            case PublicDefine.AnionLevelMid:
+                mSeekBar.setProgress(4);
+                break;
+            case PublicDefine.AnionLevelMax:
+                mSeekBar.setProgress(8);
+                break;
+        }
+    }
+
     public class TabAdapter implements SlidingTabStrip.IconTabProvider {
 
         private List<TabItem> mDrawable;
@@ -328,7 +347,7 @@ public class LightControlMenu extends FrameLayout {
                     }
                     break;
                 case R.id.btn_anion:
-                    if (!mLayoutAnion.isShown()) {
+                    if (isAnionEnable && !mLayoutAnion.isShown()) {
                         mLayoutAnion.setVisibility(View.VISIBLE);
                         mArrowAnion.setVisibility(View.VISIBLE);
                         mLayoutLight.setVisibility(View.GONE);
@@ -340,6 +359,22 @@ public class LightControlMenu extends FrameLayout {
             }
         }
     };
+
+    public void setAnionEnable(boolean isEnabled){
+        if(this.isAnionEnable != isEnabled){
+            isAnionEnable = isEnabled;
+            if(!isEnabled){
+                this.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLayoutAnion.setVisibility(View.GONE);
+                        mArrowAnion.setVisibility(View.INVISIBLE);
+                        setAnionLevel(PublicDefine.AnionLevelOff);
+                    }
+                });
+            }
+        }
+    }
 
     public void setBulbControlListener(OnBulbControlListener onBulbControlListener){
         mOnBulbControlListener = onBulbControlListener;

@@ -4,9 +4,10 @@
     <string name="app_name">小稚兔</string>
     <string name="name_bulb_rabbit">小兔灯</string>
     <string name="connect_light">连接小兔灯</string>
-    <string name="open_bulb">请打开灯泡</string>
-    <string name="connect_tips">灯泡随机变化颜色时开始配对</string>
+    <string name="open_bulb">请打开小兔灯</string>
+    <string name="connect_tips">小兔灯随机变化颜色时开始配对</string>
     <string name="change_network">切换网络</string>
+    <string name="wifi_config">WiFi配置</string>
     <string name="add_new_bulb">新增氛围灯</string>
     <string name="bulb_color">色相</string>
     <string name="bulb_light">亮度</string>
@@ -22,6 +23,7 @@
     <string name="color_blue">魅蓝灯</string>
     <string name="color_yellow">小夜灯</string>
     <string name="tips_connect_success">配对成功</string>
+    <string name="tips_connect_nothing">未查找到设备</string>
     <string name="tips_name_first">先起个名字吧~</string>
     <string name="tips_no_dev">当前无可配置设备哦~</string>
 
@@ -36,7 +38,7 @@
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancel">取消</string>
     <string name="reset_success">复位成功!</string>
-    <string name="reset_fail">复位失败，请确保手机与灯泡连接的是同一个路由器</string>
+    <string name="reset_fail">复位失败，请确保手机与小兔灯连接的是同一个路由器</string>
     <string name="reset_fail_null">当前没有可复位设备哦~</string>
 
     <string name="device_info">设备信息</string>

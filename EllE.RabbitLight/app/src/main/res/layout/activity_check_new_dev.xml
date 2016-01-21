@@ -62,7 +62,7 @@
         android:layout_marginLeft="@dimen/DIMEN_50PX"
         android:layout_marginRight="@dimen/DIMEN_50PX"
         android:background="@drawable/btn_frame"
-        android:text="@string/change_network"
+        android:text="@string/wifi_config"
         android:textColor="@drawable/selector_text_blue"
         android:textSize="@dimen/DIMEN_60PX" />
 

@@ -19,15 +19,14 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Resources;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +35,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.elle.pojo.LightColor;
 import com.elle.view.AddLightDialog;
@@ -43,6 +43,7 @@ import com.elle.view.LightControlMenu;
 import com.elle.view.RevealLayout;
 import com.elle.view.SetLightColorDialog;
 import com.elle.view.SettingDialog;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
@@ -68,17 +69,20 @@ import elle.home.utils.ShowInfo;
 
 import static android.view.Gravity.START;
 
+/**
+ * 主界面
+ */
 public class LightMainActivity extends Activity {
 
     public static boolean isFirstLoad = true;
 
-    private DrawerArrowDrawable drawerArrowDrawable;
     private LightControlMenu menu;
     private ImageView imageLightAnim;
     private DrawerLayout drawer;
     private RevealLayout revealLayout;
     private PopupWindow popupWindow;
     private Button mPopBtn;
+    private TextView mTvPower;
 
     private SetLightColorDialog setLightColorDialog;
     private AddLightDialog addLightDialog;
@@ -91,13 +95,14 @@ public class LightMainActivity extends Activity {
     private List<OneDev> mDevices;
     private OneDev oneDev;
 
-    private OnBulbChangeListener mOnBulbChangeListener;
     int mred, mgreen, mblue, lux, time, sleepTime;
     private int indexLight;
-    private int colorRed;
-    private int colorGreen;
-    private int colorBlue;
+    private int colorRed = -1;
+    private int colorGreen = -1;
+    private int colorBlue = -1;
     private int white;
+    private int power;
+    private int anionLevel;
     private final float BlueAdjust = 0.75f;
     private final float GreenAdjust = 0.8f;
 
@@ -105,24 +110,25 @@ public class LightMainActivity extends Activity {
     private OnRecvListener cycleListener = new OnRecvListener() {
         @Override
         public void OnRecvData(PacketCheck packetcheck) {
-            if (packetcheck != null && null != mOnBulbChangeListener) {
+            if (packetcheck != null) {
                 int red, green, blue;
                 /*********灯的开关状态*********/
+                boolean onoff = true;
                 if (packetcheck.xdata[0] == 0x00) {
                     onoff = false;    //关闭状态
-                    mOnBulbChangeListener.onBulbClose();
-                } else {
-                    onoff = true;    //打开状态
-                    mOnBulbChangeListener.onBulbOpen();
                 }
-                menu.setLightOn(onoff);
+
+                if(LightMainActivity.this.onoff != onoff){
+                    LightMainActivity.this.onoff = onoff;
+                    menu.setLightOn(onoff);
+                }
+
                 /*********灯的随机变色状态**********/
                 if (packetcheck.xdata[1] == 0x00) {
                     random = false;    //关闭状态
                 } else {
                     random = true;    //打开状态
                 }
-                mOnBulbChangeListener.onBulbFree(random);
 
                 /***************亮度***************/
                 lux = DataExchange.twoByteToInt(packetcheck.xdata[12], packetcheck.xdata[13]);
@@ -142,9 +148,7 @@ public class LightMainActivity extends Activity {
                     ShowInfo.printLogW("状态颜色 接收转后______：" + colorRed + " " + colorGreen + " " + colorBlue);
                 }
                 /***************睡眠时间**********/
-                sleepTime = DataExchange.twoByteToInt(packetcheck.xdata[14], packetcheck.xdata[15]);
-
-                mOnBulbChangeListener.onColorChange(colorRed, colorGreen, colorBlue, white, lux);
+                //sleepTime = DataExchange.twoByteToInt(packetcheck.xdata[14], packetcheck.xdata[15]);
 
                 if(colorRed != mred || colorGreen != mgreen || colorBlue!=mblue ){
                     mred = colorRed;
@@ -163,9 +167,53 @@ public class LightMainActivity extends Activity {
                         }
                     });
                 }
+
+                /**********第17个字节，负离子等级************/
+                ShowInfo.printLogW(packetcheck.xdata[16] + "______packetcheck______" + packetcheck.xdata[17]);
+                int level = packetcheck.xdata[16];
+                if(anionLevel != level){
+                    anionLevel = level;
+                    menu.setAnionLevel(packetcheck.xdata[16]);
+                }
+
+                /**********第18个字节，电量0-0xff************/
+                /*电量计算公式：电池电压4.2~3.0V
+                采集到电量为a值，则电量电压为0.01941*a，百分比为(0.01941*a-3.0)/1.2*/
+                setPower(packetcheck.xdata[17] & 0xff);
+
+                /**********第19个字节，充电状态************/
+                if(packetcheck.xdata[18] == 0x01){
+                    menu.setAnionEnable(true);
+                }else{
+                    menu.setAnionEnable(false);
+                }
             }
         }
     };
+
+    private void setPower(final int a) {
+        final int num = Math.round((0.01941f * a - 3.0f)/1.2f * 100);
+        if(power == num){
+            return;
+        }
+
+        ShowInfo.printLogW((0.01941*a-3.0)/1.2 + "____packetcheck_xx_____" + 0.01941*a + "  num = " + num);
+        power = num;
+
+        if(null != mTvPower){
+            mTvPower.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(power < 20 && power >=0){
+                        mTvPower.setVisibility(View.VISIBLE);
+                        mTvPower.setText(power + "%");
+                    }else{
+                        mTvPower.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+    }
 
     Timer timer = new Timer();
     TimerTask timerTask;
@@ -188,25 +236,16 @@ public class LightMainActivity extends Activity {
         setContentView(R.layout.home_view);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mTvPower = (TextView) findViewById(R.id.tv_power);
         revealLayout = (RevealLayout) findViewById(R.id.reveal_layout);
-        final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
+
         imageLightAnim = (ImageView) findViewById(R.id.img_light_anim);
         imageLightAnim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null == oneDev){
-                    return;
-                }
-
-                if (onoff) {
-                    sendBulbClose();
-                } else {
-                    sendBulbOpen();
-                }
+                doOnOffClick();
             }
         });
-
-        final Resources resources = getResources();
 
         findViewById(R.id.drawer_content).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -214,10 +253,6 @@ public class LightMainActivity extends Activity {
                 return true;
             }
         });
-
-        drawerArrowDrawable = new DrawerArrowDrawable(resources);
-        drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_black));
-        imageView.setImageDrawable(drawerArrowDrawable);
 
         drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
@@ -227,16 +262,14 @@ public class LightMainActivity extends Activity {
                 // Sometimes slideOffset ends up so close to but not quite 1 or 0.
                 if (slideOffset >= .995) {
                     flipped = true;
-                    drawerArrowDrawable.setFlip(flipped);
                 } else if (slideOffset <= .005) {
                     flipped = false;
-                    drawerArrowDrawable.setFlip(flipped);
                 }
 
-                drawerArrowDrawable.setParameter(offset);
             }
         });
 
+        ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,68 +310,17 @@ public class LightMainActivity extends Activity {
             }
         });
 
-//    styleButton.setOnClickListener(new View.OnClickListener() {
-//      boolean rounded = false;
-//
-//      @Override public void onClick(View v) {
-//        styleButton.setText(rounded //
-//            ? resources.getString(R.string.rounded) //
-//            : resources.getString(R.string.squared));
-//
-//        rounded = !rounded;
-//
-//        drawerArrowDrawable = new DrawerArrowDrawable(resources, rounded);
-//        drawerArrowDrawable.setParameter(offset);
-//        drawerArrowDrawable.setFlip(flipped);
-//        drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
-//
-//        imageView.setImageDrawable(drawerArrowDrawable);
-//      }
-//    });
-
-        mOnBulbChangeListener = new OnBulbChangeListener() {
-            @Override
-            public void onColorChange(int red, int green, int blue, int white, int lux) {
-
-            }
-
-            @Override
-            public void onBulbOpen() {
-
-            }
-
-            @Override
-            public void onBulbClose() {
-
-            }
-
-            @Override
-            public void onBulbFree(boolean isFree) {
-
-            }
-        };
-
         menu = (LightControlMenu) findViewById(R.id.layout_bottom_menu);
         menu.setBulbControlListener(new LightControlMenu.OnBulbControlListener() {
             @Override
             public void onOffClick() {
-                ShowInfo.printLogW("______doOnOffClick_______" + onoff);
-
-                if(null == oneDev){
-                    return;
-                }
-
-                if (onoff) {
-                    sendBulbClose();
-                } else {
-                    sendBulbOpen();
-                }
+                doOnOffClick();
             }
 
             @Override
             public void randomClick() {
                 ShowInfo.printLogW("______doRandomClick_______" + random);
-                if(null == oneDev){
+                if (null == oneDev) {
                     return;
                 }
                 sendBulbFree(!random);
@@ -346,7 +328,7 @@ public class LightMainActivity extends Activity {
 
             @Override
             public void onAddClick() {
-                if(null == setLightColorDialog){
+                if (null == setLightColorDialog) {
                     setLightColorDialog = new SetLightColorDialog(LightMainActivity.this);
                 }
                 setLightColorDialog.show();
@@ -355,16 +337,16 @@ public class LightMainActivity extends Activity {
             @Override
             public void onColorClick(int pos) {
                 List<LightColor> lightColors = JsonUtil.stringToArray(oneDev.function, LightColor[].class);
-                int index = pos-2;
-                if(null != lightColors && index<lightColors.size()){
+                int index = pos - 2;
+                if (null != lightColors && index < lightColors.size()) {
                     LightColor lightColor = lightColors.get(index);
                     int pixelColor = lightColor.getColor();
                     int lux = lightColor.getLight();
 
-                    if(pixelColor == Color.WHITE){
+                    if (pixelColor == Color.WHITE) {
                         sendBulbColor(0, 0, 0,
                                 WhiteToLux(lux), lux, 800);
-                    }else{
+                    } else {
                         setColorLight(Color.red(pixelColor), Color.green(pixelColor), Color.blue(pixelColor),
                                 0, lux, 800);
                     }
@@ -373,7 +355,7 @@ public class LightMainActivity extends Activity {
 
             @Override
             public void onAnionChange(int value) {
-                switch (value){
+                switch (value) {
                     case 0:
                         setAnionLevel(PublicDefine.AnionLevelOff);
                         imageLightAnim.setImageResource(R.drawable.light_blue);
@@ -416,6 +398,42 @@ public class LightMainActivity extends Activity {
                 }
             }
         });
+
+        setVersionName();
+    }
+
+    private void setVersionName() {
+        // 获取packagemanager的实例
+        PackageManager packageManager = getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = null;
+
+        TextView ver = (TextView) findViewById(R.id.tv_version);
+
+        try {
+            packInfo = packageManager.getPackageInfo(getPackageName(),0);
+            String version = packInfo.versionName;
+            ver.setText(version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     *点击开关灯
+     */
+    private void doOnOffClick() {
+        ShowInfo.printLogW("______doOnOffClick_______" + onoff);
+
+        if(null == oneDev){
+            return;
+        }
+
+        if (onoff) {
+            sendBulbClose();
+        } else {
+            sendBulbOpen();
+        }
     }
 
     private void addLightBtns(final LinearLayout linearLayout) {
@@ -525,6 +543,7 @@ public class LightMainActivity extends Activity {
         }
 
         checkDeviceMenu();
+        MobclickAgent.onResume(this);
     }
 
     private void checkDeviceMenu() {
@@ -537,20 +556,26 @@ public class LightMainActivity extends Activity {
         if(null != mDevices && mDevices.size()>1){
             mPopBtn.setVisibility(View.VISIBLE);
         }else{
-            mPopBtn.setVisibility(View.INVISIBLE);
+            mPopBtn.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        timerTask.cancel();
+        if(null != timerTask){
+            timerTask.cancel();
+        }
+
+        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        if(null != timer){
+            timer.cancel();
+        }
         this.userUnbindService();
     }
 
@@ -649,10 +674,6 @@ public class LightMainActivity extends Activity {
         }
     }
 
-    public void setOnBulbChangeListener(OnBulbChangeListener mListener) {
-        this.mOnBulbChangeListener = mListener;
-    }
-
     public void doAddLightClick(View v) {
 //        Intent intent = new Intent(this, AddLightActivity.class);
 //        startActivity(intent);
@@ -732,21 +753,6 @@ public class LightMainActivity extends Activity {
         int tmp = 0;
         tmp = (int)((float)255*(float)a/(float)300);
         return tmp;
-    }
-
-    public interface OnBulbChangeListener {
-        void onColorChange(int red, int green, int blue, int white, int lux);
-
-        void onBulbOpen();
-
-        void onBulbClose();
-
-        /**
-         * 随机变色是否打开
-         *
-         * @param isFree
-         */
-        void onBulbFree(boolean isFree);
     }
 
     @Override

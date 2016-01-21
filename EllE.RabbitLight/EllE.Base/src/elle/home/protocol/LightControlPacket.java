@@ -42,7 +42,7 @@ public class LightControlPacket extends BasicPacket {
 	public void setAnionLevel(byte[] mac,OnRecvListener listener, byte level){
 		byte[] tmp = new byte[1];
 		tmp[0] = level;
-		super.packData(PublicDefine.TypeLight, PublicDefine.LightVerOrgin, PublicDefine.FunSetAnionLevel, mac, PublicDefine.getPhoneMac(), PublicDefine.getSeq(), tmp);
+		super.packData(PublicDefine.TypeLightRabbit, PublicDefine.LightVerOrgin, PublicDefine.FunSetAnionLevel, mac, PublicDefine.getPhoneMac(), PublicDefine.getSeq(), tmp);
 		super.setListener(listener);
 	}
 

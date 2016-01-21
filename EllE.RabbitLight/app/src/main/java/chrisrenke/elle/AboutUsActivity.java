@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +22,7 @@ import elle.home.utils.SaveDataPreferences;
  */
 public class AboutUsActivity extends Activity {
 
-    private static final String ABOUT_URL = "http://120.24.228.203/about.html";
+    private static final String ABOUT_URL = "http://www.elletechnology.com/contact.html";
     private static final String ABOUT_KEY = "about";
 
     private TextView mTextView;
@@ -70,7 +72,7 @@ public class AboutUsActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            String content = "about us";
+            String content = "";
 
             try {
                 doc = Jsoup.connect(ABOUT_URL).timeout(5000).get();
@@ -108,5 +110,17 @@ public class AboutUsActivity extends Activity {
 //            bar.show();
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

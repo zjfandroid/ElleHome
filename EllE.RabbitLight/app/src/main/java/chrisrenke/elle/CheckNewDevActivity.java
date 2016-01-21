@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.elle.pojo.LightColor;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,7 @@ public class CheckNewDevActivity extends Activity {
 
     //查询新设备的线程
     CheckNewDevice udpchecknew;
-    //dev type
-    private int type;
+
     private int count;
 
     private AirKiss airKiss;
@@ -62,6 +62,8 @@ public class CheckNewDevActivity extends Activity {
     private int counter = 60;
     private CountDownTimer mCountDownTimer;
     private Button buttonBottom;
+
+    private boolean isFound;
 
     private Handler handler = new Handler() {
 
@@ -90,7 +92,6 @@ public class CheckNewDevActivity extends Activity {
         this.mContext = this;
 
         Intent intent = getIntent();
-        type = intent.getIntExtra("type", PublicDefine.TypeLight);
         count = intent.getIntExtra("count", 1);
 
         wifiadmin = new WifiAdmin(this);
@@ -141,6 +142,8 @@ public class CheckNewDevActivity extends Activity {
                     newdev.function = JsonUtil.objectToJson(mColors);
 
                     if(newdev.addToDatabase(mContext)){
+                        isFound = true;
+
                         setResult(RESULT_OK);
 
                         runOnUiThread(new Runnable() {
@@ -231,10 +234,12 @@ public class CheckNewDevActivity extends Activity {
             public void onClick(View view) {
                 switch (state){
                     case STATE_CHANGE_WIFI:
-                        if (null != configDevDataList) {
-                            Intent intent = new Intent("android.settings.WIFI_SETTINGS");
-                            startActivity(intent);
-                        }
+//                        if (null != configDevDataList) {
+//                            Intent intent = new Intent("android.settings.WIFI_SETTINGS");
+//                            startActivity(intent);
+//                        }
+                        stopAirkiss();
+                        showConfigWifiDialog(conssid);
                         break;
 
                     case STATE_CONNECT_SUCCESS:
@@ -258,7 +263,11 @@ public class CheckNewDevActivity extends Activity {
 
     private void connectSuccess() {
         state = STATE_CONNECT_SUCCESS;
-        buttonBottom.setText(R.string.tips_connect_success);
+        if(isFound){
+            buttonBottom.setText(R.string.tips_connect_success);
+        }else{
+            buttonBottom.setText(R.string.tips_connect_nothing);
+        }
     }
 
     private void stopAirkiss() {
@@ -266,6 +275,18 @@ public class CheckNewDevActivity extends Activity {
             airKiss.stop();
             airKiss = null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
