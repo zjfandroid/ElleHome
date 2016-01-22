@@ -26,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -44,9 +45,7 @@ import com.elle.view.RevealLayout;
 import com.elle.view.SetLightColorDialog;
 import com.elle.view.SettingDialog;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UpdateStatus;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -87,20 +86,17 @@ public class LightMainActivity extends Activity {
     private SetLightColorDialog setLightColorDialog;
     private AddLightDialog addLightDialog;
 
-    private float offset;
-    private boolean flipped;
     private boolean onoff, random;
 
     private AllDevInfo mAllDevInfo;
     private List<OneDev> mDevices;
     private OneDev oneDev;
 
-    int mred, mgreen, mblue, lux, time, sleepTime;
+    int mred, mgreen, mblue, lux;
     private int indexLight;
     private int colorRed = -1;
     private int colorGreen = -1;
     private int colorBlue = -1;
-    private int white;
     private int power;
     private int anionLevel;
     private final float BlueAdjust = 0.75f;
@@ -191,8 +187,42 @@ public class LightMainActivity extends Activity {
         }
     };
 
+    private GestureDetector mGestureDetector;
+//    private GestureDetector mGestureDetector = new GestureDetector(
+//            new GestureDetector.OnGestureListener() {
+//                public boolean onSingleTapUp(MotionEvent e) {
+//                    return false;
+//                }
+//                public boolean onDown(MotionEvent e) {
+//                    return false;
+//                }
+//                public void onLongPress(MotionEvent e) {
+//                }
+//                public boolean onFling(MotionEvent e1, MotionEvent e2,
+//                                       float velocityX, float velocityY) {
+//                    return true;
+//                }
+//                public boolean onScroll(MotionEvent e1, MotionEvent e2,
+//                                        float distanceX, float distanceY) {
+//                    final double FLING_MIN_DISTANCE = 0.5;
+//                    final double FLING_MIN_VELOCITY = 0.5;
+//                    if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE
+//                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+//                        ShowInfo.printLogW("_______onScroll_up_______");
+//                    }else if (e1.getY() - e2.getY() < FLING_MIN_DISTANCE
+//                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+//                        ShowInfo.printLogW("_______onScroll_down_______");
+//                    }
+//                    ShowInfo.printLogW("_______onScroll________");
+//                    return true;
+//                }
+//                public void onShowPress(MotionEvent e) {
+//                }
+//            });
+
     private void setPower(final int a) {
-        final int num = Math.round((0.01941f * a - 3.0f)/1.2f * 100);
+        //* 10 / 9 防止到90充不满的情况
+        final int num = Math.round((0.01941f * a - 3.0f)/1.2f * 100 * 10 / 9 );
         if(power == num){
             return;
         }
@@ -251,21 +281,6 @@ public class LightMainActivity extends Activity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
-            }
-        });
-
-        drawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                offset = slideOffset;
-
-                // Sometimes slideOffset ends up so close to but not quite 1 or 0.
-                if (slideOffset >= .995) {
-                    flipped = true;
-                } else if (slideOffset <= .005) {
-                    flipped = false;
-                }
-
             }
         });
 
@@ -384,22 +399,40 @@ public class LightMainActivity extends Activity {
 
         //友盟自动更新
         UmengUpdateAgent.update(this);
-        UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-
-            @Override
-            public void onClick(int arg0) {
-                switch (arg0) {
-                    case UpdateStatus.Update:
-                        break;
-                    case UpdateStatus.Ignore:
-                        break;
-                    case UpdateStatus.NotNow:
-                        break;
-                }
-            }
-        });
 
         setVersionName();
+
+        mGestureDetector = new GestureDetector(
+                new GestureDetector.OnGestureListener() {
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        return false;
+                    }
+                    public boolean onDown(MotionEvent e) {
+                        return false;
+                    }
+                    public void onLongPress(MotionEvent e) {
+                    }
+                    public boolean onFling(MotionEvent e1, MotionEvent e2,
+                                           float velocityX, float velocityY) {
+                        return true;
+                    }
+                    public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                            float distanceX, float distanceY) {
+                        final double FLING_MIN_DISTANCE = 0.5;
+                        final double FLING_MIN_VELOCITY = 0.5;
+                        if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE
+                                && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                            ShowInfo.printLogW("_______onScroll_up_______");
+                        }else if (e1.getY() - e2.getY() < FLING_MIN_DISTANCE
+                                && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                            ShowInfo.printLogW("_______onScroll_down_______");
+                        }
+                        ShowInfo.printLogW("_______onScroll________");
+                        return true;
+                    }
+                    public void onShowPress(MotionEvent e) {
+                    }
+                });
     }
 
     private void setVersionName() {
@@ -730,10 +763,6 @@ public class LightMainActivity extends Activity {
         colorGreen = (int)((float)ColorToLux(g, lux)*GreenAdjust);
         colorBlue = (int)((float)ColorToLux(b, lux)*BlueAdjust);
 
-//        colorRed = r;
-//        colorGreen = g;
-//        colorBlue = b;
-
         sendBulbColor(colorRed, colorGreen, colorBlue, white, lux, time);
     }
 
@@ -763,5 +792,14 @@ public class LightMainActivity extends Activity {
             drawer.openDrawer(START);
         }
         return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        boolean result = mGestureDetector.onTouchEvent(event);
+        if (!result) {
+            result = super.dispatchTouchEvent(event);
+        }
+        return result;
     }
 }

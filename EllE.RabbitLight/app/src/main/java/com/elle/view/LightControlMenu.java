@@ -119,6 +119,7 @@ public class LightControlMenu extends FrameLayout {
                     case 0:
                         setAnionChange(0);
                         textView0.setTextColor(COLOR_BLUE);
+                        break;
                     case 1:
                     case 2:
                         mSeekBar.setProgress(0);

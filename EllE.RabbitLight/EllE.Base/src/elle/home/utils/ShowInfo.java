@@ -9,7 +9,7 @@ import android.util.Log;
 public class ShowInfo
 {
 	
-	private static boolean isShow = false;
+	private static boolean isShow = true;
 	
 	/**
 	 * 打印Log.w信息
