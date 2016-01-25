@@ -82,6 +82,7 @@ public class LightMainActivity extends Activity {
     private PopupWindow popupWindow;
     private Button mPopBtn;
     private TextView mTvPower;
+    private TextView mTvPowerLeft;
 
     private SetLightColorDialog setLightColorDialog;
     private AddLightDialog addLightDialog;
@@ -234,12 +235,16 @@ public class LightMainActivity extends Activity {
             mTvPower.post(new Runnable() {
                 @Override
                 public void run() {
+                    String txt = power + "%";
+
                     if(power < 20 && power >=0){
                         mTvPower.setVisibility(View.VISIBLE);
-                        mTvPower.setText(power + "%");
+                        mTvPower.setText(txt);
                     }else{
                         mTvPower.setVisibility(View.GONE);
                     }
+
+                    mTvPowerLeft.setText(txt);
                 }
             });
         }
@@ -267,6 +272,7 @@ public class LightMainActivity extends Activity {
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mTvPower = (TextView) findViewById(R.id.tv_power);
+        mTvPowerLeft = (TextView) findViewById(R.id.tv_bettery);
         revealLayout = (RevealLayout) findViewById(R.id.reveal_layout);
 
         imageLightAnim = (ImageView) findViewById(R.id.img_light_anim);
@@ -402,7 +408,7 @@ public class LightMainActivity extends Activity {
 
         setVersionName();
 
-        mGestureDetector = new GestureDetector(
+        mGestureDetector = new GestureDetector(this,
                 new GestureDetector.OnGestureListener() {
                     public boolean onSingleTapUp(MotionEvent e) {
                         return false;
@@ -414,7 +420,7 @@ public class LightMainActivity extends Activity {
                     }
                     public boolean onFling(MotionEvent e1, MotionEvent e2,
                                            float velocityX, float velocityY) {
-                        return true;
+                        return false;
                     }
                     public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                             float distanceX, float distanceY) {
@@ -428,7 +434,7 @@ public class LightMainActivity extends Activity {
                             ShowInfo.printLogW("_______onScroll_down_______");
                         }
                         ShowInfo.printLogW("_______onScroll________");
-                        return true;
+                        return false;
                     }
                     public void onShowPress(MotionEvent e) {
                     }
