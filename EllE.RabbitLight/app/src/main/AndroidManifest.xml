@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="chrisrenke.elle">
+
+    <uses-sdk tools:overrideLibrary="com.silverforge.library"/>
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -39,33 +42,32 @@
         </activity>
         <activity
             android:name=".CheckNewDevActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AboutUsActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ConfigWifiActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Transparent"></activity>
+            android:theme="@style/Transparent"/>
 
         <!-- UMeng update start -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55eee0db67e58e4cd80041c5"></meta-data>
+            android:value="55eee0db67e58e4cd80041c5"/>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Umeng"></meta-data>
+            android:value="Umeng"/>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService"></service>
+            android:process=":DownloadingService"/>
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- UMeng update end -->
 
         <service android:name="elle.home.hal.sdk.SmartHomeService" />
     </application>
-
 </manifest>

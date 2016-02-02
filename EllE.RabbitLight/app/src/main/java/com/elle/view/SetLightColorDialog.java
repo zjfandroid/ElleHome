@@ -21,6 +21,9 @@ import chrisrenke.elle.R;
 import elle.home.utils.ShowInfo;
 import elle.home.utils.ShowToast;
 
+/**
+ * 设置颜色亮度界面
+ */
 public class SetLightColorDialog extends Dialog {
 
     private SeekBar mSeekColor;

@@ -24,7 +24,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -36,6 +39,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.elle.pojo.LightColor;
@@ -47,6 +51,7 @@ import com.elle.view.SettingDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
+import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -66,14 +71,17 @@ import elle.home.publicfun.PublicDefine;
 import elle.home.utils.JsonUtil;
 import elle.home.utils.ShowInfo;
 
-import static android.view.Gravity.START;
-
 /**
  * 主界面
  */
 public class LightMainActivity extends Activity {
 
+    public static final int MSG_DIS_LIGHT = 0x123;
+
     public static boolean isFirstLoad = true;
+
+    private View layout_light_progress;
+    private ProgressBar progress_bar;
 
     private LightControlMenu menu;
     private ImageView imageLightAnim;
@@ -87,12 +95,13 @@ public class LightMainActivity extends Activity {
     private SetLightColorDialog setLightColorDialog;
     private AddLightDialog addLightDialog;
 
-    private boolean onoff, random;
+    private boolean onoff, random, isWhite;
 
     private AllDevInfo mAllDevInfo;
     private List<OneDev> mDevices;
     private OneDev oneDev;
 
+    //颜色改变后更换背景
     int mred, mgreen, mblue, lux;
     private int indexLight;
     private int colorRed = -1;
@@ -102,13 +111,15 @@ public class LightMainActivity extends Activity {
     private int anionLevel;
     private final float BlueAdjust = 0.75f;
     private final float GreenAdjust = 0.8f;
+    private long lastLuxChangeTime;
+
+    private MyHandler mHandler = new MyHandler(this);
 
     //定时查询回调接口
     private OnRecvListener cycleListener = new OnRecvListener() {
         @Override
         public void OnRecvData(PacketCheck packetcheck) {
             if (packetcheck != null) {
-                int red, green, blue;
                 /*********灯的开关状态*********/
                 boolean onoff = true;
                 if (packetcheck.xdata[0] == 0x00) {
@@ -133,7 +144,9 @@ public class LightMainActivity extends Activity {
                 //white
                 if(DataExchange.twoByteToInt(packetcheck.xdata[8], packetcheck.xdata[9])>0){
                     //灯泡状态为白色
+                    isWhite = true;
                 }else{
+                    isWhite = false;
                     ShowInfo.printLogW("状态颜色 原始接收______：" + DataExchange.twoByteToInt(packetcheck.xdata[2], packetcheck.xdata[3])
                             + " " + DataExchange.twoByteToInt(packetcheck.xdata[4], packetcheck.xdata[5])
                             + " " + DataExchange.twoByteToInt(packetcheck.xdata[6], packetcheck.xdata[7]));
@@ -189,37 +202,6 @@ public class LightMainActivity extends Activity {
     };
 
     private GestureDetector mGestureDetector;
-//    private GestureDetector mGestureDetector = new GestureDetector(
-//            new GestureDetector.OnGestureListener() {
-//                public boolean onSingleTapUp(MotionEvent e) {
-//                    return false;
-//                }
-//                public boolean onDown(MotionEvent e) {
-//                    return false;
-//                }
-//                public void onLongPress(MotionEvent e) {
-//                }
-//                public boolean onFling(MotionEvent e1, MotionEvent e2,
-//                                       float velocityX, float velocityY) {
-//                    return true;
-//                }
-//                public boolean onScroll(MotionEvent e1, MotionEvent e2,
-//                                        float distanceX, float distanceY) {
-//                    final double FLING_MIN_DISTANCE = 0.5;
-//                    final double FLING_MIN_VELOCITY = 0.5;
-//                    if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE
-//                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-//                        ShowInfo.printLogW("_______onScroll_up_______");
-//                    }else if (e1.getY() - e2.getY() < FLING_MIN_DISTANCE
-//                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-//                        ShowInfo.printLogW("_______onScroll_down_______");
-//                    }
-//                    ShowInfo.printLogW("_______onScroll________");
-//                    return true;
-//                }
-//                public void onShowPress(MotionEvent e) {
-//                }
-//            });
 
     private void setPower(final int a) {
         //* 10 / 9 防止到90充不满的情况
@@ -274,6 +256,8 @@ public class LightMainActivity extends Activity {
         mTvPower = (TextView) findViewById(R.id.tv_power);
         mTvPowerLeft = (TextView) findViewById(R.id.tv_bettery);
         revealLayout = (RevealLayout) findViewById(R.id.reveal_layout);
+        layout_light_progress = findViewById(R.id.layout_light_progress);
+        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
 
         imageLightAnim = (ImageView) findViewById(R.id.img_light_anim);
         imageLightAnim.setOnClickListener(new View.OnClickListener() {
@@ -294,10 +278,10 @@ public class LightMainActivity extends Activity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (drawer.isDrawerVisible(START)) {
-                    drawer.closeDrawer(START);
+                if (drawer.isDrawerVisible(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
                 } else {
-                    drawer.openDrawer(START);
+                    drawer.openDrawer(GravityCompat.START);
                 }
             }
         });
@@ -413,32 +397,93 @@ public class LightMainActivity extends Activity {
                     public boolean onSingleTapUp(MotionEvent e) {
                         return false;
                     }
+
                     public boolean onDown(MotionEvent e) {
                         return false;
                     }
+
                     public void onLongPress(MotionEvent e) {
                     }
+
                     public boolean onFling(MotionEvent e1, MotionEvent e2,
                                            float velocityX, float velocityY) {
                         return false;
                     }
+
                     public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                             float distanceX, float distanceY) {
-                        final double FLING_MIN_DISTANCE = 0.5;
-                        final double FLING_MIN_VELOCITY = 0.5;
-                        if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE
-                                && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-                            ShowInfo.printLogW("_______onScroll_up_______");
-                        }else if (e1.getY() - e2.getY() < FLING_MIN_DISTANCE
-                                && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-                            ShowInfo.printLogW("_______onScroll_down_______");
+                        final double FLING_MIN_VELOCITY = 1;
+
+                        if (distanceY > 0 && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                            setLuxChange(true);
+                        } else if (distanceY < 0 && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                            setLuxChange(false);
                         }
-                        ShowInfo.printLogW("_______onScroll________");
                         return false;
                     }
+
                     public void onShowPress(MotionEvent e) {
                     }
                 });
+    }
+
+    private void setLuxChange(boolean isUp) {
+        long time = System.currentTimeMillis();
+        if(time - lastLuxChangeTime > 100) {
+            lastLuxChangeTime = time;
+            if (isUp) {
+                setLightUp();
+            } else {
+                setLightDown();
+            }
+
+            showLightProgress();
+        }
+    }
+
+    private void showLightProgress() {
+        if(layout_light_progress.isShown()){
+            mHandler.removeMessages(MSG_DIS_LIGHT);
+            mHandler.sendEmptyMessageDelayed(MSG_DIS_LIGHT, 1500);
+        }else{
+            layout_light_progress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void dissMissLightProgress() {
+        if(null != layout_light_progress){
+            layout_light_progress.setVisibility(View.GONE);
+        }
+    }
+
+    private void setLightDown() {
+        int mLux = lux - 10;
+        if (mLux > 0){
+            lux = mLux;
+            if (isWhite) {
+                sendBulbColor(0, 0, 0, WhiteToLux(mLux), mLux, 50);
+            } else {
+                setColorLight(colorRed, colorGreen, colorBlue, 0, mLux, 50);
+            }
+
+            progress_bar.setProgress(lux/3);
+            ShowInfo.printLogW("_______onScroll_down_______" + lux/3);
+
+        }
+    }
+
+    private void setLightUp() {
+        int mLux = lux + 10;
+        if (mLux < 300){
+            lux = mLux;
+            if (isWhite) {
+                sendBulbColor(0, 0, 0, WhiteToLux(mLux), mLux, 50);
+            } else {
+                setColorLight(colorRed, colorGreen, colorBlue, 0, mLux, 50);
+            }
+            progress_bar.setProgress(lux/3);
+            ShowInfo.printLogW("_______onScroll_up_______" + lux/3);
+        }
     }
 
     private void setVersionName() {
@@ -714,16 +759,12 @@ public class LightMainActivity extends Activity {
     }
 
     public void doAddLightClick(View v) {
-//        Intent intent = new Intent(this, AddLightActivity.class);
-//        startActivity(intent);
         addLightDialog = new AddLightDialog(this);
         addLightDialog.setDevices(mDevices, indexLight);
         addLightDialog.show();
     }
 
     public void doSettingClick(View v) {
-//        Intent intent = new Intent(this, SettingActivity.class);
-//        startActivity(intent);
         SettingDialog settingDialog = new SettingDialog(this);
         settingDialog.setDevice(oneDev);
         settingDialog.show();
@@ -792,10 +833,10 @@ public class LightMainActivity extends Activity {
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
-        if (drawer.isDrawerVisible(START)) {
-            drawer.closeDrawer(START);
+        if (drawer.isDrawerVisible(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            drawer.openDrawer(START);
+            drawer.openDrawer(GravityCompat.START);
         }
         return super.onMenuOpened(featureId, menu);
     }
@@ -807,5 +848,28 @@ public class LightMainActivity extends Activity {
             result = super.dispatchTouchEvent(event);
         }
         return result;
+    }
+
+    private static class MyHandler extends Handler {
+
+        private final WeakReference<LightMainActivity> mActivity;
+
+        public MyHandler(LightMainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            LightMainActivity activity = mActivity.get();
+            if(null == activity || activity.isFinishing()){
+                return;
+            }
+
+            switch (msg.what){
+                case MSG_DIS_LIGHT:
+                    activity.dissMissLightProgress();
+                break;
+            }
+        }
     }
 }
